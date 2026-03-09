@@ -1,0 +1,1 @@
+For each Paper 2 domain, the experiment script must read from the cleaned canonical dataset specified in that domain’s data contract, rather than provisional or raw filenames. This requirement preserves consistency between data preparation, documented schema, and downstream experimental execution, thereby strengthening reproducibility and auditability.
