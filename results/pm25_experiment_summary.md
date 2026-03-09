@@ -7,17 +7,18 @@
 - **Hmax:** `48` forecast horizons (`h=1..48`).
 - **Metric:** Mean Absolute Error (MAE), with skill defined as \(\mathrm{Skill}(h)=1-E_{\mathrm{model}}(h)/E_{\mathrm{baseline}}(h)\).
 - **Observed Skill(h) behavior:** Skill is negative at short-to-medium horizons (approximately `h=1..35`) and becomes positive at longer horizons (`h=36..48`).
+- **Interpretive note:** The strong persistence of the PM2.5 series makes the persistence baseline highly competitive at short and medium horizons.
 
 ## H* Definition Used in This Domain
 
-- Reported value uses the original definition \(H^*=\max\{h:\mathrm{Skill}(h)>0\}\).
+- The reported value uses the original definition \(H^*=\max\{h:\mathrm{Skill}(h)>0\}\).
 - For the PM2.5 Beijing experiment, this yields **`H* = 48`**.
-- Interpretive caution: late positive skill may reflect long-horizon recovery effects rather than contiguous useful predictability.
+- **Interpretive caution:** late positive skill may reflect long-horizon recovery effects rather than a contiguous interval of practically useful predictability.
 - A first-zero-crossing criterion may therefore provide a more robust operational estimate of `H*`.
 
 ## Leakage-Free Evaluation Protocol
 
-- Evaluation is strictly time-ordered, with **no random split**.
+- Evaluation is performed using time-ordered backtesting with **no random split**.
 - Targets are generated as `series.shift(-h)` for each horizon.
 - Baseline and model predictions are evaluated on the same valid timestamps via a shared mask.
 - This enforces temporally aligned, leakage-free comparison across horizons.
