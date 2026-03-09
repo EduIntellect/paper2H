@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import mean_absolute_error
 
-DATA_PATH = Path("data/pjm_load_hourly.csv")
+DATA_PATH = Path("data/pjm_load_hourly_clean.csv")
 RESULTS_DIR = Path("results")
 FIGURES_DIR = Path("figures")
 MAX_HORIZON = 72
