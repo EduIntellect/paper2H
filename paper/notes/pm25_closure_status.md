@@ -1,0 +1,3 @@
+# PM2.5 Closure Status (Paper 2, Phase 1)
+
+The PM2.5 domain is considered closed for Paper 2 Phase 1. The study package includes reproducible experiment code, generated outputs, comparison figures, and associated interpretive/methodological notes. Evaluation is implemented with a leakage-free, time-ordered protocol, and the currently reported predictability horizon under \(H^*=\max\{h:\mathrm{Skill}(h)>0\}\) is available. In addition, a first-zero-crossing version of \(H^*\) has been recorded as a more operationally robust alternative for cross-domain comparison. The primary domain-level finding is that strong temporal persistence makes the persistence baseline highly competitive, while late positive skill at long horizons should be interpreted cautiously.
