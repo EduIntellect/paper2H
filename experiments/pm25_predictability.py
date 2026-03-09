@@ -57,7 +57,7 @@ def main():
         skill = 1.0 - (model_mae / baseline_mae)
     skill = np.where(np.isfinite(skill), skill, np.nan)
 
-    valid_horizons = horizons[skill > 0]
+    valid_horizons = horizons[skill > 0.01]
     h_star = int(valid_horizons.max()) if valid_horizons.size > 0 else 0
 
     os.makedirs(RESULTS_DIR, exist_ok=True)
