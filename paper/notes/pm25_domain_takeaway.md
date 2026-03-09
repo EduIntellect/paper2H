@@ -1,0 +1,1 @@
+In the Beijing PM2.5 series, strong temporal persistence makes the persistence baseline highly competitive at short and medium horizons. Late positive Skill at longer horizons appears to reflect smoothing-related recovery rather than contiguous useful predictability, suggesting that a first-zero-crossing criterion may provide a more robust operational estimate of H*.
