@@ -1,0 +1,3 @@
+## PM2.5 XGBoost methodological note
+
+To ensure computational tractability and reduce the influence of non-stationary historical regimes, XGBoost models were trained on a sliding window of the 720 most recent observations (30 days) preceding each forecast origin. Forecast origins were sampled with daily stride. Temporal causality was preserved throughout the evaluation, and no future information was used in feature construction, training, or prediction.
