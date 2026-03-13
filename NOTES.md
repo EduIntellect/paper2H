@@ -1,0 +1,1 @@
+To ensure computational tractability and reduce the influence of non-stationary historical regimes, LightGBM models were trained on a sliding window of the 720 most recent observations (30 days) preceding each forecast origin.
