@@ -1,3 +1,6 @@
 .DS_Store
 __pycache__/
 *.pyc
+
+# Raw UCI electricity data
+data/LD2011_2014.txt
