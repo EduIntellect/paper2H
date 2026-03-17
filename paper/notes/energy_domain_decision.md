@@ -62,3 +62,17 @@ Skill(h) and H* will be computed only after the energy series representation is 
 
 This confirms that the aggregate energy series contains exploitable structure, but the moving-average baseline does not outperform persistence in a contiguous operational sense from short horizons.
 
+## Final energy-domain result
+
+After adding weekly structure features (lag-14 and day-of-week), the rolling-origin LightGBM experiment yields:
+
+- **Formal H\***: 1
+- **Contiguous H\***: 1
+
+### Interpretation
+Positive skill appears only at the 1-day horizon and disappears immediately afterwards.
+
+This means that the UCI aggregate daily energy series is not a case of H*=0 in the strict formal sense, but rather a case of **extremely short operational predictability**, where persistence remains the dominant baseline beyond 1 day.
+
+This makes the energy domain a useful cross-domain contrast against PM2.5, where much longer predictability horizons were observed.
+

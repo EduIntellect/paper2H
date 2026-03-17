@@ -1,0 +1,2 @@
+formal_hstar=1
+contiguous_hstar=1
