@@ -1,0 +1,3 @@
+formal_hstar=6
+contiguous_hstar=0
+label=formal H*=6 (non-contiguous)

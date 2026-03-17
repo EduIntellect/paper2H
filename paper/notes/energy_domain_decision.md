@@ -53,3 +53,12 @@ Before computing skill(h), the first diagnostic pass will use:
 
 No additional forecasting model is introduced in this first pass.
 Skill(h) and H* will be computed only after the energy series representation is fixed.
+
+## Moving-average screening result
+
+- **Formal H\***: 6
+- **Contiguous operational H\*** from h=1: 0
+- **Interpretation**: non-contiguous positive skill region
+
+This confirms that the aggregate energy series contains exploitable structure, but the moving-average baseline does not outperform persistence in a contiguous operational sense from short horizons.
+
