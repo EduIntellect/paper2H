@@ -1,0 +1,298 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{array}
+\geometry{margin=1in}
+
+\title{Cross-Domain Predictability Horizons in Time Series Forecasting Systems\\
+\large\emph{An empirical evaluation of operational predictability using public datasets}}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Time series forecasting is usually evaluated at fixed prediction horizons, yet the temporal extent over which forecasting systems retain useful predictive skill remains insufficiently characterized across domains.
+This study investigates operational predictability horizons in four real-world forecasting settings: air quality, electricity demand, wind speed, and traffic flow.
+Using public datasets and reproducible leakage-free evaluation protocols, we quantify forecast skill relative to explicit baseline models and estimate the horizon at which useful predictive skill is lost.
+We distinguish between a simple supremum-based estimator and a more robust first-zero-crossing estimator of the skill curve.
+Preliminary evidence from the PM$_{2.5}$ domain shows that strong temporal persistence can make naive persistence baselines highly competitive, highlighting the importance of robust horizon estimation for cross-domain predictability analysis.
+The proposed framework provides an empirical basis for comparing operational forecasting limits across heterogeneous real-world systems.
+\end{abstract}
+
+\section{Introduction}
+
+\subsection{Background}
+Forecasting models are widely used to predict future states of complex systems such as environmental processes, energy demand, and urban mobility. Forecasting is a key component of operational decision-making in domains including:
+\begin{itemize}
+  \item air quality,
+  \item energy systems,
+  \item traffic systems,
+  \item environmental monitoring.
+\end{itemize}
+Most forecasting studies evaluate performance at fixed prediction horizons and/or report benchmarking comparisons across models. However, these evaluations provide limited insight into the temporal limits of useful predictability.
+
+\subsection{Problem}
+In practice, forecasting systems lose predictive skill as the forecast horizon increases. Beyond a certain horizon, predictions become no more informative than simple baseline models.
+Moreover, two models can have similar short-horizon error while exhibiting markedly different long-horizon degradation.
+There is no standard operational metric to quantify \emph{how far into the future} a system remains predictably useful relative to a baseline.
+
+\subsection{Contribution}
+This paper studies operational predictability as a cross-domain forecasting question and proposes a reproducible evaluation framework for quantifying the temporal extent of useful predictive skill relative to explicit baselines.
+The main contributions are:
+\begin{enumerate}
+  \item a formal operational framing of predictability horizons in empirical forecasting,
+  \item a distinction between supremum-based and first-zero-crossing-based horizon estimators,
+  \item a leakage-free cross-domain evaluation protocol using public datasets,
+  \item preliminary empirical evidence showing how temporal persistence structures can shape horizon estimates.
+\end{enumerate}
+
+\section{Related Work}
+
+\subsection{Forecast evaluation metrics}
+Forecast evaluation research has focused primarily on error metrics such as MAE and RMSE, as well as scale-free metrics such as MASE. These metrics typically summarize error at a fixed horizon or over a preselected horizon set.
+
+\subsection{Forecast skill evaluation}
+Relative performance is often measured by comparing a model against a baseline via forecast skill:
+\begin{equation}
+\mathrm{Skill}(h) = 1 - \frac{E_{\mathrm{model}}(h)}{E_{\mathrm{baseline}}(h)}.
+\end{equation}
+This approach is common in meteorology and is also used in forecasting benchmarks and competitions.
+
+\subsection{Predictability limits}
+Predictability limits have long been studied in dynamical systems and meteorology. However, forecasting literature rarely provides an operational formalization of the \emph{maximum useful} horizon in data-driven forecasting systems, particularly under reproducible cross-domain evaluation settings.
+
+\section{Problem Formulation}
+Let $y_t$, $t = 1,\dots,T$, be a time series.
+A forecasting model produces predictions
+\begin{equation}
+\hat{y}_{t+h} = f_{\theta}(y_t, \dots, y_{t-L+1}),
+\end{equation}
+where $L$ is the input window length and $h$ is the forecast horizon.
+The forecast error is
+\begin{equation}
+ e_{t,h} = y_{t+h} - \hat{y}_{t+h}.
+\end{equation}
+An aggregated error metric is $E(h)$, such as MAE or RMSE.
+A baseline forecast $b(\cdot)$ provides an error curve $E_{\mathrm{baseline}}(h)$.
+
+\subsection{Operational Predictability Horizon}
+Operational predictability is defined here as the temporal extent over which a forecasting model maintains positive skill relative to a baseline under a fixed evaluation protocol.
+
+We define forecast skill at horizon $h$ as
+\begin{equation}
+\mathrm{Skill}(h) = 1 - \frac{E_{\mathrm{model}}(h)}{E_{\mathrm{baseline}}(h)}.
+\end{equation}
+
+A simple operational definition of the predictability horizon is:
+\begin{equation}
+H^*_{\max} = \max\{h : \mathrm{Skill}(h) > 0\},
+\end{equation}
+which represents the largest evaluated forecast horizon at which the model outperforms the baseline.
+
+However, because empirical skill curves may show late positive recovery after extended negative intervals, we also consider a more robust operational estimator based on the first zero-crossing of the skill curve:
+\begin{equation}
+H^*_{\mathrm{zc}} = \max\{h < h_0 : \mathrm{Skill}(h) > 0\},
+\end{equation}
+where $h_0$ is the first horizon at which $\mathrm{Skill}(h)\leq 0$.
+If the skill curve is non-positive from the first evaluated horizon onward, then $H^*_{\mathrm{zc}}=0$.
+This estimator is intended to better capture the end of the contiguous interval of practically useful predictability.
+
+\section{Evaluation Framework}
+We estimate predictability by measuring model performance across increasing forecast horizons and determining the horizon at which predictive skill relative to a baseline becomes non-positive.
+
+\subsection{Baseline models}
+\begin{itemize}
+  \item Persistence,
+  \item Seasonal naive.
+\end{itemize}
+
+\subsection{Evaluation metrics}
+\begin{itemize}
+  \item MAE,
+  \item RMSE.
+\end{itemize}
+
+\subsection{Temporal validation protocol}
+Experiments use time-ordered, leakage-free evaluation. The evaluation protocol follows a rolling-origin style design:
+\begin{enumerate}
+  \item define a temporally ordered training window,
+  \item predict horizon $h$,
+  \item advance the forecasting origin,
+  \item repeat across horizons and origins.
+\end{enumerate}
+Random train-test splits are explicitly avoided because they introduce temporal leakage.
+For all domains, model and baseline predictions must be evaluated on temporally aligned timestamps only.
+Data preprocessing, scaling, and transformation steps must be estimated using past information only.
+
+\section{Datasets}
+Table~\ref{tab:datasets} summarizes the study domains, datasets, target variables, temporal frequency, and maximum forecast horizon.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lllll}
+\toprule
+Domain & Dataset & Variable & Frequency & $H_{\max}$ \\
+\midrule
+Air quality & OpenAQ / Beijing PM$_{2.5}$ & PM$_{2.5}$ & hourly & 48 \\
+Energy & UCI Electricity Load Diagrams 2011--2014 & Aggregate load & daily & 7 \\
+Wind & NREL Wind Toolkit & Wind speed & hourly & 48 \\
+Traffic & PeMS / METR-LA & Traffic flow & 5-min & 72 \\
+\bottomrule
+\end{tabular}
+\caption{Public datasets used for cross-domain predictability evaluation.
+The energy domain uses the UCI Electricity Load Diagrams 2011--2014 dataset (Trindade, 2015; DOI: 10.24432/C58C86; CC~BY~4.0).
+The aggregate daily series is constructed by summing all 370 client series and resampling to daily totals, with a stable-coverage start date of 2013-03-06 (first date with $\geq$90\% active clients over 7 consecutive days).}
+\label{tab:datasets}
+\end{table}
+
+\subsection{Data contract}
+For each domain, the cleaned dataset is mapped into a canonical schema with a timestamp column and a single target variable.
+For the electric-load domain, the canonical cleaned schema is $(\texttt{timestamp}, \texttt{value})$, with daily resolution.
+The aggregate series is defined as the daily sum of all available client series from the stable-coverage start date onward.
+This explicit data-contract design supports reproducibility and ensures consistency between data preparation and experimental execution.
+
+\section{Experimental Setup}
+
+\subsection{Forecast horizons}
+The maximum forecast horizons are selected to reflect operationally meaningful prediction ranges while remaining large enough to observe skill degradation:
+\begin{itemize}
+  \item PM$_{2.5}$: $H_{\max}=48$,
+  \item Electric load (daily): $H_{\max}=7$,
+  \item Wind: $H_{\max}=48$,
+  \item Traffic: $H_{\max}=72$ (5-minute steps).
+\end{itemize}
+
+\subsection{Models}
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\toprule
+Type & Model \\
+\midrule
+Baseline & Persistence \\
+Baseline & Seasonal naive \\
+Initial model & Moving average \\
+Candidate model & LightGBM \\
+\bottomrule
+\end{tabular}
+\caption{Baseline and forecasting models considered in the experiments.}
+\label{tab:models}
+\end{table}
+
+\subsection{Reproducibility rules}
+For each domain, the committed data output, the result tables and the figures correspond to real experimental artefacts only, not empty placeholders.
+Experiment scripts must read from cleaned canonical datasets defined in the domain data contracts rather than provisional filenames.
+
+\section{Preliminary Results: PM$_{2.5}$ Domain}
+
+\subsection{PM$_{2.5}$ experimental setting}
+The first domain completed in the current study is the Beijing PM$_{2.5}$ forecast case, which serves as an initial empirical test of the proposed framework.
+\begin{itemize}
+  \item hourly observations,
+  \item persistence baseline,
+  \item moving-average forecasting model with trailing window $w=3$,
+  \item $H_{\max}=48$,
+  \item MAE-based skill.
+\end{itemize}
+
+\subsection{Observed skill behavior}
+In the current PM$_{2.5}$ experiment, the skill curve is negative for short and medium horizons (approximately $h=1,\dots,35$) and becomes positive only at longer horizons ($h=36,\dots,48$).
+According to the original definition,
+\begin{equation}
+H^*_{\max}=48.
+\end{equation}
+However, this value should be interpreted cautiously because positive skill appears only after an extended interval of negative skill, which does not indicate a contiguous range of practically useful predictability.
+
+\subsection{Interpretation}
+The PM$_{2.5}$ series exhibits strong temporal persistence, making the persistence baseline highly competitive at short and medium horizons.
+This behaviour is consistent with the slow decay of the autocorrelation structure observed in the series.
+Consequently, late positive skills at long horizons may reflect smoothing-related recovery or baseline degradation rather than a contiguous interval of practically useful predictability.
+This preliminary result motivates the use of first-zero-crossing-based horizon estimation for more robust cross-domain comparison.
+
+\section{Preliminary Results: Energy Domain}
+
+\subsection{Energy experimental setting}
+The second domain completed is the UCI aggregate daily electricity demand series.
+\begin{itemize}
+  \item daily observations (aggregate of 370 clients),
+  \item persistence baseline,
+  \item LightGBM with lag features (lags 1--7, lag 14) and day-of-week indicator,
+  \item rolling-origin evaluation with initial training window of 365 days,
+  \item $H_{\max}=7$,
+  \item MAE-based skill.
+\end{itemize}
+
+\subsection{Observed skill behavior}
+The LightGBM model yields positive skill only at $h=1$ (+0.015) and negative skill for all subsequent horizons.
+Both estimators yield identical values:
+\begin{equation}
+H^*_{\max} = 1, \qquad H^*_{\mathrm{zc}} = 1.
+\end{equation}
+
+\subsection{Interpretation}
+The aggregate daily energy series is highly stable (CV$\approx$0.16, ACF lag-1$\approx$0.92), making persistence an exceptionally strong baseline.
+Even with explicit weekly structure features (lag-14, day-of-week), the LightGBM model fails to maintain positive skill beyond a single day.
+This represents a case of extremely short operational predictability, where persistence dominates all operationally relevant horizons beyond 1~day.
+
+\section{Results}
+The final paper will report:
+\begin{enumerate}
+  \item Error-vs--horizon curves, e.g. $\mathrm{MAE}(h)$,
+  \item Skill-vs. Horizon curves,
+  \item Comparison between $H^*_{\max}$ and $H^*_{\mathrm{zc}}$ when relevant,
+  \item Comparison of predictability horizons between domains.
+\end{enumerate}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lllll}
+\toprule
+Domain & $H^*_{\max}$ & $H^*_{\mathrm{zc}}$ & $H^*$ (time) & Notes \\
+\midrule
+PM$_{2.5}$ & 48 & ? & ? & strong persistence; late skill recovery \\
+Load (daily) & 1 & 1 & 1 day & persistence dominates beyond 1 day \\
+Wind & ? & ? & ? &  \\
+Traffic & ? & ? & ? &  \\
+\bottomrule
+\end{tabular}
+\caption{Predictability horizon comparison across domains (current draft with PM$_{2.5}$ and energy preliminary results).}
+\label{tab:results}
+\end{table}
+
+\section{Discussion}
+Different real-world systems may exhibit distinct predictability horizons.
+Potential explanatory factors include signal-to-noise ratio, system dynamics, periodicity, and external forcing.
+The preliminary PM$_{2.5}$ result suggests that the statistical persistence structure of a system can strongly condition the difficulty of achieving positive forecast skill relative to simple baselines.
+The energy domain result further illustrates this: a highly regular aggregate series with strong autocorrelation makes persistence a near-unbeatable baseline beyond the first day.
+More broadly, these results suggest that predictability horizons should be interpreted not only as properties of models, but also as joint properties of the system, the baseline, and the evaluation protocol.
+This observation supports two broader methodological conclusions:
+\begin{enumerate}
+  \item predictability should be evaluated relative to explicit and domain-relevant baselines,
+  \item horizon estimation should be robust to non-monotonic skill curves and late-horizon recovery effects.
+\end{enumerate}
+
+\section{Limitations}
+\begin{itemize}
+  \item $H^*$ depends on the baseline choice,
+  \item $H^*$ depends on the dataset and its temporal resolution,
+  \item $H^*$ depends on the model class and training protocol,
+  \item empirical skill curves may be non-monotonic,
+  \item the supremum-based estimator may overestimate practically useful predictability when late positive recovery occurs.
+\end{itemize}
+Despite these dependencies, operational predictability horizons provide a practical and reproducible framework for comparing forecasting limits across systems.
+
+\section{Conclusion}
+This paper proposes an operational framework for evaluating predictability horizons in real-world forecasting systems under reproducible, leakage-free protocols.
+By combining forecast skill analysis with explicit baseline comparison, the framework aims to quantify the temporal extent of useful predictability across heterogeneous domains.
+Preliminary evidence from the PM$_{2.5}$ and energy domains shows that strong temporal persistence can make baseline forecasts highly competitive and can complicate horizon estimation when skill curves are non-monotonic or extremely short.
+The remaining wind and traffic domains will complete the cross-domain empirical comparison.
+
+\end{document}
