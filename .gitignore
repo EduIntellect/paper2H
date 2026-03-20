@@ -4,3 +4,7 @@ __pycache__/
 
 # Raw UCI electricity data
 data/LD2011_2014.txt
+
+# Local wind domain data
+data/nrel_wind_toolkit_hourly_raw.csv
+data/wind_hourly_clean.csv
