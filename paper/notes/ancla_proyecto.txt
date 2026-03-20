@@ -1,0 +1,68 @@
+PAPER 2 — ANCLA OPERATIVA
+
+Objetivo del paper
+Comparar horizontes de predictibilidad operativa entre dominios reales usando un protocolo reproducible, leakage-free y basado en skill relativo a baselines explícitos.
+
+Pregunta central
+¿Hasta qué horizonte un sistema real mantiene skill predictiva útil frente a un baseline?
+
+Gap que cubre
+La literatura de forecasting suele evaluar modelos mediante métricas de error y comparaciones a horizontes fijos, pero rara vez cuantifica de forma operativa hasta dónde llega la predictibilidad útil de un sistema real. Tampoco es habitual comparar ese límite de predictibilidad entre dominios heterogéneos bajo un mismo protocolo reproducible y leakage-free.
+
+Vacío del nicho
+Falta un marco empírico cross-domain que permita estimar y comparar horizontes de predictibilidad operativa usando datasets públicos, baselines explícitos, evaluación temporal sin fugas y una definición robusta de H* frente a curvas de skill no monótonas.
+
+Esto NO es
+- un benchmark de “qué modelo gana”
+- un paper teórico puro
+- una colección de ideas abiertas
+- un proyecto para rediseñar el roadmap
+
+Esto SÍ es
+- un paper empírico cross-domain
+- un estudio de predictabilidad operativa
+- una comparación bajo protocolo común
+- una línea experimental reproducible
+
+Dominios fijados
+1. PM2.5
+2. Electric load
+3. Wind
+4. Traffic
+
+Estado actual
+- PM2.5: cerrado en Phase 1
+- Electric load: cerrado
+- Dominio actual: wind
+- Siguiente dominio: traffic
+
+Reglas no negociables
+- evaluación temporal, nunca random split
+- protocolo leakage-free
+- baselines explícitos
+- inputs canónicos limpios
+- artefactos reales solamente
+- registrar ideas importantes del paper en paper/notes/
+
+Definición operativa
+- H*_max = max{h : Skill(h) > 0}
+- H*_zc = estimador más robusto basado en el primer cruce por cero
+- si Skill(h) es no positiva desde el primer horizonte, entonces H*_zc = 0
+
+Lección ya aprendida en PM2.5
+La persistencia fuerte del sistema puede hacer que el baseline sea muy competitivo y que recuperaciones tardías de skill no representen predictibilidad útil contigua.
+
+Foco de esta fase
+Cerrar el dominio wind sin abrir nuevos frentes.
+
+Siguiente paso mínimo
+Elegir el archivo/subconjunto exacto del NREL Wind Toolkit y fijar el schema canónico del dominio wind.
+
+Criterio de descarte
+Si una tarea no ayuda directamente a:
+- reproducibilidad
+- evaluación leakage-free
+- cálculo de Skill(h) o H*
+- cierre del dominio actual
+
+entonces no se hace hoy.
