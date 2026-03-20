@@ -8,3 +8,6 @@ data/LD2011_2014.txt
 # Local wind domain data
 data/nrel_wind_toolkit_hourly_raw.csv
 data/wind_hourly_clean.csv
+data/metr-la.h5
+data/pems-bay.h5
+data/traffic_hourly_clean.csv
