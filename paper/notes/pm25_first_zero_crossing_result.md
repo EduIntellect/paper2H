@@ -1,3 +1,11 @@
-# PM2.5 First-Zero-Crossing Result
+# PM2.5 Legacy First-Zero-Crossing Note
 
-For the Beijing PM2.5 experiment, the original reported predictability horizon uses \(H^*=\max\{h:\mathrm{Skill}(h)>0\}\). As an operationally more robust alternative, we also record a first-zero-crossing variant, defined as the last horizon before Skill(h) becomes non-positive for the first time. Using this definition on `results/pm25_real_skill.csv`, the recorded value is `H*_first_zero_crossing=0`. This alternative is motivated by the observed late positive skill recovery at long horizons, which may not represent a contiguous interval of practically useful predictability.
+This file records a legacy diagnostic (`H*_first_zero_crossing=0`) for PM2.5 and is not the canonical Paper 2 reporting standard.
+
+Current Paper 2 formulation:
+
+- H*(relax): maximum evaluated horizon with Skill(h) > 0, allowing intermediate non-positive gaps.
+- H*(strict): length of the longest contiguous interval [h_start, h_end] such that Skill(h) > 0.
+- Report h_start and h_end explicitly.
+
+Under the canonical formulation for `results/pm25_real_skill.csv`, PM2.5 reports H*(relax)=48 and H*(strict)=13 with [h_start, h_end]=[36,48].

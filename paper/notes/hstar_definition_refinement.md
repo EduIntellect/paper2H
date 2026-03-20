@@ -1,7 +1,9 @@
-Building upon the preliminary definition of the operational predictability horizon (H*) introduced in [Paper 1], this study adopts a slightly refined operational criterion suitable for cross-domain forecasting experiments.
+Building on the preliminary H* framing introduced in Paper 1, Paper 2 adopts a two-variant operational definition to handle heterogeneous, non-monotonic empirical skill curves across domains.
 
-In the original formulation, H* was defined as the supremum of the forecast horizons for which the model skill relative to a baseline remains positive. While this definition is appropriate for single-system model comparisons, our multi-domain analysis revealed that the skill function may occasionally exhibit stochastic recoveries at long horizons due to noise or smoothing effects.
+Current Paper 2 formulation:
 
-To ensure a more stable estimate of the effective forecasting limit, we therefore operationalize H* as the last horizon before the first zero-crossing of the skill curve. This criterion identifies the contiguous interval in which the forecasting model consistently outperforms the baseline and avoids spurious improvements that may appear at distant horizons.
+- H*(relax): maximum evaluated horizon with Skill(h) > 0, allowing intermediate non-positive gaps.
+- H*(strict): length of the longest contiguous interval [h_start, h_end] such that Skill(h) > 0.
+- Report h_start and h_end explicitly.
 
-Importantly, this refinement does not alter the conceptual meaning of H* as an operational predictability horizon; rather, it provides a more robust estimator when comparing heterogeneous systems with different dynamical properties.
+This preserves the original interpretation of H* as an operational predictability horizon while separating late-horizon recoveries from contiguous operational usefulness.
