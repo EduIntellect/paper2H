@@ -15,41 +15,28 @@ except ImportError as exc:
 else:
     IMPORT_ERROR = None
 
-DATA_PATH = Path("data/beijingpm25data.csv")
+DATA_PATH = Path("data/traffic_hourly_clean.csv")
 RESULTS_DIR = Path("results")
 FIGURES_DIR = Path("figures")
-HORIZONS = list(range(1, 49))
+HORIZONS = list(range(1, 73))
 LAGS = [0, 1, 2, 3, 6, 12, 24, 48]
 MIN_TRAIN_SAMPLES = 200
 ORIGIN_STRIDE = 24
 MAX_TRAIN_SIZE = 24 * 30
-MAX_ORIGINS_PER_HORIZON = 365
+MAX_ORIGINS_PER_HORIZON = 180
 
 
-def load_real_pm25(path: Path) -> pd.Series:
+def load_traffic_series(path: Path) -> pd.Series:
     if not path.exists():
         raise FileNotFoundError(f"Input file not found: {path}")
 
-    df = pd.read_csv(path)
-    if "pm2.5" not in df.columns:
-        raise ValueError("Expected column 'pm2.5' in Beijing dataset")
+    # Canonical traffic input is built from METR-LA sensor 773869 in prepare_traffic_data.py.
+    df = pd.read_csv(path, parse_dates=["timestamp"]).sort_values("timestamp")
+    if "value" not in df.columns:
+        raise ValueError("Expected canonical column 'value' in traffic cleaned input.")
 
-    if {"year", "month", "day", "hour"}.issubset(df.columns):
-        time_index = pd.to_datetime(
-            {
-                "year": df["year"],
-                "month": df["month"],
-                "day": df["day"],
-                "hour": df["hour"],
-            },
-            errors="coerce",
-        )
-        df = df.assign(_time=time_index).sort_values("_time")
-
-    series = pd.to_numeric(df["pm2.5"], errors="coerce")
-    series = series.where(series >= 0)
-    series = series.reset_index(drop=True)
-    return series
+    series = pd.to_numeric(df["value"], errors="coerce")
+    return series.interpolate(method="linear", limit_direction="both").reset_index(drop=True)
 
 
 def build_lag_features(series: pd.Series, lags: list[int]) -> pd.DataFrame:
@@ -63,7 +50,6 @@ def evaluate_rolling_origin_lightgbm(series: pd.Series, horizons: list[int], lag
     horizons_arr = np.array(horizons)
     baseline_mae = []
     model_mae = []
-    valid_counts = []
 
     lag_df = build_lag_features(series, lags)
     max_lag = max(lags)
@@ -85,7 +71,6 @@ def evaluate_rolling_origin_lightgbm(series: pd.Series, horizons: list[int], lag
         for origin in origins:
             target = target_series.iloc[origin]
             persistence_pred = series.iloc[origin]
-
             if pd.isna(target) or pd.isna(persistence_pred):
                 continue
 
@@ -105,7 +90,6 @@ def evaluate_rolling_origin_lightgbm(series: pd.Series, horizons: list[int], lag
             valid_train_mask = (~x_train.isna().any(axis=1)) & (~y_train.isna())
             x_train = x_train.loc[valid_train_mask]
             y_train = y_train.loc[valid_train_mask]
-
             if len(x_train) < MIN_TRAIN_SAMPLES:
                 continue
 
@@ -133,9 +117,7 @@ def evaluate_rolling_origin_lightgbm(series: pd.Series, horizons: list[int], lag
                 y_baseline_list.append(float(persistence_pred))
                 y_model_list.append(model_pred)
 
-        valid_counts.append(len(y_true_list))
         print(f"Horizon {h}: valid windows={len(y_true_list)}")
-
         if y_true_list:
             baseline_mae.append(mean_absolute_error(y_true_list, y_baseline_list))
             model_mae.append(mean_absolute_error(y_true_list, y_model_list))
@@ -143,7 +125,7 @@ def evaluate_rolling_origin_lightgbm(series: pd.Series, horizons: list[int], lag
             baseline_mae.append(np.nan)
             model_mae.append(np.nan)
 
-    return horizons_arr, np.array(baseline_mae), np.array(model_mae), np.array(valid_counts)
+    return horizons_arr, np.array(baseline_mae), np.array(model_mae)
 
 
 def main():
@@ -155,8 +137,8 @@ def main():
         print(f"Import error detail: {IMPORT_ERROR}", file=sys.stderr)
         raise SystemExit(1)
 
-    series = load_real_pm25(DATA_PATH)
-    horizons, baseline_mae, model_mae, valid_counts = evaluate_rolling_origin_lightgbm(
+    series = load_traffic_series(DATA_PATH)
+    horizons, baseline_mae, model_mae = evaluate_rolling_origin_lightgbm(
         series=series,
         horizons=HORIZONS,
         lags=LAGS,
@@ -178,28 +160,24 @@ def main():
             "baseline_mae": baseline_mae,
             "model_mae": model_mae,
         }
-    ).to_csv(RESULTS_DIR / "pm25_lightgbm_full_errors.csv", index=False)
+    ).to_csv(RESULTS_DIR / "traffic_errors.csv", index=False)
 
     pd.DataFrame({"horizon": horizons, "skill": skill}).to_csv(
-        RESULTS_DIR / "pm25_lightgbm_full_skill.csv", index=False
+        RESULTS_DIR / "traffic_skill.csv", index=False
     )
 
-    pd.DataFrame({"horizon": horizons, "n_valid_windows": valid_counts}).to_csv(
-        RESULTS_DIR / "pm25_lightgbm_full_counts.csv", index=False
-    )
-
-    (RESULTS_DIR / "pm25_lightgbm_full_hstar.txt").write_text(f"H*={h_star}\n", encoding="utf-8")
+    (RESULTS_DIR / "traffic_hstar.txt").write_text(f"H*={h_star}\n", encoding="utf-8")
 
     plt.figure(figsize=(9, 5))
     plt.plot(horizons, baseline_mae, label="Baseline (Persistence)", linewidth=2)
     plt.plot(horizons, model_mae, label="Model (LightGBM)", linewidth=2)
     plt.xlabel("Horizon")
     plt.ylabel("MAE")
-    plt.title("PM2.5 LightGBM Full Error vs Horizon")
+    plt.title("Traffic Error vs Horizon")
     plt.grid(True, alpha=0.3)
     plt.legend()
     plt.tight_layout()
-    plt.savefig(FIGURES_DIR / "pm25_lightgbm_full_error_vs_horizon.png", dpi=150)
+    plt.savefig(FIGURES_DIR / "traffic_error_vs_horizon.png", dpi=150)
     plt.close()
 
     plt.figure(figsize=(9, 5))
@@ -207,21 +185,16 @@ def main():
     plt.axhline(0.0, color="black", linestyle="--", linewidth=1)
     plt.xlabel("Horizon")
     plt.ylabel("Forecast Skill")
-    plt.title("PM2.5 LightGBM Full Skill vs Horizon")
+    plt.title("Traffic Skill vs Horizon")
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.savefig(FIGURES_DIR / "pm25_lightgbm_full_skill_vs_horizon.png", dpi=150)
+    plt.savefig(FIGURES_DIR / "traffic_skill_vs_horizon.png", dpi=150)
     plt.close()
 
     print(f"H*: {h_star}")
     print("Skill array:", skill)
     print("Baseline MAE array:", baseline_mae)
     print("Model MAE array:", model_mae)
-    print("Valid window counts:", valid_counts)
-    print("Horizons used:", HORIZONS)
-    print("Max origins per horizon:", MAX_ORIGINS_PER_HORIZON)
-    print("Origin stride:", ORIGIN_STRIDE)
-    print("Max train size:", MAX_TRAIN_SIZE)
 
 
 if __name__ == "__main__":

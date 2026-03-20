@@ -1,23 +1,27 @@
-# PM2.5 Real Experiment Summary
+# PM2.5 Experiment Summary
 
-- **Skill source:** `results/pm25_real_skill.csv`
-- **Horizon range:** `h=1..48`
+- **Dataset used:** Beijing PM2.5 dataset (`data/beijingpm25data.csv`)
+- **Cleaned canonical input:** `data/beijingpm25data.csv` (univariate target extracted as `pm2.5`)
+- **Target variable:** PM2.5 concentration (`pm2.5`)
+- **Frequency:** hourly
+- **Baseline:** persistence
+- **Model:** LightGBM (LAGS=[0,1,2,3,6,12,24,48], ORIGIN_STRIDE=24, n_estimators=50, rolling-origin)
+- **Hmax:** `48`
+- **Metric:** MAE, with skill relative to persistence
 
-## Definición operativa
+## H* Reporting
 
-- H*(relax): maximum evaluated horizon with Skill(h) > 0, allowing intermediate non-positive gaps.
-- H*(strict): length of the longest contiguous interval [h_start, h_end] such that Skill(h) > 0.
-- Report h_start and h_end explicitly.
+- **H*(relax):** `48`
+- **H*(strict):** `22`
+- **[h_start, h_end] (longest contiguous positive interval):** `[27, 48]`
+- **H*(time):** `22 h`
 
-## H* Variants
+## Correction Note
 
-- **H*(relax):** `48` (maximum horizon with `Skill(h) > 0`)
-- **H*(strict):** `13` (length of the longest contiguous positive-skill interval)
-- **H*(time):** `13 h`
-- **Longest positive interval:** `[h_start, h_end] = [36, 48]`
+The LightGBM comparable result was updated after adding `lag_0 = y[t]` to align model and persistence baseline information at prediction origin `t`.
 
-The time-based H* field refers to the contiguous positive-skill interval represented by H*(strict), not to H*(relax).
+This corrected LightGBM result is the official comparable PM2.5-domain result for the cross-domain analysis.
 
 ## Interpretation
 
-PM2.5 shows a late positive-skill recovery after a long negative region. This yields a high `H*(relax)` because skill is positive again at long horizons, while `H*(strict)` isolates the contiguous useful segment and avoids interpreting the entire horizon range as operationally predictable.
+PM2.5 exhibits a late contiguous positive-skill interval after an extended negative region, indicating delayed emergence of useful operational predictability relative to persistence.
