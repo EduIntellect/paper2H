@@ -1,24 +1,23 @@
-# PM2.5 Beijing Experiment Summary
+# PM2.5 Real Experiment Summary
 
-- **Dataset used:** Beijing PM2.5 dataset (`data/beijingpm25data.csv`, variable `pm2.5`).
-- **Frequency:** Hourly observations.
-- **Baseline:** Persistence forecast (last observed value).
-- **Model:** Moving-average forecast with trailing window `w=3`.
-- **Hmax:** `48` forecast horizons (`h=1..48`).
-- **Metric:** Mean Absolute Error (MAE), with skill defined as \(\mathrm{Skill}(h)=1-E_{\mathrm{model}}(h)/E_{\mathrm{baseline}}(h)\).
-- **Observed Skill(h) behavior:** Skill is negative at short-to-medium horizons (approximately `h=1..35`) and becomes positive at longer horizons (`h=36..48`).
-- **Interpretive note:** The strong persistence of the PM2.5 series makes the persistence baseline highly competitive at short and medium horizons.
+- **Skill source:** `results/pm25_real_skill.csv`
+- **Horizon range:** `h=1..48`
 
-## H* Definition Used in This Domain
+## Definición operativa
 
-- The reported value uses the original definition \(H^*=\max\{h:\mathrm{Skill}(h)>0\}\).
-- For the PM2.5 Beijing experiment, this yields **`H* = 48`**.
-- **Interpretive caution:** late positive skill may reflect long-horizon recovery effects rather than a contiguous interval of practically useful predictability.
-- A first-zero-crossing criterion may therefore provide a more robust operational estimate of `H*`.
+- H*(relax): maximum evaluated horizon with Skill(h) > 0, allowing intermediate non-positive gaps.
+- H*(strict): length of the longest contiguous interval [h_start, h_end] such that Skill(h) > 0.
+- Report h_start and h_end explicitly.
 
-## Leakage-Free Evaluation Protocol
+## H* Variants
 
-- Evaluation is performed using time-ordered backtesting with **no random split**.
-- Targets are generated as `series.shift(-h)` for each horizon.
-- Baseline and model predictions are evaluated on the same valid timestamps via a shared mask.
-- This enforces temporally aligned, leakage-free comparison across horizons.
+- **H*(relax):** `48` (maximum horizon with `Skill(h) > 0`)
+- **H*(strict):** `13` (length of the longest contiguous positive-skill interval)
+- **H*(time):** `13 h`
+- **Longest positive interval:** `[h_start, h_end] = [36, 48]`
+
+The time-based H* field refers to the contiguous positive-skill interval represented by H*(strict), not to H*(relax).
+
+## Interpretation
+
+PM2.5 shows a late positive-skill recovery after a long negative region. This yields a high `H*(relax)` because skill is positive again at long horizons, while `H*(strict)` isolates the contiguous useful segment and avoids interpreting the entire horizon range as operationally predictable.
