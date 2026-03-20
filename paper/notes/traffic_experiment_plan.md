@@ -3,6 +3,7 @@
 - Dataset: PeMS / METR-LA
 - Target: traffic speed (mph)
 - Source variable in raw data: speed (METR-LA sensor readings)
+- Canonical univariate series for initial Paper 2 traffic experiment: METR-LA sensor 773869
 - Frequency: 5-min
 - Baseline: persistence
 - Initial simple model: moving average
