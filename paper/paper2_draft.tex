@@ -171,21 +171,26 @@ The maximum forecast horizons are selected to reflect operationally meaningful p
 \end{itemize}
 
 \subsection{Models}
-\begin{table}[h]
-\centering
-\begin{tabular}{ll}
-\toprule
-Type & Model \\
-\midrule
-Baseline & Persistence \\
-Baseline & Seasonal naive \\
-Initial model & Moving average \\
-Candidate model & LightGBM \\
-\bottomrule
-\end{tabular}
-\caption{Baseline and forecasting models considered in the experiments.}
-\label{tab:models}
-\end{table}
+
+The empirical comparison is conducted against an explicit persistence baseline and uses forecasting models defined under a common comparable protocol.
+
+For the main comparable protocol, this paper uses LightGBM as the reference forecasting model. LightGBM is a gradient boosting framework based on decision trees that is well suited to tabular lag-based forecasting representations~\cite{ke2017lightgbm}. In the comparable experiments, the model is trained under a fixed protocol designed to preserve cross-domain consistency:
+\begin{itemize}
+  \item \texttt{LAGS = [0, 1, 2, 3, 6, 12, 24, 48]},
+  \item \texttt{ORIGIN\_STRIDE = 24},
+  \item \texttt{n\_estimators = 50},
+  \item rolling-origin evaluation,
+  \item persistence baseline,
+  \item MAE / $\mathrm{Skill}(h)$.
+\end{itemize}
+
+The persistence baseline is defined as the last observed value available at the prediction origin,
+\begin{equation}
+\hat{y}^{\mathrm{base}}_{t+h} = y_t,
+\end{equation}
+and is used in all domains. This baseline is intentionally strong in operational forecasting settings and provides the reference against which baseline-relative usefulness is assessed.
+
+No hyperparameter search is performed across any domain. The protocol is intentionally minimal to ensure that observed skill differences reflect domain dynamics and baseline competitiveness rather than model tuning. The same LightGBM evaluation design is applied uniformly to all four domains: PM$_{2.5}$, electric load, wind, and traffic.
 
 \subsection{Reproducibility rules}
 For each domain, the committed data output, the result tables and the figures correspond to real experimental artefacts only, not empty placeholders.
@@ -294,5 +299,14 @@ This paper proposes an operational framework for evaluating predictability horiz
 By combining forecast skill analysis with explicit baseline comparison, the framework aims to quantify the temporal extent of useful predictability across heterogeneous domains.
 Current evidence from the PM$_{2.5}$, energy, and wind domains shows that baseline competitiveness and skill-curve morphology are domain-dependent, ranging from delayed skill emergence to full-range positive skill.
 The remaining traffic domain will complete the cross-domain empirical comparison.
+
+\begin{thebibliography}{9}
+
+\bibitem{ke2017lightgbm}
+Ke, G., Meng, Q., Finley, T., Wang, T., Chen, W., Ma, W., Ye, Q., and Liu, T.-Y. (2017).
+LightGBM: A highly efficient gradient boosting decision tree.
+In \textit{Advances in Neural Information Processing Systems 30 (NeurIPS 2017)}, 3146--3154.
+
+\end{thebibliography}
 
 \end{document}
