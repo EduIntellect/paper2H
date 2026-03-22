@@ -259,11 +259,11 @@ Domain & $H^*_{\max}$ & $H^*_{\mathrm{zc}}$ & $H^*$ (time) & Notes \\
 \midrule
 PM$_{2.5}$ & 48 & ? & ? & strong persistence; late skill recovery \\
 Load (daily) & 1 & 1 & 1 day & persistence dominates beyond 1 day \\
-Wind & ? & ? & ? &  \\
+Wind & 48 & 48 & 48 h & positive skill across full range ($h=1..48$) \\
 Traffic & ? & ? & ? &  \\
 \bottomrule
 \end{tabular}
-\caption{Predictability horizon comparison across domains (current draft with PM$_{2.5}$ and energy preliminary results).}
+\caption{Predictability horizon comparison across domains (current draft with PM$_{2.5}$, energy, and wind results).}
 \label{tab:results}
 \end{table}
 
@@ -292,7 +292,7 @@ Despite these dependencies, operational predictability horizons provide a practi
 \section{Conclusion}
 This paper proposes an operational framework for evaluating predictability horizons in real-world forecasting systems under reproducible, leakage-free protocols.
 By combining forecast skill analysis with explicit baseline comparison, the framework aims to quantify the temporal extent of useful predictability across heterogeneous domains.
-Preliminary evidence from the PM$_{2.5}$ and energy domains shows that strong temporal persistence can make baseline forecasts highly competitive and can complicate horizon estimation when skill curves are non-monotonic or extremely short.
-The remaining wind and traffic domains will complete the cross-domain empirical comparison.
+Current evidence from the PM$_{2.5}$, energy, and wind domains shows that baseline competitiveness and skill-curve morphology are domain-dependent, ranging from delayed skill emergence to full-range positive skill.
+The remaining traffic domain will complete the cross-domain empirical comparison.
 
 \end{document}

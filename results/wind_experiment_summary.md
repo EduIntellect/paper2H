@@ -5,20 +5,24 @@
 - **Target variable:** wind speed at 100m, represented as canonical `value`.
 - **Frequency:** hourly.
 - **Baseline:** persistence.
-- **Model:** moving average (`window=3`).
+- **Model:** LightGBM (LAGS=[0,1,2,3,6,12,24,48], ORIGIN_STRIDE=24, n_estimators=50, rolling-origin).
 - **Hmax:** `48` (`h=1..48`).
 - **Metric:** MAE with skill relative to persistence.
-- **Observed Skill(h) behavior:** Skill is negative at `h=1,2` and positive from `h=3` onward.
+- **Observed Skill(h) behavior:** Skill is positive across the full evaluated range (`h=1..48`).
 
 ## H* Reporting
 
 - **H*(relax):** `48`
-- **H*(strict):** `46`
-- **[h_start, h_end]:** `[3, 48]`
-- **H*(time):** `46 h`
+- **H*(strict):** `48`
+- **[h_start, h_end]:** `[1, 48]`
+- **H*(time):** `48 h`
+
+## Correction Note
+
+The official comparable wind-domain result is produced with the canonical LightGBM protocol used across comparable domains.
 
 ## Interpretation
 
-The wind domain shows early negative skill at `h=1,2`, followed by a long contiguous positive-skill interval (`h=3..48`), indicating sustained operational predictability after the shortest lead times.
+The wind domain shows sustained positive skill across all evaluated horizons, indicating a full-range contiguous interval of useful operational predictability relative to persistence.
 
 The reported time-based horizon corresponds to H*(strict), i.e., to the contiguous positive-skill interval, rather than to H*(relax).

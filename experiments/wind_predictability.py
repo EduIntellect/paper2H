@@ -1,44 +1,36 @@
 from pathlib import Path
+import sys
+import warnings
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.metrics import mean_absolute_error
 
+try:
+    from lightgbm import LGBMRegressor
+except ImportError as exc:
+    LGBMRegressor = None
+    IMPORT_ERROR = exc
+else:
+    IMPORT_ERROR = None
+
 DATA_PATH = Path("data/wind_hourly_clean.csv")
 RESULTS_DIR = Path("results")
 FIGURES_DIR = Path("figures")
-MAX_HORIZON = 48
-MA_WINDOW = 3
-
-
-def compute_mae_by_horizon(series: pd.Series, max_horizon: int, window: int):
-    horizons = np.arange(1, max_horizon + 1)
-    baseline_mae = []
-    model_mae = []
-
-    baseline_pred = series
-    model_pred = series.rolling(window=window).mean()
-
-    for h in horizons:
-        target = series.shift(-h)
-        valid = target.notna() & baseline_pred.notna() & model_pred.notna()
-
-        y_true = target[valid]
-        y_baseline = baseline_pred[valid]
-        y_model = model_pred[valid]
-
-        baseline_mae.append(mean_absolute_error(y_true, y_baseline))
-        model_mae.append(mean_absolute_error(y_true, y_model))
-
-    return horizons, np.array(baseline_mae), np.array(model_mae)
+HORIZONS = list(range(1, 49))
+LAGS = [0, 1, 2, 3, 6, 12, 24, 48]
+MIN_TRAIN_SAMPLES = 200
+ORIGIN_STRIDE = 24
+MAX_TRAIN_SIZE = 24 * 30
+MAX_ORIGINS_PER_HORIZON = 365
 
 
 def load_wind_series(path: Path) -> pd.Series:
     if not path.exists():
         raise FileNotFoundError(f"Input file not found: {path}")
 
-    df = pd.read_csv(path)
+    df = pd.read_csv(path, parse_dates=["timestamp"]).sort_values("timestamp")
     if "value" in df.columns:
         series = pd.to_numeric(df["value"], errors="coerce")
     elif "wind_speed" in df.columns:
@@ -49,24 +41,120 @@ def load_wind_series(path: Path) -> pd.Series:
             raise ValueError("Expected a numeric wind-speed column (e.g., 'value').")
         series = pd.to_numeric(df[numeric_cols[0]], errors="coerce")
 
-    return series.interpolate(method="linear", limit_direction="both")
+    return series.interpolate(method="linear", limit_direction="both").reset_index(drop=True)
+
+
+def build_lag_features(series: pd.Series, lags: list[int]) -> pd.DataFrame:
+    lag_df = pd.DataFrame(index=series.index)
+    for lag in lags:
+        lag_df[f"lag_{lag}"] = series.shift(lag)
+    return lag_df
+
+
+def evaluate_rolling_origin_lightgbm(series: pd.Series, horizons: list[int], lags: list[int]):
+    horizons_arr = np.array(horizons)
+    baseline_mae = []
+    model_mae = []
+
+    lag_df = build_lag_features(series, lags)
+    max_lag = max(lags)
+    n = len(series)
+
+    for h in horizons_arr:
+        y_true_list = []
+        y_baseline_list = []
+        y_model_list = []
+
+        target_series = series.shift(-h)
+        first_origin = max_lag
+        last_origin = n - h - 1
+
+        origins = list(range(first_origin, last_origin + 1, ORIGIN_STRIDE))
+        if len(origins) > MAX_ORIGINS_PER_HORIZON:
+            origins = origins[-MAX_ORIGINS_PER_HORIZON:]
+
+        for origin in origins:
+            target = target_series.iloc[origin]
+            persistence_pred = series.iloc[origin]
+            if pd.isna(target) or pd.isna(persistence_pred):
+                continue
+
+            x_origin = lag_df.iloc[origin]
+            if x_origin.isna().any():
+                continue
+
+            train_end = origin - h
+            if train_end < max_lag:
+                continue
+
+            train_start = max(max_lag, train_end - MAX_TRAIN_SIZE + 1)
+            train_idx = np.arange(train_start, train_end + 1)
+            x_train = lag_df.iloc[train_idx]
+            y_train = target_series.iloc[train_idx]
+
+            valid_train_mask = (~x_train.isna().any(axis=1)) & (~y_train.isna())
+            x_train = x_train.loc[valid_train_mask]
+            y_train = y_train.loc[valid_train_mask]
+            if len(x_train) < MIN_TRAIN_SAMPLES:
+                continue
+
+            model = LGBMRegressor(
+                n_estimators=50,
+                learning_rate=0.05,
+                num_leaves=31,
+                subsample=0.9,
+                colsample_bytree=0.9,
+                random_state=42,
+                n_jobs=4,
+                verbose=-1,
+            )
+
+            try:
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    model.fit(x_train, y_train)
+                model_pred = float(model.predict(x_origin.to_frame().T)[0])
+            except Exception:
+                continue
+
+            if np.isfinite(model_pred):
+                y_true_list.append(float(target))
+                y_baseline_list.append(float(persistence_pred))
+                y_model_list.append(model_pred)
+
+        print(f"Horizon {h}: valid windows={len(y_true_list)}")
+        if y_true_list:
+            baseline_mae.append(mean_absolute_error(y_true_list, y_baseline_list))
+            model_mae.append(mean_absolute_error(y_true_list, y_model_list))
+        else:
+            baseline_mae.append(np.nan)
+            model_mae.append(np.nan)
+
+    return horizons_arr, np.array(baseline_mae), np.array(model_mae)
 
 
 def main():
-    series = load_wind_series(DATA_PATH)
+    if LGBMRegressor is None:
+        print(
+            "lightgbm is not available. Install it with 'pip install lightgbm' and rerun.",
+            file=sys.stderr,
+        )
+        print(f"Import error detail: {IMPORT_ERROR}", file=sys.stderr)
+        raise SystemExit(1)
 
-    horizons, baseline_mae, model_mae = compute_mae_by_horizon(
+    series = load_wind_series(DATA_PATH)
+    horizons, baseline_mae, model_mae = evaluate_rolling_origin_lightgbm(
         series=series,
-        max_horizon=MAX_HORIZON,
-        window=MA_WINDOW,
+        horizons=HORIZONS,
+        lags=LAGS,
     )
 
     with np.errstate(divide="ignore", invalid="ignore"):
         skill = 1.0 - (model_mae / baseline_mae)
     skill = np.where(np.isfinite(skill), skill, np.nan)
 
-    valid_horizons = horizons[skill > 0]
-    h_star = int(valid_horizons.max()) if valid_horizons.size > 0 else 0
+    positive_horizons = horizons[skill > 0]
+    h_star = int(positive_horizons.max()) if positive_horizons.size > 0 else 0
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
@@ -87,7 +175,7 @@ def main():
 
     plt.figure(figsize=(9, 5))
     plt.plot(horizons, baseline_mae, label="Baseline (Persistence)", linewidth=2)
-    plt.plot(horizons, model_mae, label=f"Model (Moving Average, w={MA_WINDOW})", linewidth=2)
+    plt.plot(horizons, model_mae, label="Model (LightGBM)", linewidth=2)
     plt.xlabel("Horizon")
     plt.ylabel("MAE")
     plt.title("Wind Error vs Horizon")
