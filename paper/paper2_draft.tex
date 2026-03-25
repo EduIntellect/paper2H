@@ -91,19 +91,19 @@ We define forecast skill at horizon $h$ as
 \mathrm{Skill}(h) = 1 - \frac{E_{\mathrm{model}}(h)}{E_{\mathrm{baseline}}(h)}.
 \end{equation}
 
-A simple operational definition of the predictability horizon is:
+A first operational descriptor of predictability reach is:
 \begin{equation}
-H^*_{\max} = \max\{h : \mathrm{Skill}(h) > 0\},
+H^*_{\mathrm{relax}} = \max\{h : \mathrm{Skill}(h) > 0\},
 \end{equation}
-which represents the largest evaluated forecast horizon at which the model outperforms the baseline.
+which represents the largest evaluated horizon at which the model outperforms the baseline, allowing intermediate non-positive gaps.
 
-However, because empirical skill curves may show late positive recovery after extended negative intervals, we also consider a more robust operational estimator based on the first zero-crossing of the skill curve:
+A second operational descriptor captures contiguous usefulness:
 \begin{equation}
-H^*_{\mathrm{zc}} = \max\{h < h_0 : \mathrm{Skill}(h) > 0\},
+H^*_{\mathrm{strict}} = \max_{[a,b]}(b-a+1)
+\quad \text{s.t.} \quad \mathrm{Skill}(h)>0\ \forall h\in[a,b],
 \end{equation}
-where $h_0$ is the first horizon at which $\mathrm{Skill}(h)\leq 0$.
-If the skill curve is non-positive from the first evaluated horizon onward, then $H^*_{\mathrm{zc}}=0$.
-This estimator is intended to better capture the end of the contiguous interval of practically useful predictability.
+i.e., the length of the longest contiguous positive-skill interval $[h_{\mathrm{start}},h_{\mathrm{end}}]$.
+When skill curves are fragmented or show late recovery, we report both interval locations and sign-change structure in addition to $H^*_{\mathrm{relax}}$ and $H^*_{\mathrm{strict}}$.
 
 \section{Evaluation Framework}
 We estimate predictability by measuring model performance across increasing forecast horizons and determining the horizon at which predictive skill relative to a baseline becomes non-positive.
@@ -252,7 +252,7 @@ The final paper will report:
 \begin{enumerate}
   \item Error-vs--horizon curves, e.g. $\mathrm{MAE}(h)$,
   \item Skill-vs. Horizon curves,
-  \item Comparison between $H^*_{\max}$ and $H^*_{\mathrm{zc}}$ when relevant,
+  \item Comparison between $H^*_{\mathrm{relax}}$ and $H^*_{\mathrm{strict}}$,
   \item Comparison of predictability horizons between domains.
 \end{enumerate}
 
@@ -260,28 +260,32 @@ The final paper will report:
 \centering
 \begin{tabular}{lllll}
 \toprule
-Domain & $H^*_{\max}$ & $H^*_{\mathrm{zc}}$ & $H^*$ (time) & Notes \\
+Domain & $H^*_{\mathrm{relax}}$ & $H^*_{\mathrm{strict}}$ & $[h_{\mathrm{start}},h_{\mathrm{end}}]$ & Notes \\
 \midrule
-PM$_{2.5}$ & 48 & ? & ? & strong persistence; late skill recovery \\
-Load (daily) & 1 & 1 & 1 day & persistence dominates beyond 1 day \\
-Wind & 48 & 48 & 48 h & positive skill across full range ($h=1..48$) \\
-Traffic & ? & ? & ? &  \\
+PM$_{2.5}$ & 48 & 13 & [36,48] & strong persistence; late recovery (robustness evidence exists, comparability treated cautiously) \\
+Load (daily) & 1 & 1 & [1,1] & partial qualitative robustness only; protocol-identical robustness not established \\
+Wind & 48 & 48 & [1,48] & descriptor-space morphotype preserved across LightGBM and ARIMA(2,0,0) \\
+Traffic (LightGBM) & 72 & 7 & [46,52] & fragmented regime; first positive interval [17,18], sign changes=19 \\
 \bottomrule
 \end{tabular}
-\caption{Predictability horizon comparison across domains (current draft with PM$_{2.5}$, energy, and wind results).}
+\caption{Predictability horizon comparison across domains with dual operational descriptors and interval structure.}
 \label{tab:results}
 \end{table}
+
+Robustness analyses reveal different cross-domain regimes. In wind, a protocol-matched second-model check preserves descriptor space ($H^*_{\mathrm{relax}}=48$, $H^*_{\mathrm{strict}}=48$, $[1,48]$) under LightGBM and ARIMA(2,0,0), supporting a domain-driven morphotype. In traffic, robustness is partial: the fallback second-model run (moving average, executed in the same canonical pipeline after ARIMA was not practically runnable in this runtime) preserves relaxed reach ($H^*_{\mathrm{relax}}=72$) but changes contiguous structure and fragmentation ($H^*_{\mathrm{strict}}=54$, $[19,72]$, first positive interval $[5,16]$, sign changes=3) compared with LightGBM ($H^*_{\mathrm{strict}}=7$, $[46,52]$, first positive interval $[17,18]$, sign changes=19). These results indicate that positive reach and contiguous usefulness can separate substantially by model class in some domains.
 
 \section{Discussion}
 Different real-world systems may exhibit distinct predictability horizons.
 Potential explanatory factors include signal-to-noise ratio, system dynamics, periodicity, and external forcing.
 The preliminary PM$_{2.5}$ result suggests that the statistical persistence structure of a system can strongly condition the difficulty of achieving positive forecast skill relative to simple baselines.
 The energy domain result further illustrates this: a highly regular aggregate series with strong autocorrelation makes persistence a near-unbeatable baseline beyond the first day.
-More broadly, these results suggest that predictability horizons should be interpreted not only as properties of models, but also as joint properties of the system, the baseline, and the evaluation protocol.
-This observation supports two broader methodological conclusions:
+More broadly, these results suggest that predictability horizons should be interpreted not only as properties of models, but also as joint properties of the system, baseline, model class, and evaluation protocol.
+Across domains, robustness is heterogeneous: wind shows descriptor preservation across models, traffic shows model-sensitive fragmentation despite stable relaxed reach, and electric-load evidence currently remains qualitative rather than protocol-identical.
+This observation supports three broader methodological conclusions:
 \begin{enumerate}
   \item predictability should be evaluated relative to explicit and domain-relevant baselines,
-  \item horizon estimation should be robust to non-monotonic skill curves and late-horizon recovery effects.
+  \item horizon-wise operational predictability cannot be summarized by a single scalar alone; both $H^*_{\mathrm{relax}}$ and $H^*_{\mathrm{strict}}$ are needed,
+  \item interval locations and sign-change structure should be reported when fragmentation or late recovery is present.
 \end{enumerate}
 
 \section{Limitations}
