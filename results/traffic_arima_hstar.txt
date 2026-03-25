@@ -1,0 +1,7 @@
+H*(relax)=72
+H*(strict)=6
+Longest positive interval=[38, 43]
+First positive interval=[17, 17]
+Sign changes=13
+Sign change locations=[(16, 17), (17, 18), (25, 26), (28, 29), (35, 36), (36, 37), (37, 38), (43, 44), (47, 48), (52, 53), (61, 62), (67, 68), (70, 71)]
+Model=ARIMA order=(2, 0, 0)
