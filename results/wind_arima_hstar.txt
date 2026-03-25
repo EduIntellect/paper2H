@@ -1,0 +1,4 @@
+H*(relax)=48
+H*(strict)=48
+Longest positive interval=[1, 48]
+Model=ARIMA order=(2, 0, 0)
