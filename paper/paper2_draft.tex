@@ -192,6 +192,8 @@ and is used in all domains. This baseline is intentionally strong in operational
 
 No hyperparameter search is performed across any domain. The protocol is intentionally minimal to ensure that observed skill differences reflect domain dynamics and baseline competitiveness rather than model tuning. The same LightGBM evaluation design is applied uniformly to all four domains: PM$_{2.5}$, electric load, wind, and traffic.
 
+To assess descriptor behavior under model substitution, we additionally evaluate ARIMA(2,0,0) in selected domains under the same rolling-origin protocol, persistence baseline, and horizon-wise evaluation framework used for the primary model. For each evaluated horizon $h$, the ARIMA comparator produces an $h$-step-ahead forecast under that same protocol-matched setup.
+
 \subsection{Reproducibility rules}
 For each domain, the committed data output, the result tables and the figures correspond to real experimental artefacts only, not empty placeholders.
 Experiment scripts must read from cleaned canonical datasets defined in the domain data contracts rather than provisional filenames.
