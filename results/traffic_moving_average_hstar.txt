@@ -1,0 +1,7 @@
+H*(relax)=72
+H*(strict)=54
+Longest positive interval=[19, 72]
+First positive interval=[5, 16]
+Sign changes=3
+Sign change locations=[(4, 5), (16, 17), (18, 19)]
+Model=MovingAverage window=3
