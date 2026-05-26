@@ -1,4 +1,4 @@
-# MANUSCRIPT WRITING SUPERPROMPT — paper2H (versión completa, primer nivel)
+# MANUSCRIPT WRITING SUPERPROMPT — paper2H (versión completa)
 ## Self-contained context for an Overleaf/LaTeX editing session in Claude
 ## Updated: 2026-05-26 — 5 tabular models + ARIMA, all numbers from results CSVs
 
@@ -6,27 +6,51 @@
 
 ## YOUR ROLE
 
-You are a research writing assistant helping to update a LaTeX manuscript submitted to **Expert Systems with Applications** (Elsevier, Q1). Your task is to draft and revise LaTeX content incorporating all results. Produce LaTeX-ready output paste-compatible with Overleaf. All numerical claims in this document are authoritative — do not invent or round differently.
+You are a research writing assistant helping to update a LaTeX manuscript submitted to **Data Mining and Knowledge Discovery (DMKD), Springer**. The paper uses the `sn-jnl` class (`\documentclass[sn-mathphys]{sn-jnl}`). Your task is to draft and revise LaTeX content incorporating all results. Produce LaTeX-ready output paste-compatible with Overleaf. All numerical claims in this document are authoritative — do not invent or round differently.
+
+---
+
+## MANUSCRIPT METADATA
+
+**Title:** Characterizing Useful Predictive Reach in Multi-Step Time Series Learning: Baseline-Relative Horizon Descriptors Under Leakage-Free Evaluation
+
+**Authors:** Federico Garcia Crespi (UMH Elche), Julio Alberto Ramos Martinez (UMH)
+
+**LaTeX class & key packages:**
+- `\documentclass[sn-mathphys]{sn-jnl}`
+- `\PassOptionsToPackage{bookmarksdepth=4}{hyperref}` (before documentclass)
+- `tabularx` for wide tables
+- `natbib` with `\setcitestyle{aysep={ }}`
+- `\graphicspath{{figures/}}` — figure files live in `figures/`
+- Profile labels: **lowercase** inside `\textsc{}` — e.g. `\textsc{fragmented}`, `\textsc{sustained}`, `\textsc{delayed\_contiguous}`, `\textsc{immediate\_collapse}`
+
+**H\* macros:**
+```latex
+\newcommand{\Hrelax}{$\text{H}^*_\text{relax}$}
+\newcommand{\Hstrict}{$\text{H}^*_\text{strict}$}
+```
 
 ---
 
 ## MANUSCRIPT CONTEXT
 
-**Title (working):** Operational Forecast Horizon Characterization via Skill-Score Profiles: H*(relax) and H*(strict)
-
 **Contribution:** Two scalar descriptors — H*(relax) and H*(strict) — that summarize how far into the future a model beats a persistence baseline, using a MAE-based skill score under strict rolling-origin evaluation. A four-class taxonomy (SUSTAINED, DELAYED\_CONTIGUOUS, FRAGMENTED, IMMEDIATE\_COLLAPSE) classifies each model × domain combination. Six domains; PM10 Madrid and PM10 Barcelona are new additions.
 
-**Section structure:**
-- §1 Introduction
-- §2 Related work
-- §3 Methodology (skill score, H* definitions, DM test, BH correction)
-- §4 Datasets (6 domains)
-- §5 Experimental setup
-- §6 Models
-- §7–§10 Results: PM2.5, Electric Load, Wind, Traffic
-- §11 **(NEW)** PM10 Air Quality Results (§11.1 Madrid, §11.2 Barcelona, §11.3 Cross-city)
-- §12 Cross-domain synthesis
-- §13 Conclusions
+**Section structure (match exactly in Overleaf):**
+- §1 Introduction (§1.1 Background, §1.2 Contribution)
+- §2 Related Work (§2.1 Forecast evaluation metrics, §2.2 Forecast skill and baselines, §2.3 Predictability limits)
+- §3 Methodology (§3.1 Skill score and H* descriptors, §3.2 Profile taxonomy, §3.3 Statistical significance)
+- §4 Datasets (`tab:datasets`)
+- §5 Experimental Setup (§5.1 Rolling-origin evaluation, §5.2 Models — contains `\input{tables}`, §5.3 Reproducibility)
+- §6 Results: PM2.5 (Beijing, hourly)
+- §7 Results: Electric Load (UCI, daily)
+- §8 Results: Wind Speed (NREL, hourly)
+- §9 Results: Traffic Flow (METR-LA, hourly)
+- §10 Results: PM10 Air Quality (Madrid and Barcelona, daily) — §10.1 PM10 Madrid, §10.2 PM10 Barcelona, §10.3 Cross-city comparison
+- §11 Cross-Domain Synthesis (`tab:results` — main results table)
+- §12 Discussion
+- §13 Limitations
+- §14 Conclusion
 
 ---
 
@@ -67,13 +91,13 @@ You are a research writing assistant helping to update a LaTeX manuscript submit
 | Wind (NREL, hourly) | ExtraTrees | 48 | 47 | 2 | 48 | 83.3 % | FRAGMENTED |
 | Wind (NREL, hourly) | KNN | 48 | 47 | 2 | 48 | 85.4 % | FRAGMENTED |
 | Wind (NREL, hourly) | MLP | 48 | 47 | 2 | 48 | 95.8 % | FRAGMENTED |
-| Wind (NREL, hourly) | ARIMA(2,0,0) | 48 | 48 | 1 | 48 | **89.6 %** | SUSTAINED |
+| Wind (NREL, hourly) | ARIMA(2,0,0) | 48 | 48 | 1 | 48 | 89.6 % | SUSTAINED |
 | Traffic (METR-LA, hourly) | Ridge | 72 | 5 | 63 | 67 | 13.9 % | FRAGMENTED |
 | Traffic (METR-LA, hourly) | LightGBM | 72 | 4 | 64 | 67 | 4.2 % | FRAGMENTED |
 | Traffic (METR-LA, hourly) | ExtraTrees | 72 | 4 | 64 | 67 | 4.2 % | FRAGMENTED |
 | Traffic (METR-LA, hourly) | KNN | 72 | 6 | 64 | 69 | 2.8 % | FRAGMENTED |
 | Traffic (METR-LA, hourly) | MLP | 66 | 3 | 40 | 42 | 9.7 % | FRAGMENTED |
-| Traffic (METR-LA, hourly) | ARIMA(2,0,0) | 70 | 9 | 52 | 60 | **22.2 %** | FRAGMENTED |
+| Traffic (METR-LA, hourly) | ARIMA(2,0,0) | 70 | 9 | 52 | 60 | 22.2 % | FRAGMENTED |
 | PM10 Madrid (Casa de Campo, daily) | Ridge | 7 | 7 | 1 | 7 | 85.7 % | SUSTAINED |
 | PM10 Madrid (Casa de Campo, daily) | LightGBM | 7 | 6 | 2 | 7 | 85.7 % | DELAYED\_CONTIGUOUS |
 | PM10 Madrid (Casa de Campo, daily) | ExtraTrees | 7 | 6 | 2 | 7 | 71.4 % | DELAYED\_CONTIGUOUS |
@@ -221,41 +245,156 @@ MLPRegressor (sklearn) without y-scaling fails catastrophically on daily Load (t
 
 ---
 
+## LATEX SNIPPETS FOR OVERLEAF — sn-jnl / tabularx style
+
+### tab:results — complete table (all 32 rows + 2 ARIMA rows)
+
+The table uses 8 columns: `Domain & Model & H*(relax) & H*(strict) & h_start & h_end & % DM & Profile`.
+Profile labels are **lowercase** inside `\textsc{}`.
+
+```latex
+\begin{table}[ht]
+\centering
+\caption{H* descriptors and DM significance for all 32 (model, domain)
+combinations. \Hrelax: last horizon with positive skill (gaps allowed).
+\Hstrict: length of longest contiguous positive-skill run.
+$h_s$--$h_e$: start and end of that run.
+\% DM: proportion of horizons significant at BH-corrected $\alpha=0.05$.
+$\dagger$~100\,\% DM significant but \emph{worse} than persistence (negative skill).}
+\label{tab:results}
+\begin{tabularx}{\textwidth}{llrrrrlX}
+\toprule
+Domain & Model & \Hrelax & \Hstrict & $h_s$ & $h_e$ & \% DM & Profile \\
+\midrule
+\multirow{5}{*}{\shortstack[l]{PM$_{2.5}$\\(hrly)}}
+  & Ridge      & 48 & 40 &  9 & 48 & 58.3\% & \textsc{fragmented} \\
+  & LightGBM   & 48 & 19 & 30 & 48 & 35.4\% & \textsc{fragmented} \\
+  & ExtraTrees & 48 & 26 & 23 & 48 & 37.5\% & \textsc{delayed\_contiguous} \\
+  & KNN        & 48 & 16 & 33 & 48 & 37.5\% & \textsc{fragmented} \\
+  & MLP        & 48 & 36 & 13 & 48 & 37.5\% & \textsc{delayed\_contiguous} \\
+\midrule
+\multirow{5}{*}{\shortstack[l]{Load\\(daily)}}
+  & Ridge      &  7 &  7 &  1 &  7 &   0.0\%              & \textsc{sustained} \\
+  & LightGBM   &  0 &  0 & ---& ---&   0.0\%              & \textsc{immediate\_collapse} \\
+  & ExtraTrees &  0 &  0 & ---& ---&   0.0\%              & \textsc{immediate\_collapse} \\
+  & KNN        &  0 &  0 & ---& ---& 100.0\%$^\dagger$    & \textsc{immediate\_collapse} \\
+  & MLP        &  0 &  0 & ---& ---& 100.0\%$^\dagger$    & \textsc{immediate\_collapse} \\
+\midrule
+\multirow{6}{*}{\shortstack[l]{Wind\\(hrly)}}
+  & Ridge        & 48 & 48 &  1 & 48 & 100.0\% & \textsc{sustained} \\
+  & LightGBM     & 48 & 48 &  1 & 48 &  72.9\% & \textsc{sustained} \\
+  & ExtraTrees   & 48 & 47 &  2 & 48 &  83.3\% & \textsc{fragmented} \\
+  & KNN          & 48 & 47 &  2 & 48 &  85.4\% & \textsc{fragmented} \\
+  & MLP          & 48 & 47 &  2 & 48 &  95.8\% & \textsc{fragmented} \\
+  & ARIMA(2,0,0) & 48 & 48 &  1 & 48 &  89.6\% & \textsc{sustained} \\
+\midrule
+\multirow{6}{*}{\shortstack[l]{Traffic\\(hrly)}}
+  & Ridge        & 72 &  5 & 63 & 67 &  13.9\% & \textsc{fragmented} \\
+  & LightGBM     & 72 &  4 & 64 & 67 &   4.2\% & \textsc{fragmented} \\
+  & ExtraTrees   & 72 &  4 & 64 & 67 &   4.2\% & \textsc{fragmented} \\
+  & KNN          & 72 &  6 & 64 & 69 &   2.8\% & \textsc{fragmented} \\
+  & MLP          & 66 &  3 & 40 & 42 &   9.7\% & \textsc{fragmented} \\
+  & ARIMA(2,0,0) & 70 &  9 & 52 & 60 &  22.2\% & \textsc{fragmented} \\
+\midrule
+\multirow{5}{*}{\shortstack[l]{PM10\\Madrid}}
+  & Ridge      & 7 & 7 & 1 & 7 &  85.7\% & \textsc{sustained} \\
+  & LightGBM   & 7 & 6 & 2 & 7 &  85.7\% & \textsc{delayed\_contiguous} \\
+  & ExtraTrees & 7 & 6 & 2 & 7 &  71.4\% & \textsc{delayed\_contiguous} \\
+  & KNN        & 7 & 6 & 2 & 7 &  71.4\% & \textsc{delayed\_contiguous} \\
+  & MLP        & 7 & 7 & 1 & 7 &  85.7\% & \textsc{sustained} \\
+\midrule
+\multirow{5}{*}{\shortstack[l]{PM10\\Barcelona}}
+  & Ridge      & 7 & 7 & 1 & 7 & 100.0\% & \textsc{sustained} \\
+  & LightGBM   & 7 & 7 & 1 & 7 &  85.7\% & \textsc{sustained} \\
+  & ExtraTrees & 7 & 7 & 1 & 7 &  85.7\% & \textsc{sustained} \\
+  & KNN        & 7 & 6 & 2 & 7 & 100.0\% & \textsc{delayed\_contiguous} \\
+  & MLP        & 7 & 7 & 1 & 7 & 100.0\% & \textsc{sustained} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+```
+
+### tab:pm10\_skill\_madrid — PM10 Madrid skill table (all 5 models)
+
+```latex
+\begin{table}[ht]
+\centering
+\caption{Skill scores by horizon, PM10 Madrid (Casa de Campo). Persistence
+MAE: $h=1 \to 5.54$~$\mu$g/m$^3$; $h=7 \to 9.61$~$\mu$g/m$^3$.}
+\label{tab:pm10_skill_madrid}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Model & $h=1$ & $h=2$ & $h=3$ & $h=4$ & $h=5$ & $h=6$ & $h=7$ \\
+\midrule
+Ridge      &  0.015 &  0.107 &  0.159 &  0.193 &  0.213 &  0.228 &  0.236 \\
+LightGBM   & -0.004 &  0.084 &  0.118 &  0.142 &  0.145 &  0.163 &  0.175 \\
+ExtraTrees & -0.022 &  0.052 &  0.094 &  0.122 &  0.129 &  0.150 &  0.172 \\
+KNN        & -0.054 &  0.038 &  0.052 &  0.088 &  0.108 &  0.106 &  0.123 \\
+MLP        &  0.016 &  0.106 &  0.154 &  0.189 &  0.202 &  0.222 &  0.229 \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
+
+### tab:pm10\_skill\_bcn — PM10 Barcelona skill table (all 5 models)
+
+```latex
+\begin{table}[ht]
+\centering
+\caption{Skill scores by horizon, PM10 Barcelona (Eixample). Persistence
+MAE: $h=1 \to 6.53$~$\mu$g/m$^3$; $h=7 \to 9.80$~$\mu$g/m$^3$.}
+\label{tab:pm10_skill_bcn}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Model & $h=1$ & $h=2$ & $h=3$ & $h=4$ & $h=5$ & $h=6$ & $h=7$ \\
+\midrule
+Ridge      &  0.079 &  0.145 &  0.177 &  0.204 &  0.203 &  0.189 &  0.193 \\
+LightGBM   &  0.023 &  0.111 &  0.144 &  0.163 &  0.157 &  0.143 &  0.160 \\
+ExtraTrees &  0.026 &  0.099 &  0.136 &  0.164 &  0.159 &  0.154 &  0.145 \\
+KNN        & -0.044 &  0.055 &  0.092 &  0.124 &  0.127 &  0.119 &  0.123 \\
+MLP        &  0.059 &  0.131 &  0.163 &  0.193 &  0.191 &  0.179 &  0.184 \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
+
+---
+
 ## KEY FINDINGS PER SECTION
 
-### §6.2 Models (updated)
+### §5.2 Models (updated — all 5 classes + ARIMA)
 
 Five tabular model classes: Ridge (linear baseline), LightGBM (gradient boosting, 50 trees), ExtraTrees (random forest variant, 50 trees), KNN (k=5 nearest neighbours, Euclidean distance after StandardScaler), MLP (two hidden layers 64–32, ReLU, Adam, early stopping, StandardScaler on X). Plus ARIMA(2,0,0) as robustness check on wind and traffic. All models use the direct multi-step strategy (one model per horizon h); sklearn clone() called per (horizon, origin) pair.
 
 **Load domain note:** MLP results on Load are excluded from quantitative comparison due to numerical instability from unscaled MW-range target values; they are reported qualitatively as a failure mode. KNN results are included as a legitimate (if poor) outcome.
 
-### §11.1 — PM10 Madrid (Casa de Campo)
+### §10.1 — PM10 Madrid (Casa de Campo)
 
 - **Ridge and MLP SUSTAINED, monotone skill:** both achieve H*(relax) = H*(strict) = 7; Ridge skill rises from 0.015 at h=1 to 0.236 at h=7; MLP skill from 0.016 to 0.229 (nearly identical to Ridge). Both achieve 85.7 % DM-significant horizons.
 - **Tree models and KNN DELAYED\_CONTIGUOUS:** LightGBM, ExtraTrees, and KNN show negative skill at h=1 (−0.004, −0.022, −0.054) but recover fully from h=2, yielding H*(strict) = 6 with h\_start=2, h\_end=7.
 - **KNN weakest at h=1:** KNN has the most negative h=1 skill (−0.054) but still achieves positive skill from h=2 onward.
 - **Strong overall DM evidence:** all five models achieve ≥ 71 % DM-significant horizons; daily PM10 autocorrelation structure (ACF lag-1 = 0.562) is strongly exploitable beyond h=1.
 
-### §11.2 — PM10 Barcelona (Eixample)
+### §10.2 — PM10 Barcelona (Eixample)
 
 - **Ridge, LightGBM, ExtraTrees, MLP: SUSTAINED (H*(relax)=H*(strict)=7).** Ridge achieves 100 % DM significance; MLP also 100 %. Four out of five models are fully SUSTAINED.
 - **KNN DELAYED\_CONTIGUOUS:** only model not positive at h=1 in Barcelona (skill=−0.044); recovers from h=2 with H*(strict)=6. Even KNN achieves 100 % DM significance on horizons h=2–7.
 - **Higher persistence volatility, higher skill:** baseline MAE higher in Barcelona (6.53 vs. 5.54 μg/m³ at h=1); Ridge skill at h=4: 0.204 vs. 0.193 in Madrid.
 
-### §11.3 — Cross-city PM10 Comparison
+### §10.3 — Cross-city PM10 Comparison
 
 - **ACF explains the h=1 difference mechanistically:** Barcelona lag-1 ACF = 0.644 vs. Madrid = 0.562 (Δ = +0.083). Higher serial correlation predicts higher exploitable skill at short horizons.
 - **Ridge and MLP tie for best overall:** both achieve SUSTAINED profiles in both cities; MLP's skill curve tracks Ridge closely at all horizons (max |Δ| ≈ 0.007).
 - **KNN systematically weakest at h=1:** −0.054 in Madrid, −0.044 in Barcelona. Euclidean distance in lag space does not capture the next-day PM10 autocorrelation as efficiently as linear or neural models.
 - **PM10 is the most consistently predictable domain:** all 10 PM10 model×station combinations are SUSTAINED or DELAYED\_CONTIGUOUS with ≥ 71 % DM evidence.
 
-### §12 Cross-domain synthesis (updated)
+### §11 Cross-domain synthesis (all 5 models)
 
-Key new findings from 5-model comparison:
+Key findings from 5-model comparison:
 
 1. **Load: unanimous failure except Ridge.** Ridge is the only model that beats persistence on Load (SUSTAINED, DM underpowered), while LightGBM and ExtraTrees IMMEDIATE\_COLLAPSE with 0 % DM, and KNN/MLP IMMEDIATE\_COLLAPSE with 100 % DM (significantly worse than persistence). The pattern reveals Load as a domain where linear persistence is near-optimal for the lag features used.
 
-2. **Wind: linear models fully SUSTAINED, nonlinear models miss h=1.** Ridge and LightGBM are SUSTAINED (h=1–48, 100%/73% DM); ExtraTrees, KNN, and MLP are FRAGMENTED — all have slightly negative skill at h=1 before recovering fully. ARIMA(2,0,0) also SUSTAINED. The h=1 miss is consistent across four nonlinear models, suggesting a domain-level artefact (possibly an aliasing or phase-shift effect at the 1-step horizon under the direct multi-step strategy with lags 0,1,…,48).
+2. **Wind: linear models fully SUSTAINED, nonlinear models miss h=1.** Ridge and LightGBM are SUSTAINED (h=1–48, 100%/73% DM); ExtraTrees, KNN, and MLP are FRAGMENTED — all have slightly negative skill at h=1 before recovering fully. ARIMA(2,0,0) also SUSTAINED. The h=1 miss is consistent across four nonlinear model classes, suggesting a domain-level artefact.
 
 3. **PM2.5: MLP achieves best strict horizon.** MLP H*(strict)=36 (h\_start=13) is the highest of any model on this domain; Ridge H*(strict)=40 (h\_start=9) but both are FRAGMENTED/DELAYED\_CONTIGUOUS. KNN has the worst profile (H*(strict)=16, h\_start=33).
 
@@ -263,83 +402,90 @@ Key new findings from 5-model comparison:
 
 ---
 
-## EXACT MANUSCRIPT ADDITIONS NEEDED
+## PROSE PASSAGES — VERIFIED, PASTE-READY
 
-### 1. §11 PM10 Air Quality Results (new section, three subsections)
+### §6 Results: PM2.5 (key sentence — if not already in paper)
 
-Draft each subsection expanding the bullet seeds above into 2–3 prose sentences. The section should:
-- Open: "PM10 particulate matter is monitored daily at two Spanish urban stations representing contrasting atmospheric regimes: the continental inland setting of Madrid Casa de Campo and the coastal Mediterranean Eixample district of Barcelona. Both series span 2017–2024 (2,922 and 2,827 daily observations respectively) and are evaluated with the same rolling-origin protocol as the other tabular domains (h=1…7, lags={0,1,2,3,7,14}, min\_train=365 days)."
-- Reference figures `fig:skill_pm10` and `fig:skill_pm10_bcn`, Table `tab:results`.
-- Close §11.3 with the ACF-based explanation and the cross-domain positioning statement.
+"Ridge achieves the best overall profile ($H^*_\text{strict}=40$, $h=9$--48, 58\,\% DM significant). MLP achieves the best strict horizon among nonlinear models ($H^*_\text{strict}=36$, $h=13$--48). KNN performs worst ($H^*_\text{strict}=16$, $h=33$--48), reflecting the poor Euclidean geometry of sparse high-lag features. At $h=48$ all five models have positive skill (Ridge 0.192, LightGBM 0.079, ExtraTrees 0.095, KNN 0.109, MLP 0.188)."
 
-### 2. Tab:results — LaTeX rows, all 5 models
+### §7 Results: Electric Load (key paragraph — if not already in paper)
 
-```latex
-% --- PM10 Madrid ---
-\multirow{5}{*}{\shortstack[l]{PM10\\Madrid\\(daily)}}
-  & Ridge      & 7 & 7 & 1--7 & 85.7\% & \textsc{Sustained}           \\
-  & LightGBM   & 7 & 6 & 2--7 & 85.7\% & \textsc{Delayed\_Contiguous} \\
-  & ExtraTrees & 7 & 6 & 2--7 & 71.4\% & \textsc{Delayed\_Contiguous} \\
-  & KNN        & 7 & 6 & 2--7 & 71.4\% & \textsc{Delayed\_Contiguous} \\
-  & MLP        & 7 & 7 & 1--7 & 85.7\% & \textsc{Sustained}           \\
-\midrule
-% --- PM10 Barcelona ---
-\multirow{5}{*}{\shortstack[l]{PM10\\Barcelona\\(daily)}}
-  & Ridge      & 7 & 7 & 1--7 & 100.0\% & \textsc{Sustained}           \\
-  & LightGBM   & 7 & 7 & 1--7 &  85.7\% & \textsc{Sustained}           \\
-  & ExtraTrees & 7 & 7 & 1--7 &  85.7\% & \textsc{Sustained}           \\
-  & KNN        & 7 & 6 & 2--7 & 100.0\% & \textsc{Delayed\_Contiguous} \\
-  & MLP        & 7 & 7 & 1--7 & 100.0\% & \textsc{Sustained}           \\
-```
+"Only Ridge achieves $H^*_\text{relax}>0$, with a \textsc{sustained} profile ($H^*_\text{strict}=7$, $h=1$--7). However, DM significance is 0\,\%: bootstrap confidence intervals (90\,\%) include zero at all seven horizons, and the minimum detectable effect under 80\,\% power is $\ge 0.061$ --- more than twice the maximum observed Ridge skill of 0.030. LightGBM and ExtraTrees are \textsc{immediate\_collapse} with 0\,\% DM significance (negative skill, not statistically verified). By contrast, KNN and MLP are also \textsc{immediate\_collapse} but with \emph{100\,\% DM significance} --- they are verified to be significantly worse than persistence at every horizon. MLP additionally exhibits numerical instability: the \texttt{MLPRegressor} without target-variable scaling diverges on the MW-scale daily load (mean $\approx 22\times10^6$), yielding skill $\approx -38$ at $h=1$. These two failure modes --- unverified negative skill versus verified degradation below persistence --- are qualitatively distinct and both captured uniformly by $H^*_\text{relax} = 0$."
 
-### 3. Tab:results — ARIMA rows (Wind and Traffic, add to existing rows)
+### §8 Results: Wind Speed (key paragraph)
+
+"Wind is the most predictable hourly domain: Ridge and LightGBM are \textsc{sustained} ($H^*_\text{strict}=48$, $h=1$--48) with 100\,\% and 73\,\% DM significance respectively. ARIMA(2,0,0) is also \textsc{sustained} (90\,\% DM), providing strong model-class robustness for the \textsc{sustained} classification. ExtraTrees, KNN, and MLP are \textsc{fragmented} with $H^*_\text{strict}=47$ ($h=2$--48): all three miss $h=1$ by a small negative margin (skill $\approx -0.001$ to $-0.069$) before maintaining positive skill from $h=2$ onward. This one-step miss is consistent across four nonlinear model classes, suggesting a domain-level effect rather than a model artefact."
+
+### §9 Results: Traffic Flow (key paragraph)
+
+"Traffic produces a ghost-skill pattern: all six model classes achieve high $H^*_\text{relax}$ (66--72) but low $H^*_\text{strict}$ (3--9), classifying universally as \textsc{fragmented}. The positive-skill windows are displaced far from $h=1$ (ML models: $h \approx 40$--69; ARIMA: $h=52$--60) and DM significance is weak (3--22\,\%). This pattern traces to the 72-step (3-day) periodic structure of METR-LA loop-detector data: autocorrelation re-emerges near multiples of the dominant period, creating pockets of apparent skill. The pattern is confirmed model-invariant across all six model classes, establishing it as a structural property of the dataset rather than a model artefact. $H^*_\text{relax}$ alone would suggest near-full-horizon utility; $H^*_\text{strict}$ immediately exposes the fragmented reality."
+
+### §11 Cross-Domain Synthesis paragraphs (4 key findings)
 
 ```latex
-% Wind ARIMA — add after Wind MLP row
-  & ARIMA(2,0,0) & 48 & 48 & 1--48 & 89.6\% & \textsc{Sustained}   \\
-% Traffic ARIMA — add after Traffic MLP row
-  & ARIMA(2,0,0) & 70 &  9 & 52--60 & 22.2\% & \textsc{Fragmented} \\
+\paragraph{Domain drives profile, not model class.}
+All five models classify as \textsc{sustained} or \textsc{delayed\_contiguous}
+on PM10 and all five are \textsc{fragmented} on traffic. No model class
+consistently outperforms the others across domains.
+
+\paragraph{Ghost-skill is model-invariant.}
+Traffic flow produces positive-skill windows displaced to
+$h \approx 40$--69 across all six model classes, confirming the pattern
+is a structural feature of the METR-LA dataset (72-step periodicity) rather
+than a model artefact.
+
+\paragraph{Load failure modes are qualitatively distinct.}
+Ridge: \textsc{sustained} but statistically underpowered (MDE $2\times$ max
+observed skill). LightGBM, ExtraTrees: unverified negative skill (0\,\% DM).
+KNN, MLP: verified worse than persistence (100\,\% DM). The profile taxonomy
+captures all three failure types uniformly at $H^*_\text{relax}=0$ while the
+\% DM column distinguishes them.
+
+\paragraph{MLP and Ridge co-dominate PM10.}
+On both PM10 stations, Ridge and MLP achieve the highest profiles
+(\textsc{sustained}, $H^*_\text{strict}=7$, 86--100\,\% DM). MLP skill
+tracks Ridge closely at every horizon (max $|\Delta| \approx 0.007$).
+KNN is the weakest model on PM10, missing $h=1$ at both stations.
 ```
 
-### 4. Tab:results — Electric Load KNN/MLP note (add footnote)
+### Abstract (complete text — all 5 models)
 
 ```latex
-% Load rows (KNN/MLP separate note)
-  & KNN & 0 & 0 & --- & 100.0\%$^\dagger$ & \textsc{Immediate\_Collapse} \\
-  & MLP & 0 & 0 & --- & 100.0\%$^\dagger$ & \textsc{Immediate\_Collapse} \\
-% Footnote:
-$\dagger$ Significantly \emph{worse} than persistence (negative skill at all horizons).
+We propose two scalar descriptors --- $\text{H}^*_\text{relax}$ and
+$\text{H}^*_\text{strict}$ --- that summarize how far into the future a
+forecasting model retains positive skill relative to a persistence baseline
+under strict rolling-origin evaluation.
+$\text{H}^*_\text{relax}$ is the last horizon at which skill is positive
+(gaps allowed); $\text{H}^*_\text{strict}$ is the length of the longest
+contiguous positive-skill interval.
+Together they support a four-class profile taxonomy:
+\textsc{sustained}, \textsc{delayed\_contiguous}, \textsc{fragmented},
+and \textsc{immediate\_collapse}.
+Statistical significance is assessed with the Harvey--Leybourne--Newbold
+modified Diebold--Mariano test corrected for multiple comparisons via the
+Benjamini--Hochberg procedure.
+
+Five model classes --- Ridge, LightGBM, ExtraTrees, KNN, and MLP --- are
+evaluated across six time-series domains (Beijing PM$_{2.5}$, UCI daily
+electric load, NREL hourly wind speed, METR-LA hourly traffic flow, and
+daily PM10 at two Spanish urban stations: Madrid Casa de Campo and
+Barcelona Eixample, 2017--2024), yielding a $5 \times 6$ profile table with 32
+entries (including two ARIMA robustness rows).
+Ridge achieves $\text{H}^*_\text{strict} = 7$ and 85--100\,\% DM-significant
+improvement at both PM10 sites; MLP matches this performance.
+Electric load exposes qualitatively distinct failure modes: Ridge is
+\textsc{sustained} but statistically underpowered (minimum detectable effect
+$\ge 0.061$, twice the maximum observed skill of 0.030), while KNN and MLP
+are \textsc{immediate\_collapse} with 100\,\% DM significance
+\emph{significantly worse} than persistence.
+Traffic flow produces a ghost-skill pattern, confirmed model-invariant across
+all six model classes, that $\text{H}^*_\text{relax}$ alone cannot reveal
+but the relax/strict pair exposes immediately.
 ```
 
-### 5. Tab:results — KNN/MLP rows for Wind, Traffic, PM2.5
+### Conclusion (key paragraph)
 
-```latex
-% Wind
-  & KNN & 48 & 47 & 2--48 & 85.4\% & \textsc{Fragmented} \\
-  & MLP & 48 & 47 & 2--48 & 95.8\% & \textsc{Fragmented} \\
-% Traffic
-  & KNN & 72 & 6  & 64--69 & 2.8\% & \textsc{Fragmented} \\
-  & MLP & 66 & 3  & 40--42 & 9.7\% & \textsc{Fragmented} \\
-% PM2.5
-  & KNN & 48 & 16 & 33--48 & 37.5\% & \textsc{Fragmented}           \\
-  & MLP & 48 & 36 & 13--48 & 37.5\% & \textsc{Delayed\_Contiguous}  \\
-```
-
-### 6. Abstract update
-
-"…five model classes (Ridge, LightGBM, ExtraTrees, KNN, MLP) across six time-series domains, including two independent PM10 stations (Madrid and Barcelona, daily, 2017–2024). Ridge achieves $\text{H}^*_\text{strict} = 7$ and 85–100\,\% DM-significant improvement at both PM10 sites; MLP matches this performance on PM10 while KNN/MLP fail catastrophically on daily electric load — demonstrating the H*/profile framework's ability to reveal qualitatively distinct failure modes across model families."
-
-### 7. §3 Methodology — add ARIMA description
-
-"As an additional robustness check, an ARIMA(2,0,0) model is evaluated on the wind and traffic domains using an iterated multi-step strategy: one model is fitted per rolling origin and forecasts are extracted for all horizons simultaneously. This allows direct comparison of profile classifications between linear autoregressive and nonlinear machine-learning approaches."
-
-### 8. §12 Cross-domain synthesis paragraph
-
-"The five-model comparison reveals qualitatively distinct failure modes that H*(relax)/H*(strict) captures uniformly. On daily electric load, Ridge achieves a SUSTAINED profile (H*(strict)=7) while tree models collapse immediately (H*(relax)=0, DM non-significant); adding KNN and MLP sharpens the picture — both are also IMMEDIATE\_COLLAPSE but with 100\,\% DM significance (significantly \emph{worse} than persistence), and MLP additionally exhibits numerical instability on the MW-scale target. On wind, only the two linear methods (Ridge and LightGBM) achieve fully SUSTAINED profiles; ExtraTrees, KNN, and MLP share a one-step negative-skill artefact that places them in FRAGMENTED despite 85–96\,\% DM significance from h=2 onward. The traffic ghost-skill pattern — positive-skill windows near multiples of the 72-step periodic signal — is confirmed by all six model classes (five tabular + ARIMA), eliminating any model-specific explanation and establishing the artefact as a structural property of the METR-LA dataset."
-
-### 9. Conclusions — updated sentence
-
-"Across the five model classes, the H*/profile taxonomy separates three qualitatively different failure regimes: IMMEDIATE\_COLLAPSE with underpowered tests (Load/Ridge), IMMEDIATE\_COLLAPSE with verified negative skill (Load/KNN, Load/MLP), and ghost-skill FRAGMENTED profiles where H*(relax) greatly overstates usable horizon (Traffic, all models). Daily PM10 air quality at Madrid and Barcelona is the most consistently predictable domain tested — all ten model×station combinations are SUSTAINED or DELAYED\_CONTIGUOUS with DM-verified skill — pointing to actionable multi-day forecast windows for environmental health alert systems."
+"Across the five model classes, the H*/profile taxonomy separates three qualitatively different failure regimes: \textsc{sustained} with underpowered tests (Load/Ridge), \textsc{immediate\_collapse} with verified negative skill (Load/KNN, Load/MLP), and ghost-skill \textsc{fragmented} profiles where $H^*_\text{relax}$ greatly overstates usable horizon (Traffic, all models). Daily PM10 air quality at Madrid and Barcelona is the most consistently predictable domain tested --- all ten model$\times$station combinations are \textsc{sustained} or \textsc{delayed\_contiguous} with DM-verified skill --- pointing to actionable multi-day forecast windows for environmental health alert systems."
 
 ---
 
@@ -355,8 +501,6 @@ Manuscript text: "Ridge yields $\text{H}^*_\text{strict} = 7$ on the Electric Lo
 
 REFRAME: confirmed across all 6 model classes. H*(relax)=66–72 would imply near-full-horizon utility; H*(strict)=3–9 exposes the truth. Positive-skill windows: ML h=40–69, ARIMA h=52–60. Model-invariant → structural dataset artefact.
 
-Manuscript text: "The traffic domain provides a canonical example of how H*(relax) and H*(strict) together prevent misinterpretation. All six model classes achieve H*(relax) ≥ 66, yet H*(strict) ranges only 3–9, located at h=40–69 depending on the model. This ghost-skill pattern traces to the 72-step (3-day) periodic structure of the METR-LA loop-detector data: autocorrelation temporarily re-emerges near multiples of the dominant period, creating isolated pockets of apparent skill. The pattern is model-invariant — identical across Ridge, LightGBM, ExtraTrees, KNN, MLP, and ARIMA(2,0,0) — confirming it is a structural property of the dataset rather than an artefact of any specific model family."
-
 ### 3. ExtraTrees 50 vs. 100 trees
 
 QUANTIFIED: max |Δ skill| = 0.010, mean |Δ| = 0.006 across h=1–7 on PM10 Madrid. All profile classifications unchanged.
@@ -369,7 +513,7 @@ Wind: SUSTAINED (89.6 % DM). Traffic: FRAGMENTED (22.2 % DM, ghost-skill h=52–
 
 ACF lag-1 Barcelona=0.644 vs. Madrid=0.562 (Δ=+0.083). Fully mechanistic explanation.
 
-### 6. MLP on Load — numerical instability (new)
+### 6. MLP on Load — numerical instability (failure mode)
 
 QUANTIFIED: skill ranges −16 to −38 at h=1–7. MLPRegressor (sklearn) without y-scaling fails on MW-range targets (~22 million). Reported qualitatively as a failure mode, not included in quantitative tables.
 
@@ -380,7 +524,7 @@ QUANTIFIED: skill ranges −16 to −38 at h=1–7. MLPRegressor (sklearn) witho
 All figures regenerated with 5 tabular models + ARIMA (where applicable):
 
 - `fig_skill_pm25.pdf/.png` — PM2.5, 5 models
-- `fig_skill_load.pdf/.png` — Electric Load, 5 models (MLP curve will appear extreme)
+- `fig_skill_load.pdf/.png` — Electric Load, 5 models (MLP curve clamped at −1.5; annotation says "MLP axis clamped")
 - `fig_skill_wind.pdf/.png` — Wind, 5 ML models + ARIMA(2,0,0)
 - `fig_skill_traffic.pdf/.png` — Traffic, 5 ML models + ARIMA(2,0,0)
 - `fig_skill_pm10.pdf/.png` — PM10 Madrid, 5 models
@@ -389,7 +533,7 @@ All figures regenerated with 5 tabular models + ARIMA (where applicable):
 
 Figure conventions: Ridge/LightGBM/ExtraTrees = solid lines; KNN/MLP = dashed; ARIMA = dotted. Filled dot = DM-significant (BH α=0.05); open dot = not significant; shaded band = H*(strict) interval; dashed line = persistence (Skill = 0).
 
-**Note for Load figure:** MLP skill axis will be extreme (−38 at h=1). Consider clamping y-axis to [−1, 1] in the figure for legibility, with a text note indicating MLP range extends below axis.
+Upload path in Overleaf: `figures/` (`\graphicspath{{figures/}}`).
 
 ---
 
@@ -400,14 +544,17 @@ Figure conventions: Ridge/LightGBM/ExtraTrees = solid lines; KNN/MLP = dashed; A
 - Skill scores: 3 decimal places in tables; 2 in prose ("0.24").
 - DM significance: integer % followed by " %" ("85 %").
 - Use "persistence" not "naïve baseline" or "random walk".
-- LaTeX: `$\text{H}^*_\text{relax}$` and `$\text{H}^*_\text{strict}$`.
+- LaTeX H* macros: `\Hrelax` and `\Hstrict` (defined as `$\text{H}^*_\text{relax}$` etc.)
+- Profile names: `\textsc{lowercase}` — `\textsc{sustained}`, `\textsc{fragmented}`, `\textsc{delayed\_contiguous}`, `\textsc{immediate\_collapse}`
 - Citations: Harvey, Leybourne & Newbold (1997); Benjamini & Hochberg (1995).
+- MLP on Load: always qualify as "numerical instability" not "model failure" when referring to the −38 skill.
 
 ---
 
 ## HOW TO USE
 
 1. Paste this entire document into a new Claude conversation.
-2. Paste the LaTeX section to update (e.g., the §11 stub, the results table, the abstract).
+2. Paste the LaTeX section to update (e.g., the §10 PM10 section, the results table, the abstract).
 3. Request the updated LaTeX. Numbers in Tables A–E are authoritative.
-4. Repeat per section.
+4. The LaTeX snippets in this document use sn-jnl/tabularx style — paste directly into Overleaf.
+5. Repeat per section.
