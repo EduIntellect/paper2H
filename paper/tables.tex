@@ -1,0 +1,27 @@
+% Table 2: Baseline definition in each domain
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{@{}l l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+Domain & Baseline & Mathematical / ML definition & Illustrative explanation \\
+\midrule
+PM$_{2.5}$ & Persistence &
+  Last observation carried forward: $\hat{y}^{\mathrm{base}}_{t+h} = y_t$. &
+  Example: if $y_t = 42$, then $\hat{y}_{t+h} = 42$. \\
+Load & Persistence &
+  Last observation carried forward: $\hat{y}^{\mathrm{base}}_{t+h} = y_t$. &
+  Example: if $y_t = 315$, then $\hat{y}_{t+h} = 315$. \\
+Wind & Persistence &
+  Last observation carried forward: $\hat{y}^{\mathrm{base}}_{t+h} = y_t$. &
+  Example: if $y_t = 6.8$~m/s, then $\hat{y}_{t+h} = 6.8$. \\
+Traffic & Persistence &
+  Last observation carried forward: $\hat{y}^{\mathrm{base}}_{t+h} = y_t$. &
+  Example: if $y_t = 57$, then $\hat{y}_{t+h} = 57$. \\
+\bottomrule
+\end{tabularx}
+\caption{Baseline definition in each domain, including both the formal persistence rule and an intuitive domain-specific example.}
+\label{tab:baselines}
+\end{table}

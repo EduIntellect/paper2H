@@ -99,7 +99,7 @@ has_fallback_evidence() {
       echo "$file"
       return 0
     fi
-  done < <(git ls-tree -r --name-only HEAD | rg '\.(md|txt|tex|rst)$')
+  done < <(git ls-tree -r --name-only HEAD | grep -E '\.(md|txt|tex|rst)$')
 
   return 1
 }

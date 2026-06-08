@@ -11,3 +11,15 @@ data/wind_hourly_clean.csv
 data/metr-la.h5
 data/pems-bay.h5
 data/traffic_hourly_clean.csv
+
+# LaTeX compilation temp files
+paper/*.aux
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.log
+paper/*.toc
+paper/*.out
+paper/*.synctex.gz
+paper/*.bbl
+paper/*.blg
+

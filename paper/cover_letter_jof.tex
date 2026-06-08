@@ -1,0 +1,48 @@
+\documentclass[11pt]{letter}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{hyperref}
+
+\signature{Federico Garcia Crespi\\
+Departamento de Ingenier\'ia de Computadores\\
+Universidad Miguel Hern\'andez, Elche, Spain\\
+\texttt{fedeg@umh.es}}
+
+\address{Federico Garcia Crespi\\
+Departamento de Ingenier\'ia de Computadores\\
+Universidad Miguel Hern\'andez\\
+Avda.\ de la Universidad, s/n\\
+03202 Elche, Spain}
+
+\date{\today}
+
+\begin{document}
+
+\begin{letter}{Editorial Office\\
+Journal of Forecasting\\
+Wiley}
+
+\opening{Dear Editors,}
+
+We submit for your consideration the manuscript entitled \textbf{``Operational Predictability Horizons Under Persistence Baselines''} for publication in the \textit{Journal of Forecasting}.
+
+\textbf{Problem.}
+When machine learning models are evaluated for multi-step time series prediction, performance is typically reported at a small number of fixed lead times. This convention does not directly answer the operational question of \emph{how long} a model remains useful relative to a strong baseline, nor whether any observed advantage is sustained or only intermittent across the forecast horizon.
+
+\textbf{Contribution.}
+We address this gap by formalising two complementary horizon descriptors---$H^*(\mathrm{relax})$ and $H^*(\mathrm{strict})$---that summarise the extent and continuity of baseline-relative forecast skill under a leakage-free rolling-origin protocol with persistence as the reference. These descriptors are not a replacement for existing forecast evaluation tools (proper scoring rules, Murphy diagrams, or Diebold--Mariano tests) but a complement: they capture the \emph{where} and \emph{for how long} dimension of operational usefulness that aggregate accuracy metrics and fixed-horizon summaries do not directly provide.
+
+\textbf{Empirical evidence.}
+We apply the shared protocol across six heterogeneous domains---PM$_{2.5}$ air quality, electric load, wind speed, traffic speed, and daily PM$_{10}$ at two independent urban stations---using five model classes (Ridge, LightGBM, ExtraTrees, KNN, MLP) plus ARIMA as a robustness check. The cross-domain analysis reveals four qualitatively distinct skill-profile types (sustained, delayed contiguous, fragmented, and immediate collapse), with profile type determined primarily by the domain rather than the model class.
+
+\textbf{Relevance to the Journal of Forecasting.}
+The manuscript contributes to the evaluation and communication of forecast quality, a topic central to the journal's scope. The proposed descriptors are designed to be practically useful: they require only a rolling-origin evaluation against a specified baseline and can be reported alongside any existing accuracy metric. The cross-domain empirical design ensures that the findings are not specific to a single application area.
+
+The manuscript has not been published previously and is not under consideration at any other journal. All authors have approved the submission. All datasets used are publicly available, and the evaluation code is provided in a public repository.
+
+\closing{Sincerely,}
+
+\end{letter}
+\end{document}
