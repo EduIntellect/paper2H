@@ -6,87 +6,98 @@
     "access_blocked": true,
     "block_reason": "add_repo cross-tier: 'cross-tier adds are not supported in v1... session already has repos from owner(s) [eduintellect]. Start a new session with the requested repo as the initial source'",
     "repos_discovered": 16,
-    "repos_content_inspected": 0,
-    "repos_with_secondhand_evidence": 1,
-    "secondhand_evidence_attribution_confirmed": false,
+    "repos_content_inspected_by_this_session": 0,
+    "repos_with_verified_evidence_via_external_agent": 1,
+    "verified_repo": "fedeg-umh-es/varret-pm10-paper",
+    "verification_method": "read-only local copy inspected by a separate Codex session; git clone to GitHub failed (proxy 403), local copy at /workspace/varret-pm10-paper not confirmed byte-identical to remote HEAD",
+    "secondhand_evidence_attribution_confirmed": true,
     "generated_by_writeup": "auditoria_censura_hstar.md",
-    "note": "No push, no commit, no write outside the two report files."
+    "note": "No push, no commit, no write outside the two report files.",
+    "update_2": "Corrects prior finding that Valencia Vivers had negative skill — root cause was a manual baseline-reconstruction bug in the first audit round (positional merge instead of merge by origin_date+date), not a pipeline or station problem. Also confirms Hmax=7 is hardcoded in the production generator (HORIZONS = tuple(range(1,8))), not an artifact of an ad hoc test script."
   },
   "domains": [
     {
       "domain": "pm10_elche",
-      "repo": "fedeg-umh-es/varret-pm10-paper (atribución no confirmada — usuario indicó 'decídelo tú')",
+      "repo": "fedeg-umh-es/varret-pm10-paper (confirmado)",
       "candidate_files": [
         "data/raw/pm10_daily.csv",
-        "outputs/metrics/predictions.csv"
+        "outputs/metrics/predictions.csv",
+        "scripts/01_generate_e1_rr_lags_only_predictions.py"
       ],
       "hmax": 7,
-      "has_skill_fold_h": "parcial (por horizonte h; sin fold_id confirmado)",
-      "has_mse_model_persistence_fold_h": "parcial (reconstruible agrupando por columna model; sin columna baseline nativa; sin fold)",
-      "has_y_true_y_pred_fold_h": "parcial (predictions.csv por horizonte; no confirmado si son y_true/y_pred crudos o errores agregados; sin fold)",
+      "hmax_source": "hardcoded en el generador canónico: HORIZONS = tuple(range(1, 8)); confirmado por lectura de línea, no es límite de un script ad hoc",
+      "has_skill_fold_h": "sí, a nivel de origin_date (más fino que fold) x horizonte, para hgb_direct y ridge_direct, h=1..7",
+      "has_mse_model_persistence_fold_h": "sí, reconstruible via merge por origin_date+date; conteos de filas modelo=persistencia confirmados en horizonte agregado",
+      "has_y_true_y_pred_fold_h": "sí, predictions.csv trae y_true/y_pred por origin_date, date, horizon, model (incl. persistencia)",
       "has_raw_target_series": true,
-      "has_train_test_partitions": "no confirmado",
-      "censoring_detectable": "sí (compatible) — skill_emp(h=7)=0.444>0, sin señal de cruce a cero cerca de Hmax",
+      "has_train_test_partitions": "implícita vía origin_date ('train-only fitting at each origin' en el docstring); sin columnas train_start/test_end explícitas confirmadas",
+      "censoring_detectable": "sí (compatible) — skill_emp(h=7)=0.444>0; cota teórica extendida h=8-30 no decae (skill_ACF entre 0.52 y 0.57), sin pico semanal dominante",
       "bound_test_executable": true,
-      "evidence": "n=2350, phi=rho(1)=0.501, Hmax=7. skill_emp: h1=0.154 ... h7=0.444 (pico h5=0.461). gap vs ACF entre -0.004 y -0.052. Veredicto reportado por el usuario: 'compatible — el skill sigue la ACF, no el modelo'.",
+      "extension_beyond_hmax": "bloqueada, confirmado que requiere reentrenar (HORIZONS hardcoded); cota teórica sí extendida a h=30",
+      "evidence": "n=2350, phi=rho(1)=0.501. skill_emp h1=0.154...h7=0.444 (pico h5=0.461). Extensión teórica h8-30: skill_ACF estable 0.52-0.57, rho(7)=0.025 sin pico semanal (vecinos rho6=0.044, rho8=0.007).",
       "missing_items": [
-        "verificación directa del repo por esta sesión (bloqueo de scope)",
-        "confirmación de atribución al repo",
-        "fold_id / origin explícito",
-        "particiones train/test explícitas",
-        "confirmar si Hmax=7 es límite del pipeline original o del script de prueba ad hoc"
+        "verificación directa del repo por esta sesión de Claude Code (sigue bloqueada por scope)",
+        "confirmar copia local usada por Codex == HEAD remoto (git clone falló por proxy 403)",
+        "columnas explícitas de partición train/test (solo implícitas vía origin_date)",
+        "auditoría de merge por claves específica para Elche (solo se hizo explícitamente para Valencia Vivers)"
       ],
-      "verdict": "ÁMBAR (evidencia de segunda mano, no verificada independientemente)"
+      "verdict": "ÁMBAR confirmado (h<=7 reconstruible sin reentrenar); ROJO para extensión h>7 (requiere reentrenar, confirmado)"
     },
     {
       "domain": "pm10_valencia_vivers",
-      "repo": "fedeg-umh-es/varret-pm10-paper (atribución no confirmada — usuario indicó 'decídelo tú')",
+      "repo": "fedeg-umh-es/varret-pm10-paper (confirmado)",
       "candidate_files": [
         "data/raw/pm10_valencia_vivers.csv",
-        "outputs/metrics/predictions_valencia_vivers.csv"
+        "outputs/metrics/predictions_valencia_vivers.csv",
+        "outputs/metrics/skill_summary_valencia_vivers.csv",
+        "scripts/01_generate_e1_rr_lags_only_predictions.py"
       ],
       "hmax": 7,
-      "has_skill_fold_h": "parcial (por horizonte h; sin fold_id confirmado)",
-      "has_mse_model_persistence_fold_h": "parcial (reconstruible agrupando por columna model; sin columna baseline nativa; sin fold)",
-      "has_y_true_y_pred_fold_h": "parcial (predictions_valencia_vivers.csv por horizonte; sin fold)",
+      "hmax_source": "hardcoded en el generador canónico: HORIZONS = tuple(range(1, 8))",
+      "has_skill_fold_h": "sí, a nivel de origin_date x horizonte, para hgb_direct y ridge_direct, h=1..7",
+      "has_mse_model_persistence_fold_h": "sí, confirmado por merge correcto por origin_date+date: mse_model y mse_persistence por horizonte, conteos de filas idénticos en los 7 horizontes",
+      "has_y_true_y_pred_fold_h": "sí, mismo esquema que Elche",
       "has_raw_target_series": true,
-      "has_train_test_partitions": "no confirmado",
-      "censoring_detectable": "no aplica — skill_emp negativo en todo el rango medido (h1=-1.582 ... h7=-0.365); requiere revisión metodológica antes de interpretar H*",
+      "has_train_test_partitions": "implícita vía origin_date, sin columnas explícitas confirmadas",
+      "censoring_detectable": "sí (compatible, corregido) — skill_emp(MSE) recalculado con merge correcto: hgb_direct 0.142->0.411, ridge_direct 0.182->0.442 entre h=1 y h=7, positivo y creciente en todo el rango",
       "bound_test_executable": true,
-      "evidence": "n=2679, phi=rho(1)=0.592, Hmax=7. skill_emp negativo en todos los h, muy por debajo de skill_AR1 y skill_ACF (gap hasta -1.786 en h1). Veredicto reportado por el usuario: 'revisar — serie no AR(1) pura (estacionalidad / no estacionariedad)'.",
+      "extension_beyond_hmax": "bloqueada, requiere reentrenar; cota teórica h=8-30 generada (theoretical_valencia_vivers_h1_30.csv) pero su contenido aún no se ha revisado en este informe",
+      "evidence": "CORRECCIÓN respecto a la ronda anterior: el hallazgo previo ('skill_emp negativo, h1=-1.582...h7=-0.365') era un artefacto de una reconstrucción manual de la columna baseline que emparejaba por posición en vez de por origin_date+date. Con el pipeline canónico (merge por claves, confirmado por script real inspeccionado por línea): mse_model/mse_persistence coherentes, conteos de filas modelo=persistencia=merge=válidas en los 7 horizontes para hgb_direct y ridge_direct. skill_summary_valencia_vivers.csv (versionado en el repo, escala RMSE) también reporta positivo para ambos modelos, consistente con la corrección. Nota aparte: el modelo stl_ridge_direct sí muestra sesgo de escala fuerte (media pred ~45 vs y_true ~22), irrelevante para hgb_direct/ridge_direct.",
       "missing_items": [
-        "verificación directa del repo por esta sesión (bloqueo de scope)",
-        "confirmación de atribución al repo",
-        "diagnóstico de por qué skill_emp es tan negativo (posible problema de escala/alineación model-persistencia)",
-        "fold_id / origin explícito",
-        "particiones train/test explícitas"
+        "verificación directa del repo por esta sesión de Claude Code (sigue bloqueada por scope)",
+        "revisar contenido de theoretical_valencia_vivers_h1_30.csv (generado, no compartido aún)",
+        "confirmar copia local usada por Codex == HEAD remoto",
+        "columnas explícitas de partición train/test"
       ],
-      "verdict": "ÁMBAR con reserva metodológica fuerte (evidencia de segunda mano, no verificada)"
+      "verdict": "ÁMBAR confirmado, hallazgo previo de skill negativo RETRACTADO (era bug de la auditoría, no del pipeline)"
     },
     {
       "domain": "pm10_zarra_emep",
-      "repo": "fedeg-umh-es/varret-pm10-paper (atribución no confirmada — usuario indicó 'decídelo tú')",
+      "repo": "fedeg-umh-es/varret-pm10-paper (confirmado)",
       "candidate_files": [
         "data/raw/pm10_zarra_emep.csv",
-        "outputs/metrics/predictions_zarra_emep.csv"
+        "outputs/metrics/predictions_zarra_emep.csv",
+        "outputs/metrics/skill_summary_zarra_emep.csv",
+        "scripts/01_generate_e1_rr_lags_only_predictions.py"
       ],
       "hmax": 7,
-      "has_skill_fold_h": "parcial (por horizonte h; sin fold_id confirmado)",
-      "has_mse_model_persistence_fold_h": "parcial (reconstruible agrupando por columna model; sin columna baseline nativa; sin fold)",
-      "has_y_true_y_pred_fold_h": "parcial (predictions_zarra_emep.csv por horizonte; sin fold)",
+      "hmax_source": "hardcoded en el generador canónico: HORIZONS = tuple(range(1, 8))",
+      "has_skill_fold_h": "sí, a nivel de origin_date x horizonte, h=1..7",
+      "has_mse_model_persistence_fold_h": "sí, reconstruible via merge por origin_date+date",
+      "has_y_true_y_pred_fold_h": "sí, mismo esquema que Elche",
       "has_raw_target_series": true,
-      "has_train_test_partitions": "no confirmado",
-      "censoring_detectable": "sí (compatible, margen pequeño) — skill_emp(h=7)=0.099>0, cruza a positivo entre h3 y h4; sin intervalos de confianza reportados",
+      "has_train_test_partitions": "implícita vía origin_date, sin columnas explícitas confirmadas",
+      "censoring_detectable": "sí (compatible, margen pequeño) — skill_emp(h=7)=0.099>0, cruza a positivo entre h3 y h4; cota teórica extendida h=8-30 no decae (skill_ACF entre 0.50 y 0.55), sin pico semanal dominante (rho14=0.165 con vecino rho15=0.184 mayor, por lo que tampoco hay pico quincenal claro)",
       "bound_test_executable": true,
-      "evidence": "n=2804, phi=rho(1)=0.623, Hmax=7. skill_emp: h1=-1.091, h3=-0.315, h4=+0.015 ... h7=0.099, muy por debajo de skill_ACF (gap ~ -0.36/-0.38). Veredicto reportado por el usuario: 'revisar — serie no AR(1) pura'.",
+      "extension_beyond_hmax": "bloqueada, confirmado que requiere reentrenar; cota teórica sí extendida a h=30",
+      "evidence": "n=2804, phi=rho(1)=0.623. skill_emp h1=-1.091, h3=-0.315, h4=+0.015...h7=0.099, muy por debajo de skill_ACF (gap ~-0.36/-0.38). Extensión teórica h8-30: skill_ACF 0.50-0.55 sin tendencia a cero; sin intervalos de confianza reportados, el margen sobre cero en h4-7 sigue siendo pequeño y no se puede descartar ruido.",
       "missing_items": [
-        "verificación directa del repo por esta sesión (bloqueo de scope)",
-        "confirmación de atribución al repo",
+        "verificación directa del repo por esta sesión de Claude Code (sigue bloqueada por scope)",
         "significancia estadística del cruce a positivo cerca de h=4",
-        "fold_id / origin explícito",
-        "particiones train/test explícitas"
+        "auditoría de merge por claves específica para Zarra EMEP (solo se hizo explícitamente para Valencia Vivers)",
+        "columnas explícitas de partición train/test"
       ],
-      "verdict": "ÁMBAR (evidencia de segunda mano, no verificada; margen sobre cero pequeño)"
+      "verdict": "ÁMBAR confirmado (h<=7 reconstruible sin reentrenar, margen sobre cero pequeño); ROJO para extensión h>7"
     },
     {
       "domain": "no_determinado",
@@ -340,5 +351,6 @@
       "detail": "Bloqueo de acceso impide leer READMEs o historial de renombrado de P34_forecasting_library o hstar desde esta sesión."
     }
   },
-  "overall_verdict": "ROJO_estructural_bloqueo_acceso"
+  "overall_verdict": "ROJO_estructural_org_15_de_16_repos_bloqueados__AMBAR_confirmado_varret_pm10_paper",
+  "retraction_note": "El hallazgo de la primera ronda 'Valencia Vivers: skill negativo en todo el rango, revisar metodología' queda retractado: era un bug de la reconstrucción manual de baseline usada para la auditoría (merge por posición en vez de por origin_date+date), no un problema del pipeline ni de la estación. Corregido con evidencia de merge por claves y contraste contra skill_summary_valencia_vivers.csv versionado."
 }
