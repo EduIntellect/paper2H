@@ -1,0 +1,14 @@
+{
+  "elapsed_seconds": 2899.8533576249997,
+  "python": "3.9.6",
+  "pandas": "2.3.3",
+  "scikit_learn": "1.6.1",
+  "lightgbm": "4.6.0",
+  "domains": [
+    "pm25",
+    "load",
+    "wind",
+    "traffic"
+  ],
+  "baseline_decision": "seasonal persistence specified before result execution"
+}
