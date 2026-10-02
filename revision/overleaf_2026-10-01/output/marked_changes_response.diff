@@ -1,5 +1,5 @@
 --- "original/Response to the editor and reviewers.tex"	2026-10-01 09:52:42.000000000 +0200
-+++ "submission/Response to the editor and reviewers.tex"	2026-10-02 16:20:50.879530768 +0200
++++ "submission/Response to the editor and reviewers.tex"	2026-10-02 16:23:43.317340389 +0200
 @@ -9,8 +9,10 @@
  \usepackage{amsmath,amssymb}
  \usepackage{geometry}
@@ -104,7 +104,7 @@
  \response
  We replaced the full stop with a colon after both labels in
 -``Operational Predictability Horizon'' (Section~3.1, p.~6).
-+``Operational Predictability Horizon'' (Section~3.1).
++``Operational Predictability Horizon'' (Section~3.1; the reviewed PDF numbers the "Operational definitions" paragraph as Section~3.1.1).
  
  
  \subsection*{Comments 2--3}
