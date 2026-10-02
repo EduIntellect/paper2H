@@ -1,0 +1,47 @@
+Horizon 6: valid windows=354
+Horizon 9: valid windows=354
+Horizon 20: valid windows=353
+Horizon 25: valid windows=352
+Horizon 35: valid windows=352
+Horizon 44: valid windows=351
+Horizon 5: valid windows=354
+Horizon 15: valid windows=354
+Horizon 28: valid windows=352
+Horizon 38: valid windows=352
+Horizon 42: valid windows=351
+Horizon 3: valid windows=354
+Horizon 10: valid windows=354
+Horizon 21: valid windows=353
+Horizon 27: valid windows=352
+Horizon 30: valid windows=352
+Horizon 39: valid windows=352
+Horizon 45: valid windows=351
+Horizon 8: valid windows=354
+Horizon 19: valid windows=353
+Horizon 23: valid windows=353
+Horizon 36: valid windows=352
+Horizon 1: valid windows=354
+Horizon 14: valid windows=354
+Horizon 17: valid windows=354
+Horizon 22: valid windows=353
+Horizon 33: valid windows=352
+Horizon 41: valid windows=352
+Horizon 46: valid windows=351
+Horizon 2: valid windows=354
+Horizon 13: valid windows=354
+Horizon 18: valid windows=353
+Horizon 31: valid windows=352
+Horizon 37: valid windows=352
+Horizon 47: valid windows=351
+Horizon 7: valid windows=354
+Horizon 12: valid windows=354
+Horizon 24: valid windows=352
+Horizon 29: valid windows=352
+Horizon 34: valid windows=352
+Horizon 40: valid windows=352
+Horizon 48: valid windows=350
+wind done
+
+real	5m29,912s
+user	84m7,072s
+sys	0m37,980s

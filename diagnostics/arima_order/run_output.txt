@@ -1,0 +1,140 @@
+
+[wind] candidates=363 (first=48, last=8736), valid under A filters=354 (first=264, last=8736)
+
+==============================================================================
+WIND / first origin  (n=8760, n_origins=363, origin_idx=264, h=1)
+  train idx [48..263] -> y_train = series[49..264], len=216
+  y_train timestamps: 2019-01-03 01:00:00 .. 2019-01-12 00:00:00
+  mean=3.9951 std=3.5398 min=0.1600 max=16.8100
+  lag   ACF      PACF
+    1  +0.7744  +0.7744
+    2  +0.6162  +0.0410
+    3  +0.5166  +0.0682
+    4  +0.4184  -0.0270
+    5  +0.3128  -0.0649
+    6  +0.3159  +0.1976
+    7  +0.2883  -0.0278
+    8  +0.2843  +0.0898
+    9  +0.3428  +0.1807
+   10  +0.3552  -0.0249
+  (95% band ±0.1334); lag24 ACF=+0.0656 PACF=-0.2009; lag48 ACF=-0.1799 PACF=-0.0495
+  ADF: stat=-1.8705 p=0.3461 usedlag=12 nobs=203 crit={'1%': np.float64(-3.463), '5%': np.float64(-2.876), '10%': np.float64(-2.574)}
+  -- auto_arima AIC, d free (KPSS-chosen), p,q<=5, d<=2
+  [d free] models fitted: 21
+    BEST  order=(1, 0, 0)  AIC=966.321
+    #2    order=(2, 0, 1)  AIC=967.008
+    #3    order=(3, 0, 2)  AIC=967.338
+    #4    order=(1, 0, 1)  AIC=967.905
+    (2,0,0) with const (same engine): AIC=967.974  rank_in_list=5
+  -- auto_arima AIC, d=0 fixed, p,q<=5
+  [d=0] models fitted: 21
+    BEST  order=(1, 0, 0)  AIC=966.321
+    #2    order=(2, 0, 1)  AIC=967.008
+    #3    order=(3, 0, 2)  AIC=967.338
+    #4    order=(1, 0, 1)  AIC=967.905
+    (2,0,0) with const (same engine): AIC=967.974  rank_in_list=5
+
+[wind] candidates=363 (first=48, last=8736), valid under A filters=354 (first=264, last=8736)
+
+==============================================================================
+WIND / last origin  (n=8760, n_origins=363, origin_idx=8736, h=1)
+  train idx [8016..8735] -> y_train = series[8017..8736], len=720
+  y_train timestamps: 2019-12-01 01:00:00 .. 2019-12-31 00:00:00
+  mean=4.0399 std=3.3097 min=0.1300 max=17.7100
+  lag   ACF      PACF
+    1  +0.8019  +0.8019
+    2  +0.6152  -0.0779
+    3  +0.4975  +0.0794
+    4  +0.4773  +0.2004
+    5  +0.4471  -0.0140
+    6  +0.3888  -0.0276
+    7  +0.3124  -0.0323
+    8  +0.2541  -0.0109
+    9  +0.2295  +0.0329
+   10  +0.2246  +0.0346
+  (95% band ±0.0730); lag24 ACF=+0.0608 PACF=-0.0443; lag48 ACF=+0.1142 PACF=+0.0763
+  ADF: stat=-6.1620 p=7.137e-08 usedlag=3 nobs=716 crit={'1%': np.float64(-3.44), '5%': np.float64(-2.866), '10%': np.float64(-2.569)}
+  -- auto_arima AIC, d free (KPSS-chosen), p,q<=5, d<=2
+  [d free] models fitted: 21
+    BEST  order=(4, 0, 0)  AIC=2979.549
+    #2    order=(5, 0, 0)  AIC=2981.278
+    #3    order=(4, 0, 1)  AIC=2981.324
+    #4    order=(3, 0, 2)  AIC=2982.161
+    (2,0,0) with const (same engine): AIC=3008.709  rank_in_list=13
+  -- auto_arima AIC, d=0 fixed, p,q<=5
+  [d=0] models fitted: 21
+    BEST  order=(4, 0, 0)  AIC=2979.549
+    #2    order=(5, 0, 0)  AIC=2981.278
+    #3    order=(4, 0, 1)  AIC=2981.324
+    #4    order=(3, 0, 2)  AIC=2982.161
+    (2,0,0) with const (same engine): AIC=3008.709  rank_in_list=13
+
+[traffic] candidates=117 (first=48, last=2832), valid under A filters=108 (first=264, last=2832)
+
+==============================================================================
+TRAFFIC / first origin  (n=2856, n_origins=117, origin_idx=264, h=1)
+  train idx [48..263] -> y_train = series[49..264], len=216
+  y_train timestamps: 2012-03-03 01:00:00 .. 2012-03-12 00:00:00
+  mean=58.2450 std=17.5189 min=0.0000 max=68.9340
+  lag   ACF      PACF
+    1  +0.7297  +0.7297
+    2  +0.5789  +0.0995
+    3  +0.4585  +0.0119
+    4  +0.3537  -0.0190
+    5  +0.3101  +0.0755
+    6  +0.2363  -0.0509
+    7  +0.1775  -0.0201
+    8  +0.1430  +0.0158
+    9  +0.0565  -0.1164
+   10  -0.0031  -0.0478
+  (95% band ±0.1334); lag24 ACF=+0.1671 PACF=+0.0174; lag48 ACF=+0.0341 PACF=-0.0739
+  ADF: stat=-4.8187 p=5.008e-05 usedlag=1 nobs=214 crit={'1%': np.float64(-3.461), '5%': np.float64(-2.875), '10%': np.float64(-2.574)}
+  -- auto_arima AIC, d free (KPSS-chosen), p,q<=5, d<=2
+  [d free] models fitted: 21
+    BEST  order=(1, 0, 1)  AIC=1690.820
+    #2    order=(2, 0, 0)  AIC=1690.846
+    #3    order=(1, 0, 0)  AIC=1691.028
+    #4    order=(3, 0, 0)  AIC=1692.812
+    (2,0,0) with const (same engine): AIC=1690.846  rank_in_list=2
+  -- auto_arima AIC, d=0 fixed, p,q<=5
+  [d=0] models fitted: 21
+    BEST  order=(1, 0, 1)  AIC=1690.820
+    #2    order=(2, 0, 0)  AIC=1690.846
+    #3    order=(1, 0, 0)  AIC=1691.028
+    #4    order=(3, 0, 0)  AIC=1692.812
+    (2,0,0) with const (same engine): AIC=1690.846  rank_in_list=2
+
+[traffic] candidates=117 (first=48, last=2832), valid under A filters=108 (first=264, last=2832)
+
+==============================================================================
+TRAFFIC / last origin  (n=2856, n_origins=117, origin_idx=2832, h=1)
+  train idx [2112..2831] -> y_train = series[2113..2832], len=720
+  y_train timestamps: 2012-05-28 01:00:00 .. 2012-06-27 00:00:00
+  mean=50.1025 std=25.1489 min=0.0000 max=68.7407
+  lag   ACF      PACF
+    1  +0.8461  +0.8461
+    2  +0.6765  -0.1385
+    3  +0.5746  +0.1439
+    4  +0.5190  +0.0722
+    5  +0.4817  +0.0521
+    6  +0.4546  +0.0553
+    7  +0.4341  +0.0459
+    8  +0.4155  +0.0327
+    9  +0.3918  +0.0075
+   10  +0.3611  -0.0069
+  (95% band ±0.0730); lag24 ACF=+0.3574 PACF=-0.0300; lag48 ACF=+0.1167 PACF=-0.0224
+  ADF: stat=-6.4296 p=1.711e-08 usedlag=3 nobs=716 crit={'1%': np.float64(-3.44), '5%': np.float64(-2.866), '10%': np.float64(-2.569)}
+  -- auto_arima AIC, d free (KPSS-chosen), p,q<=5, d<=2
+  [d free] models fitted: 21
+    BEST  order=(1, 1, 2)  AIC=5728.730
+    #2    order=(3, 1, 1)  AIC=5729.669
+    #3    order=(1, 1, 3)  AIC=5730.717
+    #4    order=(2, 1, 2)  AIC=5730.722
+    (2,0,0) with const (same engine): AIC=5764.578  rank_in_list=None
+  -- auto_arima AIC, d=0 fixed, p,q<=5
+  [d=0] models fitted: 21
+    BEST  order=(2, 0, 2)  AIC=5737.096
+    #2    order=(4, 0, 1)  AIC=5738.444
+    #3    order=(2, 0, 3)  AIC=5738.777
+    #4    order=(3, 0, 1)  AIC=5738.861
+    (2,0,0) with const (same engine): AIC=5764.578  rank_in_list=14

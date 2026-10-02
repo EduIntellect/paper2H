@@ -1,0 +1,97 @@
+Horizon 6: valid windows=354
+Horizon 18: valid windows=353
+Horizon 29: valid windows=352
+Horizon 37: valid windows=352
+Horizon 1: valid windows=354
+Horizon 17: valid windows=354
+Horizon 25: valid windows=352
+Horizon 38: valid windows=352
+Horizon 4: valid windows=354
+Horizon 16: valid windows=354
+Horizon 26: valid windows=352
+Horizon 42: valid windows=351
+Horizon 12: valid windows=354
+Horizon 20: valid windows=353
+Horizon 27: valid windows=352
+Horizon 40: valid windows=352
+Horizon 7: valid windows=354
+Horizon 21: valid windows=353
+Horizon 32: valid windows=352
+Horizon 41: valid windows=352
+Horizon 10: valid windows=354
+Horizon 22: valid windows=353
+Horizon 33: valid windows=352
+Horizon 39: valid windows=352
+Horizon 11: valid windows=354
+Horizon 15: valid windows=354
+Horizon 30: valid windows=352
+Horizon 43: valid windows=351
+Horizon 3: valid windows=354
+Horizon 13: valid windows=354
+Horizon 28: valid windows=352
+Horizon 44: valid windows=351
+Horizon 8: valid windows=354
+Horizon 23: valid windows=353
+Horizon 35: valid windows=352
+Horizon 46: valid windows=351
+Horizon 5: valid windows=354
+Horizon 19: valid windows=353
+Horizon 34: valid windows=352
+Horizon 45: valid windows=351
+Horizon 9: valid windows=354
+Horizon 24: valid windows=352
+Horizon 36: valid windows=352
+Horizon 47: valid windows=351
+Horizon 2: valid windows=354
+Horizon 14: valid windows=354
+Horizon 31: valid windows=352
+Horizon 48: valid windows=350
+ horizon  baseline_mae  model_mae    skill
+       1      2.288729   2.133467 0.067838
+       2      2.857599   2.412039 0.155921
+       3      2.968051   2.445093 0.176196
+       4      3.121525   2.563872 0.178648
+       5      3.052345   2.557076 0.162258
+       6      3.252175   2.670030 0.179002
+       7      3.226638   2.558010 0.207221
+       8      3.417712   2.639137 0.227806
+       9      3.432288   2.658792 0.225359
+      10      3.305537   2.580076 0.219469
+      11      3.394096   2.590577 0.236740
+      12      3.530085   2.690676 0.237787
+      13      3.689407   2.844757 0.228939
+      14      3.695254   2.993166 0.189997
+      15      3.745028   3.023205 0.192742
+      16      3.753729   3.087783 0.177409
+      17      3.638757   2.994992 0.176919
+      18      3.506884   2.844661 0.188835
+      19      3.511076   2.805040 0.201088
+      20      3.436091   2.849281 0.170778
+      21      3.563286   2.988932 0.161187
+      22      3.523059   3.082746 0.124981
+      23      3.388159   2.895519 0.145400
+      24      3.478153   2.760604 0.206302
+      25      3.699403   2.888212 0.219276
+      26      3.724261   2.750757 0.261395
+      27      3.719063   2.721473 0.268237
+      28      3.742386   2.708318 0.276313
+      29      3.658835   2.814929 0.230649
+      30      3.729432   2.828981 0.241444
+      31      3.803153   2.702129 0.289503
+      32      3.855256   2.761380 0.283736
+      33      3.796989   2.765262 0.271722
+      34      3.626818   2.696088 0.256624
+      35      3.633835   2.685210 0.261054
+      36      3.838097   2.758787 0.281210
+      37      4.030710   2.925970 0.274081
+      38      4.265028   3.067250 0.280837
+      39      4.271761   3.098525 0.274649
+      40      4.226222   3.150002 0.254653
+      41      4.003352   3.032326 0.242553
+      42      3.852194   2.871499 0.254581
+      43      3.879829   2.836133 0.269006
+      44      3.839145   2.868236 0.252897
+      45      3.866239   3.008061 0.221967
+      46      4.026439   3.100191 0.230041
+      47      3.876382   2.910250 0.249235
+      48      3.904743   2.768584 0.290969

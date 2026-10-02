@@ -1,0 +1,5 @@
+load done
+
+real	0m8,670s
+user	0m52,014s
+sys	0m3,274s

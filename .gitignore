@@ -23,3 +23,6 @@ paper/*.synctex.gz
 paper/*.bbl
 paper/*.blg
 
+
+# Local diagnostic virtualenv
+diagnostics/**/.venv/
