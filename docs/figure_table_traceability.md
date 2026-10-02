@@ -2,6 +2,27 @@
 
 This document establishes the audit trail mapping each figure and table in the final manuscript (`paper/paper2_submission.tex`) to its data source, generation script, and output location.
 
+## Working-revision override — 30 September 2026
+
+The manuscript is currently a **working revision, not a final submission**.
+The historical generation map below is retained for provenance, not as
+permission to run producers. The numerical freeze must remain unchanged.
+
+The isolated local package in `revision/dmkd_2026-09-30/sources/figures/`
+uses root `figures/*.pdf` for empirical figures (frozen byte-for-byte) and the
+September recovered four-domain package's conceptual/protocol PDFs for
+Figures 1 and 2. Do not confuse these sources with older `overleaf_export`
+copies. The heatmap remains a historical frozen artifact containing ARIMA;
+its caption explicitly states its exclusion from revised comparisons.
+
+The revised main results table displays 30 tabular combinations, excluding
+the two historical ARIMA rows. Table 4 (`tab:revision-baseline`) and the
+appendix table (`tab:revision-rmse`) are sourced from
+`results/dmkd_revision_audit_2026-09-30/hstar_sensitivity.csv`.
+PM2.5 and Barcelona figure axes are observation indices, not certified
+calendar intervals; their captions state this limitation. Check the
+acceptance report before using any figure as scientific submission evidence.
+
 ---
 
 ## 1. Figures
@@ -35,7 +56,10 @@ This document establishes the audit trail mapping each figure and table in the f
 ---
 
 ## 3. Data Integrity & Verification
-To ensure all figures and tables stay aligned with the committed data, run the reconstruction pipeline:
+Historical reconstruction commands below are **NOT authorised during the
+current editorial revision**: they overwrite frozen descendants and figures.
+Use `src/verify_dmkd_freeze.py` and `src/audit_dmkd_revision.py` for the current
+non-fitting verification. The earlier general reconstruction workflow was:
 ```bash
 # 1. Runs the post-processing script to rebuild the summary tables and figures
 python3 src/rebuild_all_results.py

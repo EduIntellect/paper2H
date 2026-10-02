@@ -1,0 +1,12 @@
+{
+  "status": "PASS_EDITORIAL_LINKAGE_ONLY",
+  "checked_on": "2026-10-01",
+  "main_table_rows_verified": 30,
+  "baseline_table_rows_verified": 6,
+  "loss_table_rows_verified": 12,
+  "reviewer_editor_requests_accounted_for": 19,
+  "all_primary_mae_reaggregations_match": true,
+  "model_fits": 0,
+  "submission_clearance": false,
+  "warning": "Four/six-domain identity and scientific acceptance gates remain open"
+}

@@ -1,0 +1,7 @@
+domain,input_rows,regular_calendar_grid,calendar_gap_count,prediction_rows,mismatched_elapsed_rows,mismatched_unique_keys,max_elapsed_steps,seasonal_sensitivity_status
+pm25,41757,False,213,87600,5755,1151,284.0,BLOCKED_CALENDAR_GRID
+load,667,True,0,9730,0,0,7.0,COMPUTED
+wind,8760,True,0,84290,0,0,48.0,COMPUTED
+traffic,2856,True,0,37335,0,0,72.0,COMPUTED
+pm10,2922,True,0,88655,0,0,7.0,COMPUTED
+pm10_bcn,2827,False,11,85330,1400,280,75.0,BLOCKED_CALENDAR_GRID

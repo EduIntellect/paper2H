@@ -1,0 +1,90 @@
+{
+  "status": "PASS_SENSITIVITY_ARTIFACTS_ONLY",
+  "model_fits": 0,
+  "commit": "bb9c375ead2fe1f313127b77849296a144270f68",
+  "pdf_sha256": "bca5fe7cf846be29745f66a16913246e8dce7b98710cf206dd4176d8c7b2bb20",
+  "matches_forensic_pdf": true,
+  "manifest_files_verified": 12,
+  "checks": [
+    {
+      "domain": "pm25",
+      "baseline": "persistence",
+      "rows": 16388,
+      "exact_common_support": true,
+      "calendar_horizons_verified": true,
+      "metrics_verified": true,
+      "hstar_verified": true
+    },
+    {
+      "domain": "pm25",
+      "baseline": "seasonal_persistence",
+      "rows": 16388,
+      "exact_common_support": true,
+      "calendar_horizons_verified": true,
+      "metrics_verified": true,
+      "hstar_verified": true
+    },
+    {
+      "domain": "load",
+      "baseline": "persistence",
+      "rows": 301,
+      "exact_common_support": true,
+      "calendar_horizons_verified": true,
+      "metrics_verified": true,
+      "hstar_verified": true
+    },
+    {
+      "domain": "load",
+      "baseline": "seasonal_persistence",
+      "rows": 301,
+      "exact_common_support": true,
+      "calendar_horizons_verified": true,
+      "metrics_verified": true,
+      "hstar_verified": true
+    },
+    {
+      "domain": "wind",
+      "baseline": "persistence",
+      "rows": 16928,
+      "exact_common_support": true,
+      "calendar_horizons_verified": true,
+      "metrics_verified": true,
+      "hstar_verified": true
+    },
+    {
+      "domain": "wind",
+      "baseline": "seasonal_persistence",
+      "rows": 16928,
+      "exact_common_support": true,
+      "calendar_horizons_verified": true,
+      "metrics_verified": true,
+      "hstar_verified": true
+    },
+    {
+      "domain": "traffic",
+      "baseline": "persistence",
+      "rows": 7608,
+      "exact_common_support": true,
+      "calendar_horizons_verified": true,
+      "metrics_verified": true,
+      "hstar_verified": true
+    },
+    {
+      "domain": "traffic",
+      "baseline": "seasonal_persistence",
+      "rows": 7608,
+      "exact_common_support": true,
+      "calendar_horizons_verified": true,
+      "metrics_verified": true,
+      "hstar_verified": true
+    }
+  ],
+  "not_verified": [
+    "identity against Editorial Manager",
+    "current Overleaf state",
+    "primary historical preprocessing",
+    "primary RMSE appendix provenance",
+    "author-list change",
+    "public cache completeness"
+  ]
+}
