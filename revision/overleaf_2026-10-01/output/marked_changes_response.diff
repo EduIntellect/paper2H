@@ -1,5 +1,5 @@
 --- "original/Response to the editor and reviewers.tex"	2026-10-01 09:52:42.000000000 +0200
-+++ "submission/Response to the editor and reviewers.tex"	2026-10-02 16:23:43.317340389 +0200
++++ "submission/Response to the editor and reviewers.tex"	2026-10-02 16:44:43.979599593 +0200
 @@ -9,8 +9,10 @@
  \usepackage{amsmath,amssymb}
  \usepackage{geometry}
@@ -99,7 +99,14 @@
  
  
  % ============================================================
-@@ -82,7 +129,7 @@
+@@ -76,20 +123,18 @@
+ \subsection*{Comment 1}
+ 
+ \begin{reviewcomment}
+-In the operational definitions, use a colon before the explanations of the
+-relaxed and strict horizons.
++In section 3.3.1. Change ``. '' to ``:'' before the explanation and mathematical description of the relaxed and strict horizons.
+ \end{reviewcomment}
  
  \response
  We replaced the full stop with a colon after both labels in
@@ -108,7 +115,15 @@
  
  
  \subsection*{Comments 2--3}
-@@ -105,7 +152,9 @@
+ 
+ \begin{reviewcomment}
+-Equation (5) and the surrounding text should explicitly state that the relaxed
+-horizon permits non-positive skill at intermediate steps.
++In section 3.3.1 in equation (5) include the condition of including the non-positive intermediate skills within the horizon as the definition using equation (5) does not represent what $H^*$(relax) is extracting from the curve. In this definition of relax $H^*$ reiterate for clarity purposes here that it considers all the time steps before as it skill score once the upper bound of the interval is positive as seen in the PM2.5 and the traffic domain results.
+ \end{reviewcomment}
+ 
+ \response
+@@ -105,22 +150,26 @@
  =
  \max\left(\mathcal{H}^{+}\cup\{0\}\right)
  \]
@@ -119,7 +134,18 @@
  
  The text explicitly notes that intermediate horizons with non-positive skill
  may fall within the relaxed reach, but are not themselves interpreted as
-@@ -120,7 +169,7 @@
+-skilful. We verified this behaviour using executable unit tests covering
++skilful. In the PM$_{2.5}$ and traffic results we now also state how much of the relaxed
++span has non-positive skill: 19 of the 48 PM$_{2.5}$ horizons and 36 of the 72 traffic horizons.
++We verified this behaviour using executable unit tests covering
+ intermediate skill deficits and delayed onset.
+ 
+ 
+ \subsection*{Comment 4}
+ 
+ \begin{reviewcomment}
+-Maintain units throughout Table 2.
++Keep units throughout in Table 2.
  \end{reviewcomment}
  
  \response
@@ -128,7 +154,13 @@
  $\mathrm{m\,s^{-1}}$, and traffic speed in mph. For electric load, we clarify that the
  stored experimental target is the sum of 15-minute kW readings and that
  division by four expresses the aggregate daily demand in kWh, following the source
-@@ -135,8 +184,8 @@
+@@ -130,41 +179,39 @@
+ \subsection*{Comment 5}
+ 
+ \begin{reviewcomment}
+-Figures 1--3 are not correctly referenced in the text.
++Figures 1-3 are not referenced in text.
+ \end{reviewcomment}
  
  \response
  We have added explicit textual references to the conceptual $H^*$ schematic
@@ -139,7 +171,10 @@
  
  
  \subsection*{Comment 6}
-@@ -146,25 +195,23 @@
+ 
+ \begin{reviewcomment}
+-Evaluate baseline choices beyond persistence.
++An evaluation of other baseline choices is warranted, other than persistence.
  \end{reviewcomment}
  
  \response
@@ -177,7 +212,12 @@
  
  Under the same matched-support analysis, load remains at
  $H^*(\mathrm{strict})=1$, wind changes from 48 to 30, and traffic changes from
-@@ -182,20 +229,33 @@
+@@ -178,52 +225,66 @@
+ \subsection*{Comment 7}
+ 
+ \begin{reviewcomment}
+-Explain why ARIMA(2,0,0) was selected and whether ACF was examined.
++For some datasets you used ARIMA(2,0,0) which is essentially an AR(2) model why did you choose this parameter? Did you do an ACF plot for this data?
  \end{reviewcomment}
  
  \response
@@ -225,7 +265,12 @@
  
  
  \subsection*{Comments 8--9}
-@@ -207,12 +267,15 @@
+ 
+ \begin{reviewcomment}
+-Explain the practical utility of relaxed and strict $H^*$ and what they add
+-beyond fixed-horizon summaries.
++State or reiterate the practical usefulness and use cases of each skill- relaxed and strict. Also, examine what can be done with these patterns that regular fixed horizon accuracy summaries cannot do.
+ \end{reviewcomment}
  
  \response
  A new ``Operational interpretation and actionability'' subsection
@@ -244,7 +289,11 @@
  
  
  \subsection*{Comment 10}
-@@ -223,7 +286,7 @@
+ 
+ \begin{reviewcomment}
+-Could $H^*$ dynamically decide which horizons to forecast, and could this
+-create feedback or overfitting?
++For example, can you have the persistence baseline and skill score -- relaxes and strict-- be used to determine the various h steps to predict in a rolling window approach for a dynamical forecast of the time series? Or would this create a feedback loop and cause overfitting. Explore and if feasible add to the paper to make it more substantial and unique.
  \end{reviewcomment}
  
  \response
@@ -253,7 +302,13 @@
  operational setting, $H^*$ could inform a decision policy estimated on
  historical validation data, frozen for prospective deployment, and subsequently
  updated using only realised historical errors.
-@@ -246,7 +309,7 @@
+@@ -241,12 +302,12 @@
+ \subsection*{Comment 1}
+ 
+ \begin{reviewcomment}
+-Explain the actionability of the findings more explicitly.
++The paper needs a more explicit explanation of the actionability of its findings.
+ \end{reviewcomment}
  
  \response
  We added the dedicated operational interpretation subsection noted above
@@ -262,7 +317,13 @@
  contiguous positive interval and restricting dynamic deployment claims to
  future, separately validated policies.
  
-@@ -259,7 +322,7 @@
+@@ -254,45 +315,44 @@
+ \subsection*{Comment 2}
+ 
+ \begin{reviewcomment}
+-Figures 1 and 2 are not referenced correctly.
++Figures 1 and 2 are not referenced in the text.
+ \end{reviewcomment}
  
  \response
  Both figures are now explicitly introduced and discussed in the main text
@@ -271,7 +332,10 @@
  
  
  \subsection*{Comment 3}
-@@ -269,9 +332,9 @@
+ 
+ \begin{reviewcomment}
+-In Figure 1, the curve overlaps text or annotations.
++In fig 1, parts of the line obscure some of the text.
  \end{reviewcomment}
  
  \response
@@ -284,7 +348,10 @@
  
  
  \subsection*{Comment 4}
-@@ -281,8 +344,7 @@
+ 
+ \begin{reviewcomment}
+-In Figure 2, text does not fit inside the boxes.
++In fig 2, the text does not fit inside the boxes.
  \end{reviewcomment}
  
  \response
@@ -294,7 +361,10 @@
  
  
  \subsection*{Comment 5}
-@@ -292,7 +354,7 @@
+ 
+ \begin{reviewcomment}
+-If possible, evaluate alternative baselines beyond persistence.
++If possible please evaluate alternative baseline options beyond persistence.
  \end{reviewcomment}
  
  \response
@@ -303,15 +373,14 @@
  detailed in our response to Reviewer~1 (Comment~6), enforcing exact common
  support and reporting all outcomes regardless of direction. Table~4 reports
  all four domains across both baselines, documenting common-origin sample
-@@ -302,22 +364,20 @@
+@@ -302,36 +362,36 @@
  \subsection*{Comment 6}
  
  \begin{reviewcomment}
 -Data Availability should reduce the need to visit four or five separate
 -sources and should clearly state whether files are cached in the code
 -repository.
-+Please cache all the data in a site you control and make the central
-+data location clear in the paper.
++``Data Availability'' It is too much of a burden to have to go to 4 or 5 sources. Please cache all the data in a site you control and point to it (stop press, it seems you do that on the code page. Just make this clear in your paper).
  \end{reviewcomment}
  
  \response
@@ -337,7 +406,10 @@
  
  
  \subsection*{Comment 7}
-@@ -327,11 +387,14 @@
+ 
+ \begin{reviewcomment}
+-Explain the reason for ARIMA(2,0,0).
++For certain datasets, ARIMA(2,0,0)---effectively an AR(2) model---was applied. Could you explain the rationale for selecting these parameters?
  \end{reviewcomment}
  
  \response

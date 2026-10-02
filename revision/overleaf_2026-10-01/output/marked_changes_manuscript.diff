@@ -1,5 +1,5 @@
 --- original/main.tex	2026-10-01 09:52:42.000000000 +0200
-+++ submission/main.tex	2026-10-02 16:20:42.292534054 +0200
++++ submission/main.tex	2026-10-02 16:44:23.251326178 +0200
 @@ -56,14 +56,14 @@
  non-positive gaps), and $H^*(\mathrm{strict})$, the length of the longest
  contiguous interval of positive skill. When needed (especially for
@@ -144,7 +144,7 @@
  
  \subsection{Interpretation}
 -The relaxed descriptor reaches the maximum evaluated horizon because positive skill is observed at $h=48$, even though the early region is negative. The strict descriptor is shorter because it measures sustained usefulness and is determined by the longest contiguous positive-skill interval, here $[36,48]$ with a length of 13. Operationally, PM$_{2.5}$ represents delayed contiguous emergence: baseline-relative usefulness appears late and persists continuously once it appears.
-+Positive skill at $h=48$ sets the relaxed endpoint. The strict descriptor
++Positive skill at $h=48$ sets the relaxed endpoint. The relaxed span therefore covers all 48 horizons, including the 19 with non-positive skill between and before the positive intervals; only 29 horizons have positive skill. The strict descriptor
 +instead selects the 22-hour interval $[27,48]$, not either of the shorter
 +early intervals. PM$_{2.5}$ thus combines fragmentation with a longer
 +late positive interval; it does not show positive skill only at long leads.
@@ -195,7 +195,7 @@
  \subsection{Interpretation}
  Because the skill curve remains positive throughout the evaluated range, $H^*(\mathrm{relax})$ and $H^*(\mathrm{strict})$ coincide and equal $H_{\max}$, and the maximizing interval is $[1,48]$. Operationally, wind represents sustained positive skill: the model retains baseline-relative usefulness continuously across the entire evaluated horizon range.
  
-@@ -604,6 +651,14 @@
+@@ -604,10 +651,18 @@
  \end{equation}
  The first positive interval occurs at $[17,18]$, and the sign of $\mathrm{Skill}(h)$ changes 19 times across $h\in\{1,\dots,72\}$.
  
@@ -209,7 +209,13 @@
 +
  \subsection{Interpretation}
  These results illustrate why multiple descriptors are needed in fragmented
- settings. The relaxed descriptor records the last positive-skill horizon,
+-settings. The relaxed descriptor records the last positive-skill horizon,
+-whereas the strict descriptor and its location reveal that the longest
++settings. The relaxed descriptor records the last positive-skill horizon,; its span covers all 72 horizons, of which 36 have non-positive skill.
++The strict descriptor and its location reveal that the longest
+ continuous useful window is only seven hours and occurs at $[46,52]$.
+ 
+ \begin{figure}[t]
 @@ -620,14 +675,13 @@
  Table~\ref{tab:results} presents the operational horizon descriptors
  derived for the four study domains under a common evaluation framework.
