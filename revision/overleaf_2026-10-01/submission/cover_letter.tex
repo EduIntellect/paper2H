@@ -1,0 +1,56 @@
+\documentclass[10pt,a4paper]{letter}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[top=2cm,bottom=2cm,left=2.3cm,right=2.3cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\usepackage{microtype}
+\usepackage{enumitem}
+\setlength{\emergencystretch}{3em}
+\signature{Federico Garcia Crespi\\Corresponding author, on behalf of the authors}
+\date{2 October 2026}
+\address{Departamento de Ingenier\'ia de Computadores\\Universidad Miguel Hern\'andez, Elche, Spain\\\href{mailto:fedeg@umh.es}{fedeg@umh.es}}
+\begin{document}
+\begin{letter}{Professor Eyke H\"ullermeier\\Data Mining and Knowledge Discovery}
+\opening{Dear Professor H\"ullermeier,}
+
+Re: revision of manuscript \nolinkurl{1e58c388-d7ec-4084-b792-df20a48e3e75},
+``Baseline-Relative Predictability Horizons for Cross-Domain Forecast Evaluation.''
+
+We thank you and the Reviewers for a careful and constructive assessment. We enclose the clean
+revised manuscript and a point-by-point response. The main changes are:
+
+\begin{itemize}[leftmargin=*,itemsep=0pt]
+\item \textbf{Definitions and use.} The relaxed horizon now states explicitly that non-positive
+steps can lie inside its span, and a new subsection explains what the relaxed and strict horizons add to
+fixed-horizon summaries, and what they do not establish. We discuss why using the descriptors to choose horizons
+dynamically would require a prospective or nested evaluation, since otherwise it risks adaptive selection bias.
+\item \textbf{Presentation.} Figures~1 and~2 were redrawn, all figures are cited, and units are stated.
+\item \textbf{Alternative baseline.} We added a seasonal-persistence sensitivity on exactly matched
+support for all four domains.
+\item \textbf{ARIMA.} The order $(2,0,0)$ was fixed a priori and not selected with ACF or information
+criteria. We say so, report an AIC-based order diagnostic and the ACF/PACF in a new appendix, and present the
+check as an illustration of model-class sensitivity.
+\end{itemize}
+
+\textbf{Corrections to previously reported results.} In preparing the revision we found and corrected three
+reporting issues, all described in the response letter. (i)~The PM$_{2.5}$ text reported
+$H^*(\mathrm{strict})=13$, which came from a moving-average experiment; the plotted LightGBM curve gives $22$, and the
+text and Table~3 now follow the curve. (ii)~The wind ARIMA check had requested a one-step forecast at every horizon; the
+$h$-step rerun leaves the wind descriptors unchanged. (iii)~The PM$_{2.5}$ row of the RMSE appendix was inherited
+from the same moving-average experiment and was recomputed ($H^*(\mathrm{strict})=23$).
+
+\textbf{Additional experiments.} The wind ARIMA rerun, the ARIMA order diagnostic, the RMSE recomputation (which reproduces the
+reported MAE exactly) and the seasonal-persistence sensitivity used the same data and protocol as the paper; no new model
+class, hyperparameter or split was introduced.
+
+\textbf{Data.} The exact inputs of all four experiments, with SHA-256 checksums, are deposited at
+\url{https://github.com/EduIntellect/paper2H/tree/data-cache-v1/release/data_cache_four_domain}. For the traffic series, whose underlying
+measurements come from Caltrans PeMS, we state that we have not obtained separate confirmation of
+redistribution terms and will remove the file on request.
+
+Thank you for the opportunity to revise our work.
+\closing{Sincerely,}
+\end{letter}
+\end{document}
