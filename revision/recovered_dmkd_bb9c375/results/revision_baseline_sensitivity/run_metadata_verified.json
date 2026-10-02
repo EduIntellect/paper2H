@@ -1,0 +1,22 @@
+{
+  "git_branch": "revision/dmkd-r1-r2-2026-08-31",
+  "git_base_head": "047516bd8584cfcf840bd8a9bd59672249a79363",
+  "python": "3.9.6",
+  "pandas": "2.3.3",
+  "scikit_learn": "1.6.1",
+  "lightgbm": "4.6.0",
+  "primary_metric": "MAE",
+  "baselines": {
+    "persistence": "y_t",
+    "seasonal_persistence": "y_(t+h-ceil(h/s)*s)",
+    "season_hourly": 24,
+    "season_daily_load": 7
+  },
+  "common_support_keys": [
+    "origin",
+    "target_timestamp",
+    "horizon"
+  ],
+  "target_equality_required": true,
+  "selection_note": "seasonal persistence was specified before comparative results were inspected"
+}

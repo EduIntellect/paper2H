@@ -1,0 +1,694 @@
+--- six_domain_draft_before.tex
++++ six_domain_working_revision.tex
+@@ -1,3 +1,6 @@
++% Working revision, 2026-09-30. NOT CLEARED FOR SUBMISSION.
++% See docs/dmkd_revision_status_2026-09-30.md for version and calendar gates.
++% Frozen forecasts are retained; no model was refitted for this revision.
+ % hyperref is loaded by the sn-jnl class; pass options before \documentclass to avoid option clashes
+ \PassOptionsToPackage{bookmarksdepth=4}{hyperref}
+ % The sn-jnl class expects the engine option to correctly configure URL breaking.
+@@ -47,7 +50,7 @@
+ only sporadic across the forecast horizon. We recast predictability-horizon
+ estimation as an evaluation task and measure baseline-relative
+ performance through the forecast skill curve $\mathrm{Skill}(h)$, obtained
+-using a leakage-free rolling-origin procedure with persistence as the
++using rolling-origin model fitting with persistence as the
+ reference. To distinguish total positive reach from sustained contiguous
+ usefulness, we report two complementary horizon descriptors:
+ $H^*(\mathrm{relax})$, the last horizon at which $\mathrm{Skill}(h)>0$
+@@ -56,29 +59,33 @@
+ interval locations when profiles are delayed or fragmented. Empirically,
+ we apply the shared protocol across heterogeneous domains (air quality,
+ energy, wind, and traffic), and two independent PM$_{10}$ stations (Madrid
+-and Barcelona, daily, 2017--2024) confirm the method's generality, with
++and Barcelona, 2017--2024) provide additional descriptive examples, with
+ Ridge achieving $\text{H}^*_{\text{strict}}=7$ and 85--100\% DM-significant
+-improvement over persistence at both sites. These results suggest that evaluation protocols for ML-based time series prediction should report not only aggregate accuracy but also the structure of baseline-relative usefulness across horizons.}
++differences relative to persistence at both sites. These additional results
++require qualification of preprocessing and calendar support and do not establish
++validated alerting policies. These results suggest that evaluation protocols for ML-based time series prediction should report not only aggregate accuracy but also the structure of baseline-relative usefulness across horizons.}
+ \keywords{time series evaluation; predictive reach; baseline-relative skill; rolling-origin validation; machine learning benchmarking; multi-step prediction}
+ \begin{document}
+ \maketitle
++\noindent\textbf{Working revision --- not cleared for submission.}
++Manuscript identity and input-validity checks remain open.
+ 
+ %% ========================================================================
+ %% §1 INTRODUCTION
+ %% ========================================================================
+ \section{Introduction}
+ In machine learning for time series prediction, model performance is conventionally reported at a small number of fixed lead times. This approach can make it unclear when (and for how long) a trained model is practically advantageous compared to a strong baseline, particularly when multi-step performance varies non-monotonically or is unevenly distributed over the horizon. Methodological audits also document recurrent evaluation failures—including temporally invalid partitioning, leakage-prone preprocessing, omitted parsimonious baselines, and uncritical metric selection—that can materially distort conclusions about practical forecasting value \citep{hewamalage2023dmkd}. Even when leakage is controlled, conventional fixed-horizon summaries and single summary descriptors are not designed to characterise fragmented positive-skill intervals, the delayed emergence of usefulness, or the distinction between total positive reach and sustained contiguous usefulness. As a result, the operational question of \emph{where} and \emph{for how long} a method improves on a clear baseline is not directly answered by common reporting conventions.
+-We address this capacity gap with leakage-free rolling-origin evaluation, train-only preprocessing, and persistence as an explicit reference baseline. Horizon-wise baseline-relative performance is reported as skill curves $\mathrm{Skill}(h)$ under this strict temporal protocol. This evaluation design yields the horizon-wise evidence needed to define operational reach.
++We address this capacity gap with rolling-origin evaluation, train-window model preprocessing, and persistence as an explicit reference baseline. Horizon-wise baseline-relative performance is reported as skill curves $\mathrm{Skill}(h)$. Historical input cleaning and calendar alignment are separate validity requirements; the limitations of the retained artifacts are stated explicitly below.
+ Operational reach is then summarised using complementary horizon descriptors that separate total positive reach from sustained contiguous usefulness. Specifically, we report $H^*(\mathrm{relax})$ and $H^*(\mathrm{strict})$, along with interval locations and sign-change structures when profiles are fragmented or delayed, to make horizon continuity and fragmentation explicit.
+ This evaluation-methodology framing complements recent work on evaluation pitfalls and multi-step forecasting in machine learning and data mining \citep{hewamalage2023dmkd,green2025stratify,kreuzer2025trend,cerqueira2020,modelradar2025}.
+-Empirically, we apply this unified evaluation design to six domains—PM$_{2.5}$ air quality, electric load, wind speed, traffic speed, and daily PM$_{10}$ at two Spanish urban stations (Madrid Casa de Campo and Barcelona Eixample, 2017–2024)—chosen to span heterogeneous dynamics and baseline competitiveness under the same leakage-free protocol.
++Empirically, we examine six stored domain evaluations—PM$_{2.5}$ air quality, electric load, wind speed, traffic speed, and PM$_{10}$ at two Spanish urban stations (Madrid Casa de Campo and Barcelona Eixample, 2017–2024). They span heterogeneous dynamics and baseline competitiveness, but calendar and historical input-preparation defects prevent claiming a uniformly verified protocol across all six.
+ The paper makes three contributions:
+ \begin{enumerate}
+-  \item \textbf{A reproducible leakage-free evaluation framework:} we specify a rolling-origin protocol with train-only preprocessing that computes horizon-wise skill $\mathrm{Skill}(h)$ relative to an explicit persistence baseline, enabling comparable operational assessments across domains.
++  \item \textbf{A reproducible baseline-relative evaluation framework:} we specify a rolling-origin protocol with train-window model preprocessing that computes horizon-wise skill $\mathrm{Skill}(h)$ relative to an explicit persistence baseline. Full temporal validity additionally requires verified causal input preparation and calendar support.
+   \item \textbf{Operational horizon descriptors for useful predictive reach and continuity:} we instantiate the generic predictability-horizon concept via two complementary descriptors—$H^*(\mathrm{relax})$, the maximum evaluated horizon such that $\mathrm{Skill}(h)>0$ (allowing intermediate non-positive gaps), and $H^*(\mathrm{strict})$, the length of the longest contiguous positive-skill interval $[h_{\mathrm{start}},h_{\mathrm{end}}]$—augmented, when needed, with interval locations and sign-change structure for fragmented or late-recovery profiles.
+   \item \textbf{A cross-domain empirical analysis under a shared protocol:} we show that domains differ not only in positive reach but also in continuity and fragmentation, including cases of descriptor preservation under protocol-matched model substitution and cases where relaxed reach is stable, but contiguous usefulness is model-sensitive.
+ \end{enumerate}
+-Together, these contributions provide a leakage-free, baseline-relative basis for estimating and comparing operational predictability horizons across domains.
++Together, these contributions provide a baseline-relative basis for describing operational predictability horizons, subject to explicit temporal-validity checks.
+ 
+ %% ========================================================================
+ %% §2 RELATED WORK
+@@ -237,26 +244,37 @@
+ descriptors, defined over the evaluated horizon set
+ $\mathcal{H} = \{1, 2, \dots, H_{\max}\}$ and the positive-skill
+ subset $\mathcal{H}^+ = \{h \in \mathcal{H} \mid \mathrm{Skill}(h) > 0\}$. In the remainder of the paper, $H^*$ is used as the generic conceptual label for the operational predictability horizon, whereas all empirical reporting is based on the two instantiated descriptors $H^*(\mathrm{relax})$ and $H^*(\mathrm{strict})$.
+-\textbf{$H^*(\mathrm{relax})$.} The relaxed horizon is the maximum
++\textbf{$H^*(\mathrm{relax})$:} The relaxed horizon is the maximum
+ evaluated horizon such that $\mathrm{Skill}(h)>0$, allowing intermediate
+ horizons with non-positive skill.
+ \begin{equation}
+-  H^*(\mathrm{relax}) = \max\!\bigl(\mathcal{H}^+ \cup \{0\}\bigr).
++  \begin{aligned}
++  H^*(\mathrm{relax}) &= \max\!\bigl(\mathcal{H}^+ \cup \{0\}\bigr),\\
++  \mathcal{R}_{\mathrm{relax}} &= \{1,\ldots,H^*(\mathrm{relax})\},\qquad
++  \mathcal{R}_{\mathrm{relax}}\setminus\mathcal{H}^+
++  =\{h\in\mathcal{R}_{\mathrm{relax}}:\mathrm{Skill}(h)\leq0\}.
++  \end{aligned}
+ \end{equation}
+-\textbf{$H^*(\mathrm{strict})$.}\ To capture sustained usefulness, let
++The relaxed span is empty when $H^*(\mathrm{relax})=0$. It includes all
++evaluated steps up to the last positive-skill endpoint, including possible
++non-positive gaps; those gaps are not themselves labelled useful. Thus a
++delayed PM$_{2.5}$ profile or a fragmented Traffic profile can have a large
++relaxed endpoint despite persistence dominance at many earlier steps.
++\textbf{$H^*(\mathrm{strict})$:} To capture sustained usefulness, let
+ $\mathcal{I}$ be the collection of all contiguous integer intervals
+ $I=[h_{\mathrm{start}},h_{\mathrm{end}}]$ with $I\subseteq\mathcal{H}^+$.
+ The strict horizon is the \emph{length} of the longest such interval:
+ \begin{equation}
+-  H^*(\mathrm{strict}) = \max_{I\in\mathcal{I}} |I|,
++  H^*(\mathrm{strict}) = \max\!\bigl(\{|I|:I\in\mathcal{I}\}\cup\{0\}\bigr),
+   \qquad |I| = h_{\mathrm{end}} - h_{\mathrm{start}} + 1.
+ \end{equation}
+ We additionally report the maximizing interval location
+ $[h_{\mathrm{start}}, h_{\mathrm{end}}]$ and, for fragmented or
+ late-recovery profiles, the full sign-change structure of
+-$\mathrm{Skill}(h)$. $H^*(\mathrm{time})$ denotes the wall-clock
+-duration corresponding to $H^*(\mathrm{strict})$ (not to
+-$H^*(\mathrm{relax})$), and it is reported alongside it.
++$\mathrm{Skill}(h)$. Ties are resolved by reporting the earliest maximizing
++interval. A conversion to elapsed time is valid only when the input grid is
++regular and target timestamps have been checked; an observation-index interval
++must not automatically be interpreted as a calendar-time interval.
+ Together, these two descriptors distinguish total positive reach from
+ sustained contiguous usefulness — a distinction that matters in the
+ fragmented and delayed-onset domains studied below. Fig.~\ref{fig:hstar_conceptual}
+@@ -271,21 +289,56 @@
+ %% ========================================================================
+ %% §4 EVALUATION FRAMEWORK
+ %% ========================================================================
++\subsection{Operational interpretation and actionability}\label{sec:actionability}
++The relaxed descriptor answers how far any positive baseline-relative skill
++reaches. It does not justify using the model at every earlier horizon. The
++strict descriptor, together with its interval location, identifies the longest
++continuous positive-skill window. For example, the Traffic LightGBM interval
++$[64,67]$ indicates a four-hour window, not continuous usefulness over all
++72 hours. A fixed-horizon or average-error summary does not convey delayed
++onset, intervening gaps, or the location and length of that window.
++
++A practitioner should first specify the target, baseline, decision loss and
++relevant horizon range, estimate the full skill curve on historical validation
++data, and inspect both gain magnitude and uncertainty before choosing any
++operational window. Positive average skill alone does not demonstrate the
++value or safety of a deployment decision. For adaptive use, a horizon policy
++may be estimated from past validation errors and frozen for later forecasts;
++updates must use only errors whose targets have already been observed.
++Estimating the descriptors, selecting horizons and scoring that selection on
++the same errors creates adaptive selection bias. A dynamic policy therefore
++requires separate prospective, prequential or nested validation. Such a
++controller is a potential application and is not evaluated in this study.
++
+ \section{Evaluation Framework}\label{sec:framework}
+ This section specifies the evaluation components used to compute horizon-wise baseline-relative skill curves $\mathrm{Skill}(h)$ and the associated horizon descriptors: the reference baseline, error metrics, and the leakage-free rolling-origin validation protocol.
+ \subsection{Baseline models}
+ In every domain, we evaluate models against a persistence baseline. At forecast origin $t$, the baseline prediction for horizon $h$ is simply the most recent observation available at time $t$. Persistence is intentionally adopted as a strong operational reference because it is easy to implement, transparent, and often highly competitive for short lead times~\citep{murphy1993,hyndman2018}. Accordingly, the evaluation objective is not just to report absolute error levels but to determine the horizons at which a forecasting method yields positive skill relative to this baseline.
++For a supplementary sensitivity analysis on verified regular grids, we also
++use seasonal persistence,
++\begin{equation}
++\hat y^{\mathrm{season}}_{t+h}=y_{t+h-\lceil h/s\rceil s},
++\end{equation}
++with $s=24$ hours for Wind and Traffic and $s=7$ days for Load. The source
++index is always at or before the origin. Periods were fixed before this
++diagnostic was computed. Existing model forecasts, targets and evaluation
++rows are reused without refitting or dropping records. Calendar sensitivity
++for irregular inputs is not inferred from row-based seasonal offsets.
+ \subsection{Evaluation metrics}
+ Forecast errors are evaluated primarily using mean absolute error (MAE) \citep{hyndman2006}, which serves as the basis for computing baseline-relative skill at each horizon. Root mean squared error (RMSE) is additionally reported as a complementary error measure, but the main operational analysis throughout this work is framed in terms of $\mathrm{Skill}(h)$ computed from MAE. This design choice ensures that horizon-specific comparisons remain straightforward to interpret: at each lead time, we can directly assess whether a given forecasting approach improves upon persistence. A metric-sensitivity analysis based on RMSE-derived skill curves, conducted under the same rolling-origin protocol and persistence baseline, is reported in Appendix~A.1.
+ \subsection{Temporal validation protocol}
+-All experiments adopt rolling-origin evaluation with train-only preprocessing and persistence as the explicit reference baseline. This design yields leakage-free, out-of-sample horizon-wise skill estimates that are directly interpretable relative to a transparent, parsimonious operational baseline. Fig.~\ref{fig:rolling_origin} summarizes the protocol schematic.
++The tabular experiments use rolling-origin model fitting and train-window
++scaling with persistence as the reference. This controls model-fitting
++leakage but does not by itself verify historical cleaning or calendar
++alignment. The limitations below distinguish those outstanding input checks.
++Fig.~\ref{fig:rolling_origin} summarizes the intended protocol.
+ \begin{figure}[t]
+   \centering
+   \includegraphics[width=0.75\textwidth]{fig_rolling_origin_protocol}
+   \caption{Schematic of the leakage-free rolling-origin evaluation protocol. Each origin uses a past-only training window with train-only preprocessing, generates $h$-step-ahead forecasts for the model and the persistence baseline, and then rolls the origin forward in time.}
+   \label{fig:rolling_origin}
+ \end{figure}
+-All experiments use strictly time-ordered, leakage-free evaluation. The procedure adopts a rolling-origin framework~\citep{tashman2000}:
++Model fitting is time-ordered. The intended end-to-end protocol adopts a rolling-origin framework~\citep{tashman2000}:
+ \begin{enumerate}
+   \item define a chronologically ordered training window,
+   \item fit any preprocessing steps using training data only,
+@@ -296,7 +349,7 @@
+ Random train-test splits are intentionally avoided because they may introduce temporal leakage.
+ For all domains, model and baseline forecasts are generated and compared only at aligned timestamps.
+ \subsection{Horizon-wise significance testing}
+-To complement descriptive skill profiles, horizon-wise differences in predictive accuracy between each model and persistence were tested using the Harvey--Leybourne--Newbold modified Diebold--Mariano test \citep{harvey1997}. The test was applied two-sided at each horizon for each model, using the rolling-origin loss differentials implied by MAE. To control multiplicity across horizons, $p$-values were adjusted per domain using the Benjamini--Hochberg false discovery rate procedure \citep{benjamini1995} at $\alpha=0.05$. In the results, the ``\% DM sign.'' field reports the proportion of evaluated horizons whose BH-adjusted DM test rejects equal predictive accuracy in favor of the model.
++To complement descriptive skill profiles, horizon-wise differences in predictive accuracy between each model and persistence were tested using the Harvey--Leybourne--Newbold modified Diebold--Mariano test \citep{harvey1997}. The test was applied two-sided at each horizon for each model, using the rolling-origin loss differentials implied by MAE. The stored Benjamini--Hochberg adjustments use historical domain/model batches; the primary three-model batch and later KNN/MLP batch were adjusted separately. Thus the reported decisions do not establish joint false-discovery control over the entire expanded study. The ``\% DM sign.'' field counts two-sided rejections, including significant deterioration; direction must be read jointly with the sign of skill. Undefined test statistics are not interpreted as evidence of equality. Stored decisions are retained for traceability rather than recomputed during editorial revision.
+ 
+ %% ========================================================================
+ %% §5 DATASETS AND EXPERIMENTAL SETUP
+@@ -308,12 +361,12 @@
+ domains, datasets, target variables, temporal resolution, and maximum
+ forecast horizon.
+ The six domains are selected to support methodological comparison under a
+-shared, leakage-free evaluation design rather than to provide exhaustive
++shared evaluation design rather than to provide exhaustive
+ coverage of forecasting applications. They span heterogeneous temporal
+ structures, differ markedly in baseline competitiveness against
+ persistence, and vary in temporal resolution and operational context
+ (hourly environmental and mobility signals versus daily energy and PM$_{10}$
+-air-quality series). Together, they form a diverse but controlled public
++air-quality series). Together, they form a diverse
+ cross-domain testbed for studying horizon-wise baseline-relative skill and
+ its operational summaries.
+ Under this shared protocol, the domains yield distinct baseline-relative
+@@ -324,16 +377,16 @@
+ \scriptsize
+ \setlength{\tabcolsep}{2.8pt}
+ \renewcommand{\arraystretch}{1.12}
+-\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.3cm} >{\raggedright\arraybackslash}p{3.0cm} >{\centering\arraybackslash}p{1.4cm} r >{\centering\arraybackslash}p{1.0cm} r >{\centering\arraybackslash}p{1.0cm}@{}}
++\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.3cm} >{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{1.1cm} r >{\centering\arraybackslash}p{1.4cm} r >{\centering\arraybackslash}p{1.1cm}@{}}
+ \toprule
+ Domain & Station / ID & Period & $N$ & Freq. & Eval.\ origins & $H_{\max}$ \\
+ \midrule
+-PM$_{2.5}$ (Beijing) & Beijing US Embassy & 2010--2014 & 43{,}824 & Hourly & 365 & 48 h \\
+-Electric Load (UCI) & Aggregate (370 clients) & 2013--2014 & 730 & Daily & 281 & 7 days \\
+-Wind (NREL) & NREL station (site-specific) & 2019 & 8{,}760 & Hourly & 352 & 48 h \\
+-Traffic (METR-LA) & Univariate sensor trajectory & 2012 & 2{,}856 & Hourly & 105 & 72 h \\
+-PM$_{10}$ Madrid & Casa de Campo & 2017--2024 & 2{,}922 & Daily & 2{,}536 & 7 days \\
+-PM$_{10}$ Barcelona & Eixample (08019043) & 2017--2024 & 2{,}827 & Daily & 2{,}441 & 7 days \\
++PM$_{2.5}$ (Beijing) & Beijing US Embassy & 2010--2014 & 41{,}757 & Observed rows & 365 & 48 steps \\
++Electric Load (UCI) & Aggregate (370 clients) & 2013--2015 & 667 & Daily & 275--281 & 7 days \\
++Wind (NREL) & Site 1673080, 100 m & 2019 & 8{,}760 & Hourly & 350--352 & 48 h \\
++Traffic (METR-LA) & Sensor 773869 & 2012 & 2{,}856 & Hourly & 102--105 & 72 h \\
++PM$_{10}$ Madrid & Casa de Campo & 2017--2024 & 2{,}922 & Daily & 2{,}530--2{,}536 & 7 days \\
++PM$_{10}$ Barcelona & Eixample (08019043) & 2017--2024 & 2{,}827 & Observed days & 2{,}435--2{,}441 & 7 steps \\
+ \bottomrule
+ \end{tabularx}
+ \caption{Datasets used for cross-domain predictability analysis. Data sources are described in the corresponding domain results; this table focuses on station/ID, period, sample size $N$, sampling frequency, the number of evaluation origins used in rolling-origin scoring, and the maximum evaluated horizon.}
+@@ -343,34 +396,44 @@
+ sensor speed measurements \citep{li2018dcrnn}.
+ 
+ \subsubsection{Data representation}
+-For each domain, the cleaned data used in the experiments is
+-standardised into a univariate format containing a timestamp column and
+-a single target variable. In the electric-load domain, the cleaned
++For each domain, the stored input is univariate. PM$_{2.5}$ is a one-column
++sequence with missing raw observations removed; its timestamps were recovered
++by exact comparison with the observed raw subsequence for the revision audit.
++Barcelona contains only available observation dates and is not a complete
++daily grid. In the electric-load domain, the cleaned
+ representation is $(\texttt{timestamp}, \texttt{value})$ at daily
+ resolution. The aggregate series is defined as the daily sum of all
+ available client-level series from the stable-coverage start date
+ onwards. This explicit specification of the aggregation procedure
+-promotes reproducibility and ensures alignment between data preparation
+-and experimental evaluation.
++specifies the stored scale. Coverage of the final aggregate day and historical
++PM$_{10}$ imputation require separate verification.
+ 
+ \subsection{Forecast horizons}
+ The maximum forecast horizons are chosen to balance practical
+ operational relevance with a sufficient length to capture the onset and
+ progression of skill decay:
+ \begin{itemize}
+-  \item PM$_{2.5}$ (hourly): $H_{\max}=48$,
++  \item PM$_{2.5}$ (observation-index input): $H_{\max}=48$ steps,
+   \item Electric load (daily): $H_{\max}=7$,
+   \item Wind (hourly): $H_{\max}=48$,
+   \item Traffic (hourly): $H_{\max}=72$,
+-  \item PM$_{10}$ (daily, Madrid and Barcelona): $H_{\max}=7$.
++  \item PM$_{10}$: $H_{\max}=7$ days for the regular Madrid grid and
++  7 observation steps for the irregular Barcelona input.
+ \end{itemize}
+-When supported by operational considerations, these upper limits may
+-differ across domains. Nonetheless, the primary cross-domain analysis
+-is carried out over a shared interval, $h=1,\ldots,48$, to maintain
+-comparability among systems.
++The evaluated ranges differ across domains. No common 48-step calendar-time
++range exists across hourly and daily inputs. Numerical horizon lengths must
++therefore be interpreted with their domain-specific frequency and support.
+ \subsection{Models}
+-Three forecasting models were evaluated against persistence in every domain: Ridge regression, LightGBM~\citep{ke2017lightgbm}, and ExtraTrees. Ridge was implemented as a \texttt{StandardScaler} followed by $\alpha=1$ (L2-regularised) linear regression; LightGBM used 50 trees with a learning rate of 0.1 and 31 leaves; and ExtraTrees used 50 estimators (reduced from an originally planned 100 for computational feasibility on CPU). Pilot comparisons on PM$_{2.5}$ indicated negligible skill differences at this scale.
+-These three learners were selected as representatives of distinct learning classes rather than as a model-selection exercise. Ridge represents regularised linear learning with explicit capacity control; LightGBM represents sequential additive learning via gradient-boosted decision trees; and ExtraTrees represents a parallel ensemble with randomised splits and feature subsampling. This coverage makes the learning component explicit and allows differences in $\mathrm{Skill}(h)$ morphology to be understood in terms of inductive bias and bias--variance trade-offs, rather than only in terms of domain difficulty.
++Five forecasting models were evaluated against persistence in every domain:
++Ridge regression, LightGBM~\citep{ke2017lightgbm}, ExtraTrees, KNN and MLP.
++Ridge used a \texttt{StandardScaler} followed by $\alpha=1$ linear regression;
++LightGBM used 50 trees, learning rate 0.1 and 31 leaves; ExtraTrees used 50
++estimators. KNN used five Euclidean neighbours with uniform weights. MLP used
++hidden layers $(64,32)$, ReLU, Adam, a maximum of 500 iterations and early
++stopping with a 0.1 validation fraction. Ridge, KNN and MLP scaling was fitted
++inside each rolling training window. MLP's internal validation samples are
++drawn only from that training window; the target was left unscaled.
++The original three learners represent distinct learning classes: Ridge is regularised linear learning, LightGBM is gradient-boosted trees, and ExtraTrees is an ensemble with randomised splits. KNN and MLP extend the stored comparison to instance-based and neural learning. This fixed selection samples different inductive biases; it does not establish their general superiority or identify the cause of profile differences.
+ All forecasts were generated with a direct multi-step strategy: a separate model was trained for each horizon $h$. At each rolling origin $t_0$, lag features were constructed exclusively from values at or before $t_0$.
+ Lag/stride settings were aligned with domain frequency. For hourly domains, lags were drawn from short-term and daily-cycle offsets (e.g., including lag 0 so that the model and baseline share the same information at the origin). For daily PM$_{10}$, the setup used horizons $h=1,\ldots,7$ days, lags $\{0,1,2,3,7,14\}$, stride of 1 day, and a minimum training window of 365 days.
+ The persistence baseline was defined as the most recent observed value available at the prediction origin.
+@@ -378,9 +441,14 @@
+ \hat{y}^{\mathrm{base}}_{t+h} = y_{t},
+ \end{equation}
+ and was applied uniformly in all domains.
+-No hyperparameter tuning was carried out. The protocol was kept deliberately simple so that observed differences in skill reflect domain characteristics and baseline competitiveness rather than aggressive model optimisation.
++The stored runs use fixed configurations; no hyperparameter tuning or new model fitting was carried out for this revision. These comparisons are conditional on those configurations and do not isolate domain dynamics as a causal explanation.
+ \input{tables}
+-As an auxiliary robustness cheque (wind and traffic only), ARIMA was also evaluated under the same rolling-origin protocol; however, Diebold–Mariano significance rates are reported only for Ridge, LightGBM, and ExtraTrees.
++Historical ARIMA$(2,0,0)$ artifacts are retained in the replication audit but
++excluded from the revised empirical comparison. No documented ACF/PACF or
++validation-based rationale establishes why order two was selected, and its
++forecast origins differ from those of the tabular experiments. We therefore
++do not use these artifacts to support matched-model robustness or invent a
++retrospective order-selection rationale.
+ \subsection{Reproducibility rules}
+ All tables and figures are generated directly from the experiments
+ carried out under the stated evaluation protocol. To support
+@@ -396,17 +464,21 @@
+ \subsection{\texorpdfstring{PM$_{2.5}$}{PM2.5} domain}\label{sec:pm25}
+ 
+ \subsubsection{Experimental setting}
+-The first domain we analyse is the Beijing PM$_{2.5}$ forecasting case \citep{chen2015beijingpm25}, which provides an initial empirical demonstration of the proposed evaluation framework. The study relies on hourly measurements, a persistence baseline, and the standard comparable LightGBM setup with $H_{\max}=48$, using MAE-based skill for horizon-wise assessment. This domain is particularly informative for highlighting settings in which persistence remains very strong at short lead times, and positive skill appears only at longer horizons.
++The Beijing PM$_{2.5}$ input \citep{chen2015beijingpm25} illustrates delayed
++positive skill in the stored sequence. The raw observations are hourly, but
++the evaluated input removes missing rows. Its $H_{\max}=48$ is therefore an
++observation-index range, not a verified 48-hour range. The numerical results
++below are retained as descriptive sequence diagnostics pending calendar repair.
+ 
+ \subsubsection{Observed skill behavior}
+ For PM$_{2.5}$, the skill curves are delayed and become positive only after an extended short-horizon region dominated by persistence (Fig.~\ref{fig:skill-pm25}). Under this setting, all three models achieve $H^*(\mathrm{relax})=48$, but strict continuity differs substantially: Ridge attains $H^*(\mathrm{strict})=40$ with $[h_{\mathrm{start}},h_{\mathrm{end}}]=[9,48]$, LightGBM attains $H^*(\mathrm{strict})=19$ with $[30,48]$, and ExtraTrees attains $H^*(\mathrm{strict})=26$ with $[23,48]$ (Table~\ref{tab:results}).
+ 
+ \subsubsection{Interpretation}
+-These outcomes indicate that, in the hourly PM$_{2.5}$ series, baseline-relative usefulness can emerge late but then persist for a long interval; however, the degree of contiguity is model-dependent. Ridge achieves the longest sustained improvement window, while the tree-based models show more fragmented or delayed contiguous usefulness, consistent with persistence being highly competitive at short lead times.
++These outcomes indicate that, in the stored PM$_{2.5}$ observation sequence, baseline-relative usefulness can emerge late but then persist for a long interval; however, the degree of contiguity is model-dependent. Ridge achieves the longest sustained improvement window, while the tree-based models show more fragmented or delayed contiguous usefulness, consistent with persistence being highly competitive at short observation leads. These are not verified calendar-hour intervals.
+ \begin{figure}[t]
+   \centering
+   \includegraphics[width=0.88\textwidth]{fig_skill_pm25.pdf}
+-  \caption{PM$_{2.5}$ skill curve $\mathrm{Skill}(h)$ under the leakage-free rolling-origin protocol. The skill-profile pattern shows delayed onset: persistence dominates at short lead times and positive skill emerges only at longer horizons.}
++  \caption{Stored PM$_{2.5}$ skill curve $\mathrm{Skill}(h)$. The retained figure's horizontal axis denotes observation steps, not verified elapsed hours. Positive skill emerges late in this compressed sequence.}
+   \label{fig:skill-pm25}
+ \end{figure}
+ 
+@@ -419,11 +491,11 @@
+ Daily electric load was evaluated at horizons $h=1,\ldots,7$ days. Ridge achieves sustained positive skill across the full evaluated range, with $H^*(\mathrm{relax})=H^*(\mathrm{strict})=7$ and $[h_{\mathrm{start}},h_{\mathrm{end}}]=[1,7]$ (Table~\ref{tab:results}). By contrast, both tree-based models collapse immediately against persistence, yielding $H^*(\mathrm{relax})=H^*(\mathrm{strict})=0$. Fig.~\ref{fig:skill_load} shows the corresponding skill curves.
+ 
+ \subsubsection{Interpretation}
+-This domain illustrates that positive skill and statistical evidence can diverge when evaluation windows are short. Although Ridge yields $H^*(\mathrm{strict})=7$ on the load series, 0\% of horizons are DM-significant after BH correction (Table~\ref{tab:results}), most plausibly because the effective evaluation window (approximately two years of daily data) limits test power.
++This domain illustrates that positive sample skill and statistical evidence can diverge. Although Ridge yields $H^*(\mathrm{strict})=7$ on the load series, none of its horizons has a stored DM/BH rejection (Table~\ref{tab:results}). This does not demonstrate equivalence to persistence or establish a specific explanation in terms of statistical power. Terminal-day coverage also requires verification.
+ \begin{figure}[t]
+   \centering
+   \includegraphics[width=0.88\textwidth]{fig_skill_load.pdf}
+-  \caption{Electric-load skill curve $\mathrm{Skill}(h)$ under the leakage-free rolling-origin protocol for $h=1,\ldots,7$ days. The figure highlights the strong competitiveness of persistence, and the limited statistical power available for significance testing under short daily evaluation windows.}
++  \caption{Stored electric-load skill curve $\mathrm{Skill}(h)$ for $h=1,\ldots,7$ days. Persistence is competitive for the tree models. Absence of a stored Ridge significance rejection is not proof of equivalence or low power.}
+   \label{fig:skill_load}
+ \end{figure}
+ 
+@@ -436,7 +508,11 @@
+ For wind, Ridge and LightGBM achieve sustained positive skill across the full evaluated range $h=1,\ldots,48$ (Fig.~\ref{fig:skill-wind}), yielding $H^*(\mathrm{relax})=H^*(\mathrm{strict})=48$ with $[h_{\mathrm{start}},h_{\mathrm{end}}]=[1,48]$ (Table~\ref{tab:results}). ExtraTrees is near-sustained but not fully contiguous, with $H^*(\mathrm{strict})=47$ and $[2,48]$, indicating a small short-horizon dip despite strong overall reach.
+ 
+ \subsubsection{Interpretation}
+-Wind, therefore, represents the clearest case of sustained baseline-relative usefulness in the hourly domains, with high DM significance rates (73--100\% across the three models; Table~\ref{tab:results}). This setting also supports a limited robustness observation: under a protocol-matched substitution (LightGBM versus ARIMA$(2,0,0)$), the wind descriptor tuple can be preserved within an everywhere-positive skill regime, up to differences in skill amplitude.
++Wind shows sustained or nearly sustained persistence-relative skill across
++the tabular models. Among the original three learners, 73--100\% of horizons
++have stored two-sided DM/BH rejections (Table~\ref{tab:results}). This result
++is conditional on persistence and does not establish invariance to baseline
++choice or generalise beyond the sampled wind series.
+ \begin{figure}[t]
+   \centering
+   \includegraphics[width=0.88\textwidth]{fig_skill_wind.pdf}
+@@ -450,7 +526,7 @@
+ The traffic domain uses the METR-LA hourly traffic-speed dataset \citep{li2018dcrnn}. Forecasts were evaluated up to $H_{\max}=72$ under the leakage-free rolling-origin protocol, with persistence as the baseline.
+ 
+ \subsubsection{Observed skill behavior}
+-Traffic exhibits a pronounced ``ghost-skill'' pattern (Fig.~\ref{fig:skill-traffic}). For all three models, $H^*(\mathrm{relax})=72$, but contiguous usefulness is short and occurs late in the horizon: Ridge yields $H^*(\mathrm{strict})=5$ with $[h_{\mathrm{start}},h_{\mathrm{end}}]=[63,67]$, while LightGBM and ExtraTrees yield $H^*(\mathrm{strict})=4$ with $[64,67]$ (Table~\ref{tab:results}). DM-significant improvements are sparse (4--14\% of horizons).
++Traffic exhibits a pronounced ``ghost-skill'' pattern (Fig.~\ref{fig:skill-traffic}). For the original three models, $H^*(\mathrm{relax})=72$, but contiguous usefulness is short and occurs late in the horizon: Ridge yields $H^*(\mathrm{strict})=5$ with $[h_{\mathrm{start}},h_{\mathrm{end}}]=[63,67]$, while LightGBM and ExtraTrees yield $H^*(\mathrm{strict})=4$ with $[64,67]$ (Table~\ref{tab:results}). Stored two-sided DM/BH rejections are sparse (4--14\% of horizons); rejection direction must be read with the corresponding skill.
+ 
+ \subsubsection{Interpretation}
+ The co-occurrence of large relaxed reach and short late strict intervals indicates that most horizons are persistence-dominated, with a narrow positive cluster consistent with a daily-periodic structure in the loop-detector signal. This domain, therefore, motivates reporting $H^*(\mathrm{relax})$ and $H^*(\mathrm{strict})$ together: $H^*(\mathrm{relax})$ alone would suggest broad reach, while $H^*(\mathrm{strict})$ correctly reflects the short, isolated operational window.
+@@ -464,7 +540,12 @@
+ \subsection{\texorpdfstring{PM$_{10}$}{PM10} air quality domain}\label{sec:pm10}
+ 
+ \subsubsection{Domain overview}
+-We next evaluate daily PM$_{10}$ forecasting at two Mediterranean urban monitoring stations (Madrid Casa de Campo and Barcelona Eixample) over 2017--2024. Forecasts were generated for horizons $h=1,\ldots,7$ days under the same leakage-free rolling-origin protocol and persistence baseline used throughout the paper, with horizon-wise skill reported as $\mathrm{Skill}(h)$.
++The PM$_{10}$ artifacts cover Madrid Casa de Campo and Barcelona Eixample
++over 2017--2024. Madrid's stored input has a complete daily axis, while
++Barcelona's axis omits dates. The existing outputs use row-index horizons;
++only the regular axis permits a direct conversion to days. Historical
++Madrid imputation has not been shown to be causal. These retained results
++are not presented as a verified cross-city deployment comparison.
+ 
+ \subsubsection{\texorpdfstring{PM$_{10}$}{PM10} Madrid (Casa de Campo)}
+ Figure~\ref{fig:skill_pm10} shows a monotone skill increase for Ridge, with $\mathrm{Skill}(h)$ rising from 0.02 at $h=1$ to 0.24 at $h=7$. Consistent with this sustained positive profile, Ridge achieves $H^*(\mathrm{relax})=H^*(\mathrm{strict})=7$ (Table~\ref{tab:results}), and 85\% of horizons are Diebold--Mariano-significant after Benjamini--Hochberg correction.
+@@ -472,34 +553,45 @@
+ \begin{figure}[t]
+   \centering
+   \includegraphics[width=0.88\textwidth]{fig_skill_pm10.pdf}
+-  \caption{PM$_{10}$ (Madrid, Casa de Campo) skill curve $\mathrm{Skill}(h)$ for $h=1,\ldots,7$ days under the leakage-free rolling-origin protocol. Filled markers indicate horizons with BH-corrected Diebold--Mariano significance at $\alpha=0.05$; the shaded band denotes the maximizing $H^*(\mathrm{strict})$ interval.}
++  \caption{Stored PM$_{10}$ (Madrid, Casa de Campo) skill curve $\mathrm{Skill}(h)$ for $h=1,\ldots,7$ days. Historical missing-value preparation is not yet verified as causal. Filled markers indicate stored BH-corrected Diebold--Mariano significance at $\alpha=0.05$; the shaded band denotes the maximizing $H^*(\mathrm{strict})$ interval.}
+   \label{fig:skill_pm10}
+ \end{figure}
+ 
+ \subsubsection{\texorpdfstring{PM$_{10}$}{PM10} Barcelona (Eixample)}
+-In Barcelona, all three models achieve positive skill from the first day ahead (Figure~\ref{fig:skill_pm10_bcn}), yielding $H^*(\mathrm{relax})=H^*(\mathrm{strict})=7$ for Ridge, LightGBM, and ExtraTrees (Table~\ref{tab:results}). Ridge reaches 100\% DM significance, while LightGBM and ExtraTrees each achieve 85\% DM-significant horizons.
+-Although the persistence baseline MAE is higher in Barcelona than in Madrid at $h=1$ (6.53 vs. 5.54~$\mu$g/m$^3$), Ridge skill is comparable to or higher than at intermediate horizons (e.g., 0.20 at $h=4$), indicating that the models exploit structure in the more variable Barcelona series rather than benefiting from an unusually weak baseline.
++In Barcelona, the original three models achieve positive skill from the
++first observation step (Figure~\ref{fig:skill_pm10_bcn}), yielding
++$H^*(\mathrm{relax})=H^*(\mathrm{strict})=7$ steps for Ridge, LightGBM and
++ExtraTrees (Table~\ref{tab:results}). Ridge has stored rejections at 100\%
++of horizons, while LightGBM and ExtraTrees each have 85\%.
++Differences in baseline error between cities cannot establish an explanation
++for their skill differences without controlling input preparation and elapsed
++target time. We therefore make no causal attribution from this comparison.
+ \begin{figure}[t]
+   \centering
+   \includegraphics[width=0.88\textwidth]{fig_skill_pm10_bcn.pdf}
+-  \caption{PM$_{10}$ (Barcelona, Eixample) skill curve $\mathrm{Skill}(h)$ for $h=1,\ldots,7$ days under the leakage-free rolling-origin protocol. Conventions match Fig.~\ref{fig:skill_pm10}.}
++  \caption{PM$_{10}$ (Barcelona, Eixample) stored skill curve for $h=1,\ldots,7$ observation steps. The input omits dates, so these steps are not uniformly calendar days. Conventions otherwise match Fig.~\ref{fig:skill_pm10}.}
+   \label{fig:skill_pm10_bcn}
+ \end{figure}
+ 
+ \subsubsection{Cross-city comparison}
+-Across both cities, Ridge and MLP achieve \textsc{sustained} profiles and closely matched skill curves. The higher day-ahead skill in Barcelona (Ridge 0.079 vs. Madrid 0.015) is explained mechanistically by stronger short-lag serial correlation: the lag-1 ACF is 0.644 in Barcelona versus 0.562 in Madrid ($\Delta=+0.083$), and the ACF gap persists through lags 1--7.
+-Within the overall six-domain study, daily PM10 is the most consistently predictable setting: all ten model $\times$ station combinations are classified as \textsc{sustained} or \textsc{delayed\_contiguous}, with at least 71.4\,\% DM-significant horizons. This contrasts with the universal \textsc{fragmented} ghost-skill behaviour in Traffic and with Electric Load, where Ridge is \textsc{sustained} but DM tests are underpowered despite positive skill.
+-
+-Table~\ref{tab:results} reports the complete operational horizon descriptors and taxonomy labels for all six study domains under the shared leakage-free rolling-origin protocol with persistence as baseline.
++Ridge and MLP have sustained labels in both stored PM$_{10}$ sequences.
++These descriptive patterns do not establish a physical mechanism or a
++validated daily alert window. Missing-date handling and historical imputation
++must be checked before interpreting the difference as a cross-city effect.
++
++Table~\ref{tab:results} reports the retained horizon descriptors and taxonomy labels for the six stored domain evaluations with persistence as baseline. Their temporal-validity limitations differ and must not be conflated with numerical reproducibility.
+ 
+ \begin{table}[ht]
+ \centering
+-\caption{H* descriptors and DM significance for all 32 (model, domain)
++\caption{Retained H* descriptors and stored DM significance for 30 (model, domain)
+ combinations. \Hrelax: last horizon with positive skill (gaps allowed).
+ \Hstrict: length of the longest contiguous positive-skill run.
+ $h_s$--$h_e$: start and end of that run.
+ \% DM: proportion of horizons significant at BH-corrected $\alpha=0.05$.
+-$\dagger$~100\,\% DM significant but \emph{worse} than persistence (negative skill).}
++$\dagger$~100\,\% DM significant but \emph{worse} than persistence (negative skill).
++PM$_{2.5}$ and Barcelona horizons count observations, not uniform elapsed
++hours or days. Historical ARIMA results are excluded. The stored taxonomy
++and BH decisions are reported with their implementation limitations.}
+ \label{tab:results}
+ \scriptsize
+ \setlength{\tabcolsep}{2.6pt}
+@@ -508,7 +600,7 @@
+ \toprule
+ Domain & Model & \Hrelax & \Hstrict & $h_s$ & $h_e$ & \% DM & Profile \\
+ \midrule
+-\multirow{5}{*}{\shortstack[l]{PM$_{2.5}$\\(hrly)}}
++\multirow{5}{*}{\shortstack[l]{PM$_{2.5}$\\(obs. steps)}}
+   & Ridge      & 48 & 40 &  9 & 48 & 58.3\% & \textsc{fragmented} \\
+   & LightGBM   & 48 & 19 & 30 & 48 & 35.4\% & \textsc{fragmented} \\
+   & ExtraTrees & 48 & 26 & 23 & 48 & 37.5\% & \textsc{delayed\_contiguous} \\
+@@ -522,21 +614,19 @@
+   & KNN        &  0 &  0 & ---& ---& 100.0\%$^\dagger$ & \textsc{immediate\_collapse} \\
+   & MLP        &  0 &  0 & ---& ---& 100.0\%$^\dagger$ & \textsc{immediate\_collapse} \\
+ \midrule
+-\multirow{6}{*}{\shortstack[l]{Wind\\(hrly)}}
++\multirow{5}{*}{\shortstack[l]{Wind\\(hrly)}}
+   & Ridge        & 48 & 48 &  1 & 48 & 100.0\% & \textsc{sustained} \\
+   & LightGBM     & 48 & 48 &  1 & 48 &  72.9\% & \textsc{sustained} \\
+   & ExtraTrees   & 48 & 47 &  2 & 48 &  83.3\% & \textsc{fragmented} \\
+   & KNN          & 48 & 47 &  2 & 48 &  85.4\% & \textsc{fragmented} \\
+   & MLP          & 48 & 47 &  2 & 48 &  95.8\% & \textsc{fragmented} \\
+-  & ARIMA(2,0,0) & 48 & 48 &  1 & 48 &  89.6\% & \textsc{sustained} \\
+ \midrule
+-\multirow{6}{*}{\shortstack[l]{Traffic\\(hrly)}}
++\multirow{5}{*}{\shortstack[l]{Traffic\\(hrly)}}
+   & Ridge        & 72 &  5 & 63 & 67 &  13.9\% & \textsc{fragmented} \\
+   & LightGBM     & 72 &  4 & 64 & 67 &   4.2\% & \textsc{fragmented} \\
+   & ExtraTrees   & 72 &  4 & 64 & 67 &   4.2\% & \textsc{fragmented} \\
+   & KNN          & 72 &  6 & 64 & 69 &   2.8\% & \textsc{fragmented} \\
+   & MLP          & 66 &  3 & 40 & 42 &   9.7\% & \textsc{fragmented} \\
+-  & ARIMA(2,0,0) & 70 &  9 & 52 & 60 &  22.2\% & \textsc{fragmented} \\
+ \midrule
+ \multirow{5}{*}{\shortstack[l]{PM10\\Madrid}}
+   & Ridge      & 7 & 7 & 1 & 7 &  85.7\% & \textsc{sustained} \\
+@@ -545,7 +635,7 @@
+   & KNN        & 7 & 6 & 2 & 7 &  71.4\% & \textsc{delayed\_contiguous} \\
+   & MLP        & 7 & 7 & 1 & 7 &  85.7\% & \textsc{sustained} \\
+ \midrule
+-\multirow{5}{*}{\shortstack[l]{PM10\\Barcelona}}
++\multirow{5}{*}{\shortstack[l]{PM10\\Barcelona\\(obs. steps)}}
+   & Ridge      & 7 & 7 & 1 & 7 & 100.0\% & \textsc{sustained} \\
+   & LightGBM   & 7 & 7 & 1 & 7 &  85.7\% & \textsc{sustained} \\
+   & ExtraTrees & 7 & 7 & 1 & 7 &  85.7\% & \textsc{sustained} \\
+@@ -560,47 +650,97 @@
+ %% ========================================================================
+ \section{Discussion}\label{sec:discussion}
+ 
+-The cross-domain results in Table~\ref{tab:results} reveal that the proposed descriptors capture four qualitatively distinct skill-profile types across the six domains. This section synthesises the empirical evidence along three axes—domain versus model effects on profile type, structural periodicity as a driver of fragmented skill, and the diagnostic value of the framework at its statistical limits—and then examines what the PM$_{10}$ cross-city comparison adds to the overall picture.
++The stored results in Table~\ref{tab:results} illustrate contrasting interval structures across the six domains. We distinguish descriptive domain/model associations, possible periodicity-related patterns and the framework's statistical limits. Input-validity differences prevent treating this comparison as a controlled causal study.
+ 
+ \subsection{Domain drives profile type, not model class}
+ 
+-The most consistent pattern in Table~\ref{tab:results} is that profile type is determined primarily by the domain, not by the model class. All five models classify as \textsc{sustained} or \textsc{delayed\_contiguous} on both PM$_{10}$ stations (10/10 combinations), and all five (plus ARIMA) are \textsc{fragmented} on traffic (6/6). In wind, all models achieve $H^*(\mathrm{relax})=48$ and $H^*(\mathrm{strict})\geq 47$, spanning only \textsc{sustained} and near-sustained \textsc{fragmented} profiles. PM$_{2.5}$ is the only domain where profile type varies across models (Ridge and MLP are \textsc{delayed\_contiguous} or \textsc{fragmented} with long strict intervals, while KNN and LightGBM show shorter strict windows), but even there the overall morphology—delayed onset with eventual positive skill—is shared.
+-
+-This stability suggests that the dominant determinant of $H^*$ profile type is the interaction between domain dynamics and baseline competitiveness, not the choice of learner. From a practical standpoint, it implies that the framework can characterise a domain's predictability regime with moderate model coverage, without requiring exhaustive model search. The protocol-matched ARIMA substitution in wind further supports this: LightGBM and ARIMA$(2,0,0)$ yield identical descriptor tuples ($H^*(\mathrm{relax})=48$, $H^*(\mathrm{strict})=48$, $[1,48]$), indicating that the domain's everywhere-positive skill regime is robust to model substitution within this protocol.
++Table~\ref{tab:results} shows recurring descriptive patterns within the sampled
++inputs. All five tabular models are labelled \textsc{sustained} or
++\textsc{delayed\_contiguous} on the two PM$_{10}$ inputs and all five are
++\textsc{fragmented} on Traffic. Wind reaches $H^*(\mathrm{relax})=48$ and
++$H^*(\mathrm{strict})\geq47$. Both PM$_{2.5}$ and Load show variation in the
++stored profile labels across models. These are descriptive labels from the
++historical classification rule, not mutually exclusive physical regimes:
++for example, the rule labels a near-sustained Wind profile as fragmented.
++
++This recurrence motivates reporting interval structure alongside model
++comparisons. The selected series and fixed learner configurations do not
++identify a causal effect of domain dynamics or demonstrate that learner
++choice is generally unimportant. The ARIMA comparison has been withdrawn
++because its selection rationale and support matching were not established.
+ 
+ \subsection{Ghost-skill and structural periodicity in traffic}
+ 
+-Traffic flow produces the most distinctive profile: $H^*(\mathrm{relax})$ is near-maximal (66--72) across all six model classes, but $H^*(\mathrm{strict})$ is only 3--9, with positive-skill windows displaced to $h \approx 40$--69. This ``ghost-skill'' pattern is model-invariant, confirming that it is a structural feature of the METR-LA dataset rather than a model artefact. The 72-step periodicity of the traffic signal (corresponding to the daily cycle in hourly data) creates narrow windows where lag-based models can exploit the periodic structure, while persistence—which carries forward the most recent observation—becomes a weaker reference at lags near integer multiples of the cycle length.
+-
+-This pattern demonstrates precisely the scenario that motivates reporting both $H^*(\mathrm{relax})$ and $H^*(\mathrm{strict})$. Reporting $H^*(\mathrm{relax})=72$ alone would suggest broad operational usefulness, when in fact contiguous positive skill spans at most 9 horizons. The sign-change count (13--19 across models) and the fragmented interval structure provide a more accurate summary: traffic forecast skill, relative to persistence, is structurally intermittent rather than operationally sustained.
++Traffic speed has near-maximal relaxed reach (66--72 hours) across the five
++tabular models but strict intervals of only 3--6 hours, located between
++$h=40$ and $h=69$. This recurrence is evidence about this sensor, baseline and
++protocol, not proof of a dataset-wide structural mechanism. A daily cycle is
++24 observations in hourly data; 72 hours correspond to three daily cycles.
++Seasonal sensitivity directly examines how the reference affects the profile.
++
++Reporting $H^*(\mathrm{relax})=72$ alone would obscure the short continuous
++windows. The five tabular models have 6--17 positive/non-positive transitions;
++the full curve and interval locations therefore qualify any interpretation
++of the relaxed endpoint as operational reach.
++
++\subsection{Sensitivity to an alternative reference}\label{sec:baseline-sensitivity}
++Table~\ref{tab:revision-baseline} compares persistence with seasonal persistence
++using the stored LightGBM predictions on exactly the same rows. In Load,
++strict continuity changes from zero to four days. In Wind it contracts from
++48 hours at $[1,48]$ to 29 hours at $[20,48]$; in Traffic it expands from four
++hours at $[64,67]$ to 13 hours at $[48,60]$. These changes show that baseline
++sensitivity is distinct from changing the forecasting model. For hourly
++endpoints that are multiples of 24, the two baselines coincide by construction;
++unchanged relaxed reach at those endpoints is not independent evidence of
++baseline invariance. PM$_{2.5}$ and Barcelona calendar sensitivities remain
++unresolved because the frozen input axes contain gaps. The analysis neither
++replaces primary results nor validates a dynamic horizon-selection controller.
++\input{revision_sensitivity_tables}
+ 
+ Fig.~\ref{fig:hstar_heatmap} visualises the contrast between \Hrelax{} and \Hstrict{} across all domains and model classes.
+ 
+ \begin{figure}[t]
+   \centering
+   \includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{fig_hstar_heatmap.pdf}
+-  \caption{\Hrelax{} and \Hstrict{} heatmap across all six domains and all evaluated
+-  model classes. The visualization emphasizes the contrast between sustained
+-  daily PM$_{10}$ predictability (both cities) and the fragmented late positive
+-  clusters in Traffic.}
++  \caption{Historical \Hrelax{} and \Hstrict{} heatmap. It is retained as an
++  audit artifact and includes historical ARIMA rows excluded from the revised
++  comparison. PM$_{2.5}$ and Barcelona entries are observation-index
++  descriptors. It must not be read as a validated calendar-time ranking.}
+   \label{fig:hstar_heatmap}
+ \end{figure}
+ 
+ \subsection{Electric load as a diagnostic boundary case}
+ 
+-The electric load domain illustrates a qualitatively distinct failure mode and exposes a diagnostic boundary of the framework. Ridge achieves \textsc{sustained} classification with $H^*(\mathrm{strict})=7$ across the full evaluated range $h=1$--7, yet 0\% of horizons are DM-significant after BH correction. This is not a contradiction but a consequence of limited statistical power: across $n\approx 281$ rolling origins, the maximum observed skill is 0.061 (at $h=5$), the minimum detectable effect at 80\% power given this sample size is approximately 0.061, and 90\% bootstrap confidence intervals include zero at all seven horizons.
+-
+-This diagnostic is informative in two directions. First, it demonstrates that $H^*(\mathrm{strict})$ can be positive while DM significance is unattainable, alerting practitioners that the descriptor should be accompanied by sample-size context when evaluation windows are short. Second, it distinguishes the Ridge outcome from the remaining models on this domain: LightGBM and ExtraTrees are \textsc{immediate\_collapse} with 0\% DM significance (negative skill without statistical verification), while KNN and MLP are also \textsc{immediate\_collapse} but with 100\% DM significance in the \emph{wrong direction}—they are significantly worse than persistence. MLP additionally exhibits numerical instability on this domain due to unscaled MW-range target values (the target was deliberately left unscaled as part of the fixed protocol), yielding skill values from $-16$ to $-38$.
+-
+-The load domain therefore contributes a necessary category to the empirical taxonomy: \textsc{immediate\_collapse} with statistically confirmed negative skill is a qualitatively different outcome from \textsc{immediate\_collapse} without significance, and both differ from \textsc{sustained} skill that is underpowered. In applied settings, this three-way distinction has practical implications: the first case warrants discarding the model, the second is inconclusive, and the third calls for longer evaluation windows or pooled testing designs.
++Ridge has positive point-estimate skill at all seven Load horizons but no
++stored DM/BH rejection. This separates descriptive positivity from statistical
++evidence. Counts vary between 275 and 281 origins. The lack of rejection does
++not establish equivalence, and no quantitative power or bootstrap assertion
++is made without a traceable analysis. The aggregate's unusually small final
++2015-01-01 value also requires a raw interval-coverage audit before deployment
++claims are warranted.
++
++KNN and MLP have negative skill with two-sided rejections at every Load
++horizon, whereas LightGBM and ExtraTrees have negative skill without stored
++rejections. The MLP's large negative skill occurs on an unscaled aggregate
++target. Target scaling was not changed to improve this outcome. These
++observations must be read with the historical BH batch and sample-support
++limitations described in the evaluation section.
++
++Operationally, consistent deterioration argues against using a model under
++that loss and support; absence of a rejection requires uncertainty assessment
++and cannot by itself justify discarding or deploying a model.
+ 
+ \subsection{PM$_{10}$ cross-city comparison and temporal-regime sensitivity}\label{sec:pm10-discuss}
+ 
+-The PM$_{10}$ results at Madrid and Barcelona provide the strongest evidence for the framework's capacity to characterise sustained predictability. All ten model $\times$ station combinations are classified as \textsc{sustained} or \textsc{delayed\_contiguous}, with DM significance rates of 71--100\%. This uniformity contrasts sharply with the heterogeneity observed in the other four domains.
+-
+-The cross-city comparison also reveals a systematic difference in day-ahead skill: Ridge achieves $\mathrm{Skill}(h=1)=0.079$ in Barcelona versus 0.015 in Madrid. This difference is explained by stronger short-lag serial correlation in the Barcelona series: the lag-1 ACF is 0.644 versus 0.562 in Madrid ($\Delta=+0.083$), and this ACF gap persists through lags 1--7. Because both stations share the same protocol, models, and horizon range, the difference in $\mathrm{Skill}(h=1)$ is attributable to the temporal structure of the series rather than to methodological differences.
+-
+-This observation suggests that $H^*$ descriptors are sensitive to the autocorrelation regime of the target series—a property that is desirable for an operational diagnostic but that also reinforces the protocol-conditional nature of the descriptors. The mechanism connecting autocorrelation structure to skill magnitude is not pursued further in this paper, as it belongs to a different line of investigation; here, we report it as a descriptive finding that illustrates the sensitivity of the framework to domain-level temporal properties.
++The stored PM$_{10}$ results illustrate sustained or delayed contiguous observation-index profiles: all ten model $\times$ station combinations receive those historical labels, with stored DM significance rates of 71--100\%. Unverified imputation and Barcelona's missing dates prevent treating that apparent uniformity as validated calendar-time predictability.
++
++The stored first-step Ridge skill is 0.079 in Barcelona and 0.015 in Madrid.
++The corresponding lag-1 ACF estimates are 0.644 and 0.562. This association
++does not establish a causal explanation: the inputs differ in missing-day
++handling and calendar support, and Barcelona's row lag is not always a
++one-day lag. These differences preclude a controlled cross-city attribution.
++
++The association is descriptive. It does not identify the effect of autocorrelation on the descriptors, because input preparation and support are not controlled between stations. Any mechanistic explanation would require an independently validated comparison.
+ 
+ %% ========================================================================
+ %% §8 LIMITATIONS
+@@ -618,21 +758,23 @@
+ H^* = H^*(\text{dataset}, \text{model}, \text{baseline}, \text{metric}, \text{validation protocol}),
+ \]
+ rather than as intrinsic properties of a forecasting system. Because both baseline competitiveness and evaluation design shape $\mathrm{Skill}(h)$, operational predictability horizons reflect an interaction of system dynamics, baseline choice, metric, and temporal validation protocol. In particular, the metric-sensitivity analysis indicates that changing the error metric from MAE to RMSE can modify not only the numerical values of $H^*(\mathrm{relax})$ and $H^*(\mathrm{strict})$ but, in some domains, the qualitative morphology of $\mathrm{Skill}(h)$ itself; consequently, claims of cross-metric invariance are not warranted in general, and any reported horizon estimates should be interpreted in the context of the full evaluation protocol.
+-The robustness evidence in this paper should be interpreted in domain-
+-and protocol-conditional terms rather than as support for universal model
+-invariance. In wind, the protocol-matched LightGBM versus ARIMA$(2,0,0)$
+-comparison yields the same descriptor tuple
+-($H^*(\mathrm{relax})=48$, $H^*(\mathrm{strict})=48$,
+-$[h_{\mathrm{start}}, h_{\mathrm{end}}]=[1,48]$), indicating strong
+-descriptor preservation under model substitution. In traffic,
+-$H^*(\mathrm{relax})$ remains stable across models ($=72$), but
+-$H^*(\mathrm{strict})$ and interval structure are model-sensitive:
+-LightGBM yields $H^*(\mathrm{strict})=7$ with the longest interval $[46,52]$
+-and 19 sign changes, whereas ARIMA$(2,0,0)$ yields
+-$H^*(\mathrm{strict})=6$ with the longest interval $[38,43]$ and 13 sign
+-changes. For electric load and PM$_{2.5}$, cross-model comparisons are
+-treated only as partial qualitative support unless strict protocol
+-matching is explicitly established.
++The revised audit distinguishes train-window fitting from input preparation.
++The frozen PM$_{2.5}$ sequence equals the raw non-missing subsequence exactly:
++213 gaps remain after row removal, and 5,755 stored predictions have elapsed
++hours different from the declared row horizon. Barcelona has 11 gaps and
++1,400 predictions whose elapsed days differ from their row horizon. Calendar
++forecast conclusions for these inputs therefore require a corrected regular-grid
++evaluation. A sensitivity calculation on existing forecasts cannot repair that
++training/target alignment. Madrid's historical missing-value preparation also
++requires a causal-imputation audit. These are substantive limitations of the
++retained six-domain artifacts, not just rounding or typography issues.
++
++The numerical freeze protects reproducibility of the existing artifacts; it
++does not certify their scientific interpretation. The stored DM/BH batching,
++the coarse rule-based profile labels, the Load terminal-day coverage, and the
++small set of fixed model configurations further restrict inference. No
++prospective health-alert policy, dynamic controller, universal model
++invariance or causal domain mechanism is established.
+ These results show why $H^*(\mathrm{relax})$ alone is not sufficient in
+ fragmented settings. When skill curves are non-monotonic, total positive
+ reach can remain stable even though contiguous usefulness and interval
+@@ -650,7 +792,7 @@
+ This study frames predictability-horizon estimation as an operational
+ forecast-evaluation task, focused on skill relative to an explicit
+ baseline. The contribution is not a new forecasting model but a
+-leakage-free, baseline-relative way to summarise useful predictive reach
++baseline-relative way to summarise useful predictive reach
+ across horizons via the skill curve $\mathrm{Skill}(h)$.
+ Using rolling-origin evaluation against persistence, we report two
+ complementary horizon descriptors: $H^*(\mathrm{relax})$ (the maximum
+@@ -658,11 +800,12 @@
+ (the longest uninterrupted run of positive skill), augmented when needed
+ with interval locations and sign-change structure. Across the six
+ domains, useful predictive reach differs not only in extent but also in
+-continuity and fragmentation. Daily PM$_{10}$ air quality at both Madrid
+-and Barcelona emerged as the most consistently predictable domain tested,
+-with all models achieving $H^*(\mathrm{strict})=6$--7 and DM-verified
+-skill, pointing to actionable multi-day forecast windows for
+-environmental health alerts. Future work will test whether these
++continuity and fragmentation. The regular Wind and Traffic inputs show
++that seasonal reference choice changes strict continuity while stored model
++forecasts remain fixed. The additional PM$_{2.5}$ and PM$_{10}$ artifacts
++illustrate descriptive interval patterns, but input preparation and calendar
++alignment prevent unqualified calendar-time deployment conclusions. Future
++work will test whether these
+ operational skill-profile types recur systematically across broader
+ domain families and evaluation designs, and whether more expressive model
+ classes or multivariate formulations alter the interval structure of
+@@ -672,23 +815,43 @@
+ %% APPENDIX
+ %% ========================================================================
+ \appendix
+-\subsection*{A.1 Metric sensitivity}
+-The main analysis in this paper is based on MAE-derived skill curves, which are a common choice for scale-dependent error evaluation in applied forecasting. To examine how the proposed horizon descriptors behave under a different loss geometry, we recomputed the skill curves using RMSE as the underlying error metric while keeping all other components of the protocol fixed (datasets, models, persistence baseline, and rolling-origin design).
+-The resulting metric sensitivity is heterogeneous across domains. In the electric-load domain, replacing MAE with RMSE extends the positive-skill region from the first horizon to a short early interval, yielding $H^*(\mathrm{relax})=3$, $H^*(\mathrm{strict})=3$, and $[h_{\mathrm{start}},h_{\mathrm{end}}]=[1,3]$ under the present configuration, without altering the broader impression that persistence dominates beyond very short lead times. In the traffic domain, the effect is considerably stronger: the MAE-based fragmented profile becomes a near-contiguous positive-skill regime under RMSE, with $H^*(\mathrm{relax})=72$, $H^*(\mathrm{strict})=63$, and the longest positive interval $[10,72]$, indicating that the qualitative morphology of $\mathrm{Skill}(h)$ itself can depend on the error metric.
+-By contrast, PM$_{2.5}$ and wind retain their main qualitative profile types under RMSE. For PM$_{2.5}$, RMSE preserves the delayed-emergence pattern, with $H^*(\mathrm{relax})=48$, $H^*(\mathrm{strict})=18$, and the longest positive interval $[31,48]$. For wind, the skill curve remains fully positive across the evaluated range, with $H^*(\mathrm{relax})=48$, $H^*(\mathrm{strict})=48$, and $[1,48]$. Taken together, these observations suggest that the proposed descriptors should be interpreted as protocol-conditional summaries: the choice of error metric is a substantive component of the operational definition of $H^*(\mathrm{relax})$ and $H^*(\mathrm{strict})$, rather than a secondary implementation detail, and cross-metric invariance cannot be assumed uniformly across domains.
++\subsection*{A.1 Metric sensitivity}\label{sec:metric-sensitivity}
++MAE and RMSE were aggregated from the same stored per-origin predictions,
++with all forecast rows and persistence values unchanged. No models were
++retrained. The complete five-model diagnostics and input/output hashes are
++provided in the replication audit; Table~\ref{tab:revision-rmse} shows
++LightGBM for a compact comparison.
++
++For Load, RMSE yields $H^*(\mathrm{relax})=H^*(\mathrm{strict})=2$ with
++interval $[1,2]$, while MAE yields no positive horizon. For Traffic, RMSE
++yields $72/53$ at $[20,72]$, compared with $72/4$ at $[64,67]$ under MAE.
++Wind remains $48/48$ at $[1,48]$. The PM$_{2.5}$ sequence gives $48/19$
++at $[30,48]$ under both losses; its sign-change count changes from one to
++three, and its axis remains observation-based. These current results replace
++the incompatible numerical claims inherited from an earlier experiment.
++Madrid changes from $7/6$ to $7/7$ for LightGBM, and Barcelona remains
++$7/7$ observation steps. These diagnostics address loss sensitivity only;
++they cannot establish temporal validity or validate historical imputation.
++\input{revision_rmse_table}
+ 
+ %% ========================================================================
+ %% DECLARATIONS
+ %% ========================================================================
+ \section*{Declarations}
+ \subsection*{Funding}
+-The author did not receive support from any organisation for the submitted work.
++The authors did not receive support from any organisation for the submitted work.
+ \subsection*{Competing Interests}
+-The author declares that there are no relevant financial or non-financial competing interests to disclose.
++The authors declare that there are no relevant financial or non-financial competing interests to disclose.
+ \subsection*{Ethics Approval}
+ Not applicable. This study is based exclusively on publicly available benchmark datasets. It did not involve human participants, animals, patient data, or primary data collection.
+ \subsection*{Data Availability}
+-All datasets used in this study are publicly available:
++The local replication package has a single data entry point,
++\texttt{data/README.md}, and a machine-readable checksum manifest,
++\texttt{data/MANIFEST.tsv}. Exact processed inputs are assembled into one
++local archive for review. Public release of that archive has not yet been
++verified, and it must not be claimed that every input is already cached in
++the public repository. Wind and Traffic retrieval instructions are retained
++in the recovered four-domain revision package. The original sources are:
+ \begin{itemize}
+   \item \textbf{PM$_{2.5}$:} Beijing PM$_{2.5}$ dataset \citep{chen2015beijingpm25}, UCI Machine Learning Repository, \url{https://doi.org/10.24432/C5JS49}.
+   \item \textbf{Electric Load:} UCI Electricity Load Diagrams 2011--2014 \citep{trindade2015}, \url{https://doi.org/10.24432/C58C86}.

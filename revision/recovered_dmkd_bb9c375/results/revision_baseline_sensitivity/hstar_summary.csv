@@ -1,0 +1,9 @@
+domain,baseline,h_relax,h_strict,h_start,h_end,sign_changes
+load,persistence,1,1,1,1,0
+load,seasonal_persistence,1,1,1,1,0
+pm25,persistence,48,22,27,48,5
+pm25,seasonal_persistence,48,24,25,48,2
+traffic,persistence,72,7,46,52,19
+traffic,seasonal_persistence,72,14,48,61,14
+wind,persistence,48,48,1,48,0
+wind,seasonal_persistence,48,30,19,48,2

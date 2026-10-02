@@ -1,0 +1,45 @@
+{
+  "status": "VERIFIED_PM25_TEXT_FIGURE_INCONSISTENCY",
+  "date": "2026-10-01",
+  "pdf": "/home/fede/Descargas/paper2_H_-1.pdf",
+  "pdf_sha256": "464916a0b2f8d780343cc4721eee338623aee52fa3a8b292f914a2c13bd629f8",
+  "figure_number": 3,
+  "pdf_page": 12,
+  "text_descriptors_page_11": {
+    "h_relax": 48,
+    "h_strict": 13,
+    "h_start": 36,
+    "h_end": 48
+  },
+  "figure_csv_descriptors": {
+    "h_relax": 48,
+    "h_strict": 22,
+    "h_start": 27,
+    "h_end": 48
+  },
+  "comparisons": [
+    {
+      "csv": "results/pm25_lightgbm_full_skill.csv",
+      "csv_sha256": "be1b595c1e76bed2aedb64f3996895428af71e6212b28235b2cd26804dba9b09",
+      "pdf_points": 48,
+      "max_residual_points": 4.0253225108699553e-07,
+      "rmse_residual_points": 2.1076683919976268e-07,
+      "zero_line_residual_points": 6.381819162015745e-08,
+      "slope": -265.67908529090363,
+      "matches_vector_geometry": true
+    },
+    {
+      "csv": "results/pm25_real_skill.csv",
+      "csv_sha256": "56c4bde28e10726de5e1d5879922f46b4687ded05ca9194f36bf8fb9720cbe9d",
+      "pdf_points": 48,
+      "max_residual_points": 38.78691916530542,
+      "rmse_residual_points": 18.140317639715498,
+      "zero_line_residual_points": 13.282400289642197,
+      "slope": -274.9714899821039,
+      "matches_vector_geometry": false
+    }
+  ],
+  "model_fits": 0,
+  "prediction_changes": 0,
+  "required_action": "Reconcile text/table to the confirmed evidence version; do not invent a support-effect explanation"
+}

@@ -1,0 +1,102 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\usepackage{microtype}
+\setlength{\emergencystretch}{3em}
+\definecolor{responseblue}{RGB}{22,74,130}
+\newcommand{\comment}[2]{\subsection*{#1}\begin{quote}\emph{#2}\end{quote}}
+\newcommand{\response}[1]{\noindent\textcolor{responseblue}{\textbf{Response:}} #1\par\medskip}
+\newcommand{\location}[1]{\noindent\textbf{Location / evidence:} #1\par\medskip}
+\title{DMKD: Point-by-point response working draft}
+\author{Federico Garcia Crespi and Julio Alberto Ramos Martinez}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\noindent\textbf{Internal review copy: not cleared for submission.}
+Manuscript ID: \nolinkurl{1e58c388-d7ec-4084-b792-df20a48e3e75}.
+The submitted title is ``Baseline-Relative Predictability Horizons for
+Cross-Domain Forecast Evaluation.'' The local six-domain draft has a different
+title and experimental version. A recovered September four-domain revision
+is preserved separately. Final scope, author metadata and Overleaf
+synchronization must be reconciled before submission. Locations below name
+sections; no final page or line numbers are invented.
+
+\medskip\noindent Dear Editor and Reviewers,
+
+We thank you for your careful assessment. This working response records the
+changes made and the remaining checks; it does not claim complete resolution
+of the scientific gates.
+
+\section*{Response to the Editor}
+\comment{E1: Accurate reporting and limitations}{Please ensure the results are accurately reported, any overstated conclusions are rewritten and the limitations of the work fully explained.}
+\response{We corrected the local Methods to describe the five stored tabular models, actual input sizes and horizon-dependent counts. Unsupported causal, invariance and deployment claims have been narrowed. Historical ARIMA comparisons are excluded because order selection and matched support were not established. MAE/RMSE and seasonal-reference diagnostics were computed from unchanged stored forecasts, with zero model fits. The audit identified calendar-support defects in the six-domain version: PM2.5 removes missing hourly rows and Barcelona omits dates. These inputs cannot support unqualified calendar-time claims. Finalisation remains blocked pending evidence-version reconciliation and input-validity checks.}
+\location{Datasets and Experimental Setup; Discussion; Limitations; Appendix A.1; revision acceptance report.}
+\comment{E2: Required submission files}{The original submitting author must upload a point-by-point response to the comments as a PDF file. Any files (including the manuscript) that have changed based on the comments will also need to be uploaded again. Do not include tracked changes in your manuscript file.}
+\response{The clean local working manuscript, this response, editable sources, change log and local replication inputs are prepared for review. They are not an approved resubmission. A marked version must compare the confirmed submitted source with the final synchronized revision, rather than an unrelated historical draft. No upload has been performed.}
+
+\section*{Reviewer 1}
+\comment{R1.1: Punctuation}{In section 3.3.1. Change ``. '' to ``:'' before the explanation and mathematical description of the relaxed and strict horizons.}
+\response{Both descriptor labels now use a colon.}
+\location{Problem Formulation, Operational definitions.}
+\comment{R1.2: Equation and intermediate gaps}{In section 3.3.1 in equation (5) include the condition of including the non-positive intermediate skills within the horizon as the definition using equation (5) does not represent what H*(relax) is extracting from the curve.}
+\response{The equation defines the last positive endpoint, the relaxed span from step one to that endpoint, and its non-positive intermediate members. Inclusion in the span does not label those intermediate horizons skillful. This clarification preserves the frozen numerical descriptor.}
+\location{Operational definitions; \texttt{src/compute\_hstar.py}.}
+\comment{R1.3: Clarify relaxed reach}{In this definition of relax H* reiterate for clarity purposes here that it considers all the time steps before as it skill score once the upper bound of the interval is positive as seen in the PM2.5 and the traffic domain results.}
+\response{The surrounding prose explicitly distinguishes the relaxed span from its positive-skill subset and refers to delayed PM2.5 and fragmented Traffic examples. A positive endpoint does not justify using the model at every preceding step.}
+\location{Operational definitions; Operational interpretation and actionability.}
+\comment{R1.4: Units}{Keep units throughout in Table 2.}
+\response{Table 2 gives concentration units, Wind in metres per second, Traffic in mph and the exact Load aggregate scale. UCI specifies 15-minute kW readings and division by four for kWh. The producer sums those readings; the manuscript no longer calls the stored target daily mean MW. No input was rescaled.}
+\location{Table 2; \texttt{src/aggregate\_uci\_electricity.py}; UCI metadata.}
+\comment{R1.5: Figure citations}{Figures 1-3 are not referenced in text.}
+\response{All three figures are explicitly referenced in the associated prose. Existing references were retained without duplication.}
+\location{Operational definitions; Temporal validation protocol; PM2.5 results.}
+\comment{R1.6: Alternative baselines}{An evaluation of other bassline choices is warranted, other than persistence.}
+\response{Seasonal persistence uses fixed periods of 24 hours for Wind/Traffic and seven days for Load. Its source value is available at or before the origin. Existing LightGBM forecasts are reused on identical targets and rows. In the six-domain artifact version, strict continuity changes from 0 to 4 days in Load, 48 to 29 hours in Wind, and 4 to 13 hours in Traffic. At multiples of the period the references coincide, so unchanged relaxed endpoints do not prove baseline invariance. PM2.5 calendar sensitivity is not closed while its input axis is compressed. The recovered four-domain revision has a separate four-domain sensitivity with different support and numbers. This response remains provisional pending confirmation of the active version.}
+\location{Baseline models; Sensitivity to an alternative reference; Table 4; revision evidence manifest.}
+\comment{R1.7: ARIMA order}{For some datasets you used ARIMA(2,0,0) which is essentially an AR(2) model why did you choose this parameter? Did you do an ACF plot for this data?}
+\response{Available evidence does not document selection of AR(2) using ACF/PACF, information criteria or validation. We do not assert such a rationale. The current ARIMA artifact also uses different origins from the tabular evaluation. We therefore withdraw the empirical comparison and its robustness claims, retaining historical files for audit. No new ARIMA fit was used to construct a retrospective justification.}
+\location{Models; Wind interpretation; Discussion; main results table.}
+\comment{R1.8: Practical usefulness}{State or reiterate the practical usefulness and use cases of each skill- relaxed and strict.}
+\response{A dedicated subsection describes relaxed reach as the outer positive endpoint and strict reach, with its location, as the longest continuous positive-skill window. Traffic LightGBM's four-hour interval at [64,67] does not imply usefulness over all 72 hours. Any operational choice additionally needs gain magnitude, uncertainty and an appropriate decision loss.}
+\location{Operational interpretation and actionability.}
+\comment{R1.9: Information beyond fixed horizons}{Also, examine what can be done with these patterns that regular fixed horizon accuracy summaries cannot do.}
+\response{We explain delayed onset, intervening gaps, fragmented positive islands, and interval location and duration. These structural summaries describe existing forecast evidence; they do not create predictive information or validate deployment by themselves.}
+\location{Operational interpretation and actionability; Discussion.}
+\comment{R1.10: Dynamic use and feedback}{For example, can you have the persistence baseline and skill score -- relaxes and strict -- be used to determine the various h steps to predict in a rolling window approach for a dynamical forecast of the time series? Or would this create a feedback loop and cause overfitting. Explore and if feasible add to the paper to make it more substantial and unique.}
+\response{We describe estimating a policy on historical validation data, freezing it for later forecasts and updating it only from errors with realised targets. Selecting and scoring horizons on the same errors creates adaptive selection bias. Prospective, prequential or nested validation must separate policy selection from assessment. No dynamic controller is claimed as validated here.}
+\location{Operational interpretation and actionability; Limitations.}
+
+\section*{Reviewer 2}
+\comment{R2.1: Actionability}{The paper needs a more explicit explanation of the actionability of its findings.}
+\response{The new subsection distinguishes the uses of relaxed and strict reach and states the need to assess gain magnitude and uncertainty. The Conclusion no longer claims validated environmental-health alert windows from unverified input preparation.}
+\location{Operational interpretation and actionability; Conclusion.}
+\comment{R2.2: References}{Figures 1 and 2 are not referenced in the text.}
+\response{Both are explicitly introduced in their associated prose. Figure 3 is referenced as requested by Reviewer 1.}
+\location{Operational definitions; Temporal validation protocol.}
+\comment{R2.3: Figure 1}{In fig 1, parts of the line obscure some of the text.}
+\response{The local review package uses the recovered September redrawing, with protected callout boxes. Its mathematical content is unchanged. The final compiled rendering is checked visually.}
+\location{Figure 1; recovered figure source.}
+\comment{R2.4: Figure 2}{In fig 2, the text does not fit inside the boxes.}
+\response{The local review package uses the recovered enlarged boxes and wrapped text, preserving the evaluation sequence.}
+\location{Figure 2; recovered figure source.}
+\comment{R2.5: Other references}{If possible please evaluate alternative bassline options beyond persistence.}
+\response{The seasonal-reference diagnostic in R1.6 is included on unchanged forecast rows for regular-grid Load, Wind and Traffic. PM2.5 calendar sensitivity remains blocked in the six-domain version. The recovered four-domain revision has a distinct analysis; those versions will not be combined.}
+\location{Sensitivity to an alternative reference; Table 4.}
+\comment{R2.6: Data availability}{``Data Availability'' It is too much of a burden to have to go to 4 or 5 sources. Please cache all the data in a site you control and point to it (stop press, it seems you do that on the code page. Just make this clear in your paper).}
+\response{A single local archive contains the six exact processed inputs with a README and checksum manifest. The manuscript distinguishes local assembly from public caching: Wind and Traffic are Git-ignored and no public release has been performed. Original-source attribution is retained. Publication to an author-controlled location, redistribution verification and independent download checks remain necessary to fulfil the public-caching request.}
+\location{Data Availability; \texttt{data/README.md}; \texttt{data/MANIFEST.tsv}; local replication archive.}
+\comment{R2.7: ARIMA rationale}{For certain datasets, ARIMA(2,0,0)---effectively an AR(2) model---was applied. Could you explain the rationale for selecting these parameters?}
+\response{We could not substantiate the order-selection rationale and excluded the ARIMA numerical comparison and robustness claims, as explained in R1.7. Historical artifacts remain unchanged and no parameter-selection experiment was performed.}
+\location{Models; Discussion; main results table.}
+
+\section*{Internal acceptance status}
+Every reviewer request is accounted for. Manuscript identity, calendar
+support, historical PM10 preprocessing, Load terminal-day coverage and public
+data release remain open. The approximately 25,872 prospective fits remain
+unauthorised. Final page/line locations and submission wording will be set
+after these gates and Overleaf synchronization are resolved.
+\end{document}

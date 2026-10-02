@@ -1,0 +1,30 @@
+% Table 2: Baseline definition in each domain
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{@{}l l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+Domain / target unit & Baseline & Mathematical / ML definition & Illustrative explanation \\
+\midrule
+PM$_{2.5}$ ($\mu$g m$^{-3}$) & Persistence &
+  Last observation carried forward: $\hat{y}^{\mathrm{base}}_{t+h} = y_t$. &
+  If $y_t = 42$~$\mu$g m$^{-3}$, every lead uses 42~$\mu$g m$^{-3}$. \\
+Load (stored aggregate) & Persistence &
+  Last observation carried forward: $\hat{y}^{\mathrm{base}}_{t+h} = y_t$. &
+  Sum of client 15-minute kW readings per day. Dividing by four gives daily energy in kWh. \\
+Wind (m s$^{-1}$) & Persistence &
+  Last observation carried forward: $\hat{y}^{\mathrm{base}}_{t+h} = y_t$. &
+  If $y_t = 6.8$~m s$^{-1}$, every lead uses 6.8~m s$^{-1}$. \\
+Traffic (mph) & Persistence &
+  Last observation carried forward: $\hat{y}^{\mathrm{base}}_{t+h} = y_t$. &
+  If $y_t = 57$~mph, every lead uses 57~mph. \\
+PM$_{10}$ ($\mu$g m$^{-3}$) & Persistence &
+  Last observation carried forward: $\hat{y}^{\mathrm{base}}_{t+h} = y_t$. &
+  If $y_t = 26$~$\mu$g m$^{-3}$, every lead uses 26~$\mu$g m$^{-3}$. \\
+\bottomrule
+\end{tabularx}
+\caption{Persistence definition and target units. Electric load retains the exact stored scale of the historical aggregation; it is not a daily mean in MW. The kWh conversion follows UCI's 15-minute kW convention. No experimental values were rescaled.}
+\label{tab:baselines}
+\end{table}

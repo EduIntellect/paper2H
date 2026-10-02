@@ -1,0 +1,5 @@
+This is BibTeX, Version 0.99e (TeX Live 2026)
+The top-level auxiliary file: manuscript_working.aux
+The style file: sn-basic.bst
+Database file #1: sn-bibliography.bib
+sn-basic.bst [2024/07/19 v1.1 bibliography style]

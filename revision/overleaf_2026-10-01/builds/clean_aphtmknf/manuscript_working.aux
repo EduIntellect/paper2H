@@ -1,0 +1,125 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\Newlabel{1}{1}
+\Newlabel{2}{2}
+\citation{hewamalage2023dmkd}
+\citation{green2025stratify,kreuzer2025trend}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.1}\protected@file@percent }
+\citation{hyndman2006}
+\citation{petropoulos2022}
+\citation{gneiting2007}
+\citation{diebold1995}
+\citation{makridakis2020}
+\citation{godahewa2021}
+\citation{hyndman2018}
+\citation{hewamalage2023dmkd}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{3}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Forecast evaluation metrics}{3}{subsection.2.1}\protected@file@percent }
+\citation{murphy1993}
+\citation{tashman2000}
+\citation{cerqueira2020,bergmeir2012}
+\citation{kapoor2023leakage}
+\citation{lorenz1969}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Forecast skill evaluation}{4}{subsection.2.2}\protected@file@percent }
+\citation{makridakis2020,godahewa2021}
+\citation{hyndman2006,murphy1993,tashman2000}
+\citation{makridakis2020,godahewa2021}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Predictability limits}{5}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Problem Formulation}{5}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Operational Predictability Horizon}{6}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Operational definitions:}{6}{section*.2}\protected@file@percent }
+\newlabel{eq:relaxed_horizon}{{5}{6}{Operational definitions:}{equation.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Conceptual illustration of a baseline-relative skill curve $\mathrm  {Skill}(h)$ with both positive and negative regions. The relaxed horizon $H^*(\mathrm  {relax})$ is the maximum evaluated horizon with $\mathrm  {Skill}(h) > 0$, whereas the strict horizon $H^*(\mathrm  {strict})$ is the length of the longest contiguous positive-skill interval $[h_{\mathrm  {start}},h_{\mathrm  {end}}]$.}}{7}{figure.caption.3}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:hstar_conceptual}{{1}{7}{Conceptual illustration of a baseline-relative skill curve $\mathrm {Skill}(h)$ with both positive and negative regions. The relaxed horizon $H^*(\mathrm {relax})$ is the maximum evaluated horizon with $\mathrm {Skill}(h) > 0$, whereas the strict horizon $H^*(\mathrm {strict})$ is the length of the longest contiguous positive-skill interval $[h_{\mathrm {start}},h_{\mathrm {end}}]$}{figure.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Operational interpretation and actionability}{7}{subsection.3.2}\protected@file@percent }
+\citation{murphy1993,hyndman2018}
+\citation{hyndman2006}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Evaluation Framework}{8}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Baseline models}{8}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Evaluation metrics}{8}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Temporal validation protocol}{8}{subsection.4.3}\protected@file@percent }
+\citation{tashman2000}
+\citation{trindade2015}
+\citation{trindade2015}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Schematic of the leakage-free rolling-origin evaluation protocol. Each origin uses a past-only training window with train-only preprocessing, generates $h$-step-ahead forecasts for the model and the persistence baseline, and then rolls the origin forward in time.}}{9}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:rolling_origin}{{2}{9}{Schematic of the leakage-free rolling-origin evaluation protocol. Each origin uses a past-only training window with train-only preprocessing, generates $h$-step-ahead forecasts for the model and the persistence baseline, and then rolls the origin forward in time}{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Datasets}{9}{section.5}\protected@file@percent }
+\citation{li2018dcrnn}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Public datasets used for cross-domain predictability analysis. In the energy domain, we use the UCI Electricity Load Diagrams 2011--2014 dataset \citep  {trindade2015}. The aggregate daily series is obtained by summing all 370 client series and resampling to daily totals, starting from 2013-03-06, which is the first date with $\geq $90\% active clients over seven consecutive days.}}{10}{table.caption.6}\protected@file@percent }
+\newlabel{tab:datasets}{{1}{10}{Public datasets used for cross-domain predictability analysis. In the energy domain, we use the UCI Electricity Load Diagrams 2011--2014 dataset \citep {trindade2015}. The aggregate daily series is obtained by summing all 370 client series and resampling to daily totals, starting from 2013-03-06, which is the first date with $\geq $90\% active clients over seven consecutive days}{table.caption.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Data representation}{10}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Experimental Setup}{10}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Forecast horizons}{10}{subsection.6.1}\protected@file@percent }
+\citation{ke2017lightgbm}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Models}{11}{subsection.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Persistence definition and verified target units in each domain. Electric-load values are retained on the exact scale produced by the historical aggregation script; the stated conversion follows the source dataset's 15-minute kW sampling.}}{11}{table.caption.7}\protected@file@percent }
+\newlabel{tab:baseline_domains}{{2}{11}{Persistence definition and verified target units in each domain. Electric-load values are retained on the exact scale produced by the historical aggregation script; the stated conversion follows the source dataset's 15-minute kW sampling}{table.caption.7}{}}
+\citation{chen2015beijingpm25}
+\citation{hong2016}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Reproducibility rules}{12}{subsection.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}PM$_{2.5}$ Domain Results}{12}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}PM$_{2.5}$ experimental setting}{12}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Observed skill behavior}{12}{subsection.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Interpretation}{12}{subsection.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Electric Load Domain Results}{12}{section.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Energy experimental setting}{12}{subsection.8.1}\protected@file@percent }
+\citation{draxl2015}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces PM$_{2.5}$ LightGBM skill curve. Short positive intervals at $[7,11]$ and $[13,14]$ precede the longest positive interval, $[27,48]$. The relaxed endpoint is 48 hours and the strict interval length is 22 hours.}}{13}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:skill-pm25}{{3}{13}{PM$_{2.5}$ LightGBM skill curve. Short positive intervals at $[7,11]$ and $[13,14]$ precede the longest positive interval, $[27,48]$. The relaxed endpoint is 48 hours and the strict interval length is 22 hours}{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Observed skill behavior}{13}{subsection.8.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Interpretation}{13}{subsection.8.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Electric-load skill curve $\mathrm  {Skill}(h)$ under the leakage-free rolling-origin protocol. The canonical cross-domain analysis uses $H_{\max }=1$, yielding $H^*(\mathrm  {relax})=1$ and $H^*(\mathrm  {strict})=1$ at $h=1$. The extended view up to $h=7$ is shown only to illustrate the rapid decay of positive skill against persistence beyond the first day.}}{14}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:skill_load}{{4}{14}{Electric-load skill curve $\mathrm {Skill}(h)$ under the leakage-free rolling-origin protocol. The canonical cross-domain analysis uses $H_{\max }=1$, yielding $H^*(\mathrm {relax})=1$ and $H^*(\mathrm {strict})=1$ at $h=1$. The extended view up to $h=7$ is shown only to illustrate the rapid decay of positive skill against persistence beyond the first day}{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Wind Domain Results}{14}{section.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}Wind experimental setting}{14}{subsection.9.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.2}Observed skill behavior}{14}{subsection.9.2}\protected@file@percent }
+\citation{li2018dcrnn}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Wind skill curve $\mathrm  {Skill}(h)$ under the leakage-free rolling-origin protocol. The skill-profile pattern shows sustained positive skill across the evaluated horizon range.}}{15}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:skill-wind}{{5}{15}{Wind skill curve $\mathrm {Skill}(h)$ under the leakage-free rolling-origin protocol. The skill-profile pattern shows sustained positive skill across the evaluated horizon range}{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.3}Interpretation}{15}{subsection.9.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {10}Traffic Domain Results}{15}{section.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.1}Traffic experimental setting}{15}{subsection.10.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.2}Observed skill behavior}{15}{subsection.10.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Traffic skill curve $\mathrm  {Skill}(h)$ under the leakage-free rolling-origin protocol. The skill-profile pattern shows fragmented positive intervals: brief, separated stretches of positive skill interspersed with negative regions.}}{16}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:skill-traffic}{{6}{16}{Traffic skill curve $\mathrm {Skill}(h)$ under the leakage-free rolling-origin protocol. The skill-profile pattern shows fragmented positive intervals: brief, separated stretches of positive skill interspersed with negative regions}{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.3}Interpretation}{16}{subsection.10.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Comparison of predictability horizons across domains (PM$_{2.5}$, electric load, wind, and traffic).}}{17}{table.caption.13}\protected@file@percent }
+\newlabel{tab:results}{{3}{17}{Comparison of predictability horizons across domains (PM$_{2.5}$, electric load, wind, and traffic)}{table.caption.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.4}Alternative-baseline sensitivity}{17}{subsection.10.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {11}Discussion}{17}{section.11}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Baseline sensitivity on exact common support. $n_h$ is the number of aligned forecast origins at each horizon (a range is shown when it varies with $h$). The persistence rows in this table are recomputed on the same support as seasonal persistence and therefore need not equal the primary full-support persistence descriptors.}}{18}{table.caption.15}\protected@file@percent }
+\newlabel{tab:baseline-sensitivity}{{4}{18}{Baseline sensitivity on exact common support. $n_h$ is the number of aligned forecast origins at each horizon (a range is shown when it varies with $h$). The persistence rows in this table are recomputed on the same support as seasonal persistence and therefore need not equal the primary full-support persistence descriptors}{table.caption.15}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {12}Limitations}{19}{section.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {13}Conclusion}{20}{section.13}\protected@file@percent }
+\citation{trindade2015}
+\citation{chen2015beijingpm25}
+\citation{draxl2015}
+\citation{li2018dcrnn}
+\bibstyle{sn-basic}
+\bibdata{sn-bibliography}
+\bibcite{bergmeir2012}{{1}{2012}{{Bergmeir and Ben{\'i}tez}}{{}}}
+\bibcite{cerqueira2020}{{2}{2020}{{Cerqueira et~al.}}{{Cerqueira, Torgo, and Mozeti{\v {c}}}}}
+\bibcite{chen2015beijingpm25}{{3}{2015}{{Chen}}{{}}}
+\bibcite{diebold1995}{{4}{1995}{{Diebold and Mariano}}{{}}}
+\bibcite{draxl2015}{{5}{2015}{{Draxl et~al.}}{{Draxl, Hodge, Clifton, and McCaa}}}
+\bibcite{gneiting2007}{{6}{2007}{{Gneiting and Raftery}}{{}}}
+\bibcite{godahewa2021}{{7}{2021}{{Godahewa et~al.}}{{Godahewa, Bergmeir, Webb, Hyndman, and Montero-Manso}}}
+\bibcite{green2025stratify}{{8}{2025}{{Green et~al.}}{{Green, Stevens, Abdallah, and Silva~Filho}}}
+\bibcite{hewamalage2023dmkd}{{9}{2023}{{Hewamalage et~al.}}{{Hewamalage, Ackermann, and Bergmeir}}}
+\bibcite{hong2016}{{10}{2016}{{Hong and Fan}}{{}}}
+\bibcite{hyndman2018}{{11}{2018}{{Hyndman and Athanasopoulos}}{{}}}
+\bibcite{hyndman2006}{{12}{2006}{{Hyndman and Koehler}}{{}}}
+\bibcite{kapoor2023leakage}{{13}{2023}{{Kapoor and Narayanan}}{{}}}
+\bibcite{ke2017lightgbm}{{14}{2017}{{Ke et~al.}}{{Ke, Meng, Finley, Wang, Chen, Ma, Ye, and Liu}}}
+\bibcite{kreuzer2025trend}{{15}{2025}{{Kreuzer et~al.}}{{Kreuzer, Zdravkovic, and Papapetrou}}}
+\bibcite{li2018dcrnn}{{16}{2018}{{Li et~al.}}{{Li, Yu, Shahabi, and Liu}}}
+\bibcite{lorenz1969}{{17}{1969}{{Lorenz}}{{}}}
+\bibcite{makridakis2020}{{18}{2020}{{Makridakis et~al.}}{{Makridakis, Spiliotis, and Assimakopoulos}}}
+\bibcite{murphy1993}{{19}{1993}{{Murphy}}{{}}}
+\bibcite{petropoulos2022}{{20}{2022}{{Petropoulos et~al.}}{{Petropoulos, Apiletti, Assimakopoulos, Babai, Barrow, Ben~Taieb, Bergmeir, Bessa, Bijak, Boylan et~al.}}}
+\bibcite{tashman2000}{{21}{2000}{{Tashman}}{{}}}
+\bibcite{trindade2015}{{22}{2015}{{Trindade}}{{}}}
+\gdef \@abspage@last{23}

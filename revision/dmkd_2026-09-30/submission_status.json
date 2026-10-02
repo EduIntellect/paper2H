@@ -1,0 +1,17 @@
+{
+  "status": "NOT_READY_FOR_SUBMISSION",
+  "model_fits": 0,
+  "clean_directory_compile": "PASS",
+  "build_directory": "/home/fede/repos/paper2H/revision/dmkd_2026-09-30/clean_build_wabyn6o8",
+  "primary_frozen_artifacts": "UNCHANGED",
+  "version": "ARCHIVED six-domain working revision; author-supplied submitted PDF confirms four-domain scope",
+  "gates": [
+    "submitted-source identity and Overleaf reconciliation",
+    "PM2.5 compressed time axis",
+    "Barcelona missing-day axis",
+    "Madrid causal preprocessing",
+    "Load final-day coverage",
+    "public data release and redistribution verification",
+    "final reviewer page/line mapping and marked manuscript"
+  ]
+}

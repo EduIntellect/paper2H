@@ -1,0 +1,20 @@
+reviewer	comment_id	issue	evidence_needed	analysis_needed	manuscript_change	figure_table_change	response_status	validation_status
+Editor	E1	Accurate results and restrained conclusions	Canonical artifacts and claim audit	Reproduction and provenance audit	Correct configurations; narrow causal and invariance language	Synchronize canonical tables and figures	DONE	VERIFIED
+Editor	E2	Complete limitations	Protocol scope and sensitivity evidence	Scope audit	Expand baseline/metric/Hmax/dataset/model/dynamic-policy limitations	None	DONE	VERIFIED
+Reviewer 1	R1.1	Colon before relaxed and strict definitions	Submitted and revised source	Text inspection	Replace punctuation	None	DONE	VERIFIED
+Reviewer 1	R1.2	Equation 5 must permit non-positive intermediate skill	H* implementation and tests	Semantic verification	Define H+ and max(H+ union 0); state gap semantics	Regenerate conceptual figure	DONE	VERIFIED
+Reviewer 1	R1.3	Reiterate relaxed reach despite gaps	H* implementation	Text inspection	Add explicit prose and operational interpretation	Figure 1 annotation	DONE	VERIFIED
+Reviewer 1	R1.4	Units throughout Table 2	Official metadata and preprocessing	Unit provenance audit	Clarify load stored scale	Add PM2.5 µg/m3, wind m/s, traffic mph	DONE	VERIFIED
+Reviewer 1	R1.5	Figures 1–3 referenced	LaTeX references	Reference audit	Add explicit references	None	DONE	VERIFIED
+Reviewer 1	R1.6	Alternative baselines	Pre-specified baseline and exact common support	Four-domain seasonal-persistence sensitivity	Add baseline-sensitivity methods/results/limitations	Add compact sensitivity table	DONE	VERIFIED
+Reviewer 1	R1.7	Why ARIMA(2,0,0); was ACF examined?	Git/code/history provenance	ARIMA audit	Remove unsupported ARIMA robustness claims	Remove ARIMA numerical entries	DONE	VERIFIED
+Reviewer 1	R1.8	Practical utility of relaxed and strict H*	Verified definitions and examples	Actionability analysis	Add dedicated operational interpretation subsection	None	DONE	VERIFIED
+Reviewer 1	R1.9	Information beyond fixed horizons	Full skill-curve semantics	Structural comparison	Explain gaps, onset, fragmentation, location and continuity	None	DONE	VERIFIED
+Reviewer 1	R1.10	Dynamic horizon use and feedback/overfitting	Evaluation-design analysis	Bias analysis	Add frozen-policy workflow and prospective/prequential/nested caveat	None	DONE	VERIFIED
+Reviewer 2	R2.1	Actionability	Verified H* semantics	Operational interpretation	Add dedicated subsection and bounded examples	None	DONE	VERIFIED
+Reviewer 2	R2.2	Figures 1 and 2 references	LaTeX references	Reference audit	Add explicit references	None	DONE	VERIFIED
+Reviewer 2	R2.3	Figure 1 overlap	Rendered submitted and revised figures	Visual QA	None	Regenerate with protected callout boxes	DONE	VERIFIED
+Reviewer 2	R2.4	Figure 2 box overflow	Rendered submitted and revised figures	Visual QA	None	Regenerate with enlarged boxes and wrapped text	DONE	VERIFIED
+Reviewer 2	R2.5	Alternative baselines	Pre-specified baseline and exact common support	Four-domain seasonal-persistence sensitivity	Add sensitivity subsection	Add compact table	DONE	VERIFIED
+Reviewer 2	R2.6	Unified Data Availability	Input hashes, licenses and scripts	Reproducibility audit	Point to one data README and manifest	Add data/MANIFEST.tsv	DONE	VERIFIED
+Reviewer 2	R2.7	ARIMA rationale	Git/code/history provenance	ARIMA audit	Remove comparison because no rationale and wind protocol mismatch	Remove ARIMA numerical claims	DONE	VERIFIED

@@ -1,0 +1,24 @@
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llcccl@{}}
+\toprule
+Domain & Baseline & Common $n_h$ & $H^*_{\mathrm{relax}}$ & $H^*_{\mathrm{strict}}$ & Longest interval \\
+\midrule
+PM$_{2.5}$ & Persistence & 328--346 & 48 & 22 & $[27,48]$ \\
+PM$_{2.5}$ & Seasonal persistence & 328--346 & 48 & 24 & $[25,48]$ \\
+\addlinespace[2pt]
+Load & Persistence & 301 & 1 & 1 & $[1,1]$ \\
+Load & Seasonal persistence & 301 & 1 & 1 & $[1,1]$ \\
+\addlinespace[2pt]
+Wind & Persistence & 350--354 & 48 & 48 & $[1,48]$ \\
+Wind & Seasonal persistence & 350--354 & 48 & 30 & $[19,48]$ \\
+\addlinespace[2pt]
+Traffic & Persistence & 102--108 & 72 & 7 & $[46,52]$ \\
+Traffic & Seasonal persistence & 102--108 & 72 & 14 & $[48,61]$ \\
+\bottomrule
+\end{tabular}
+\caption{Baseline sensitivity on exact common support. $n_h$ is the number of aligned forecast origins at each horizon (a range is shown when it varies with $h$). The persistence rows in this table are recomputed on the same support as seasonal persistence and therefore need not equal the primary full-support persistence descriptors.}
+\label{tab:baseline-sensitivity}
+\end{table}

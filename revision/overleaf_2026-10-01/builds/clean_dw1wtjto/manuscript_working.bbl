@@ -1,0 +1,75 @@
+\begin{thebibliography}{22}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{{#1}}
+\providecommand{\urlprefix}{URL }
+\providecommand{\doi}[1]{\url{https://doi.org/#1}}
+\providecommand{\eprint}[2][]{\url{#2}}
+ \bibcommenthead
+
+\bibitem[{Bergmeir and Ben{\'i}tez(2012)}]{bergmeir2012}
+Bergmeir C, Ben{\'i}tez JM (2012) On the use of cross-validation for time series predictor evaluation. Information Sciences 191:192--213. \doi{10.1016/j.ins.2011.12.028}
+
+\bibitem[{Cerqueira et~al.(2020)Cerqueira, Torgo, and Mozeti{\v{c}}}]{cerqueira2020}
+Cerqueira V, Torgo L, Mozeti{\v{c}} I (2020) Evaluating time series forecasting models: An empirical study on performance estimation methods. Machine Learning 109(11):2151--2181. \doi{10.1007/s10994-020-05910-7}
+
+\bibitem[{Chen(2015)}]{chen2015beijingpm25}
+Chen S (2015) Beijing {PM2.5} [dataset]. UCI Machine Learning Repository, \doi{10.24432/C5JS49}
+
+\bibitem[{Diebold and Mariano(1995)}]{diebold1995}
+Diebold FX, Mariano RS (1995) Comparing predictive accuracy. Journal of Business \& Economic Statistics 13(3):253--263. \doi{10.1080/07350015.1995.10524599}
+
+\bibitem[{Draxl et~al.(2015)Draxl, Hodge, Clifton, and McCaa}]{draxl2015}
+Draxl C, Hodge BM, Clifton A, et~al (2015) The wind integration national dataset ({WIND}) toolkit. Applied Energy 151:355--366. \doi{10.1016/j.apenergy.2015.03.121}
+
+\bibitem[{Gneiting and Raftery(2007)}]{gneiting2007}
+Gneiting T, Raftery AE (2007) Strictly proper scoring rules, prediction, and estimation. Journal of the American Statistical Association 102(477):359--378. \doi{10.1198/016214506000001437}
+
+\bibitem[{Godahewa et~al.(2021)Godahewa, Bergmeir, Webb, Hyndman, and Montero-Manso}]{godahewa2021}
+Godahewa R, Bergmeir C, Webb GI, et~al (2021) Monash time series forecasting archive. In: Advances in Neural Information Processing Systems 34 (NeurIPS 2021 Datasets and Benchmarks Track)
+
+\bibitem[{Green et~al.(2025)Green, Stevens, Abdallah, and Silva~Filho}]{green2025stratify}
+Green R, Stevens G, Abdallah ZS, et~al (2025) Stratify: unifying multi-step forecasting strategies. Data Mining and Knowledge Discovery 39:64. \doi{10.1007/s10618-025-01135-1}
+
+\bibitem[{Hewamalage et~al.(2023)Hewamalage, Ackermann, and Bergmeir}]{hewamalage2023dmkd}
+Hewamalage H, Ackermann K, Bergmeir C (2023) Forecast evaluation for data scientists: common pitfalls and best practices. Data Mining and Knowledge Discovery 37:788--832. \doi{10.1007/s10618-022-00894-5}
+
+\bibitem[{Hong and Fan(2016)}]{hong2016}
+Hong T, Fan S (2016) Probabilistic electric load forecasting: a tutorial review. International Journal of Forecasting 32(3):914--938. \doi{10.1016/j.ijforecast.2015.11.011}
+
+\bibitem[{Hyndman and Athanasopoulos(2018)}]{hyndman2018}
+Hyndman RJ, Athanasopoulos G (2018) Forecasting: Principles and Practice, 3rd edn. OTexts
+
+\bibitem[{Hyndman and Koehler(2006)}]{hyndman2006}
+Hyndman RJ, Koehler AB (2006) Another look at measures of forecast accuracy. International Journal of Forecasting 22(4):679--688. \doi{10.1016/j.ijforecast.2006.03.001}
+
+\bibitem[{Kapoor and Narayanan(2023)}]{kapoor2023leakage}
+Kapoor S, Narayanan A (2023) Leakage and the reproducibility crisis in machine-learning-based science. Patterns 4(9):100804. \doi{10.1016/j.patter.2023.100804}
+
+\bibitem[{Ke et~al.(2017)Ke, Meng, Finley, Wang, Chen, Ma, Ye, and Liu}]{ke2017lightgbm}
+Ke G, Meng Q, Finley T, et~al (2017) {LightGBM}: A highly efficient gradient boosting decision tree. In: Advances in Neural Information Processing Systems 30 (NeurIPS 2017), pp 3146--3154
+
+\bibitem[{Kreuzer et~al.(2025)Kreuzer, Zdravkovic, and Papapetrou}]{kreuzer2025trend}
+Kreuzer T, Zdravkovic J, Papapetrou P (2025) Unpacking the trend: decomposition as a catalyst to enhance time series forecasting models. Data Mining and Knowledge Discovery 39:54. \doi{10.1007/s10618-025-01120-8}
+
+\bibitem[{Li et~al.(2018)Li, Yu, Shahabi, and Liu}]{li2018dcrnn}
+Li Y, Yu R, Shahabi C, et~al (2018) Diffusion convolutional recurrent neural network: Data-driven traffic forecasting. In: International Conference on Learning Representations (ICLR)
+
+\bibitem[{Lorenz(1969)}]{lorenz1969}
+Lorenz EN (1969) The predictability of a flow which possesses many scales of motion. Tellus 21(3):289--307. \doi{10.3402/tellusa.v21i3.10086}
+
+\bibitem[{Makridakis et~al.(2020)Makridakis, Spiliotis, and Assimakopoulos}]{makridakis2020}
+Makridakis S, Spiliotis E, Assimakopoulos V (2020) The {M4} competition: 100,000 time series and 61 forecasting methods. International Journal of Forecasting 36(1):54--74. \doi{10.1016/j.ijforecast.2019.04.014}
+
+\bibitem[{Murphy(1993)}]{murphy1993}
+Murphy AH (1993) What is a good forecast? an essay on the nature of goodness in weather forecasting. Weather and Forecasting 8(2):281--293. \doi{10.1175/1520-0434(1993)008<0281:WIAGFA>2.0.CO;2}
+
+\bibitem[{Petropoulos et~al.(2022)Petropoulos, Apiletti, Assimakopoulos, Babai, Barrow, Ben~Taieb, Bergmeir, Bessa, Bijak, Boylan et~al.}]{petropoulos2022}
+Petropoulos F, Apiletti D, Assimakopoulos V, et~al (2022) Forecasting: theory and practice. International Journal of Forecasting 38(3):705--871. \doi{10.1016/j.ijforecast.2021.11.001}
+
+\bibitem[{Tashman(2000)}]{tashman2000}
+Tashman LJ (2000) Out-of-sample tests of forecasting accuracy: An analysis and review. International Journal of Forecasting 16(4):437--450. \doi{10.1016/S0169-2070(00)00065-0}
+
+\bibitem[{Trindade(2015)}]{trindade2015}
+Trindade A (2015) Electricityloaddiagrams20112014 [dataset]. UCI Machine Learning Repository, \doi{10.24432/C58C86}
+
+\end{thebibliography}

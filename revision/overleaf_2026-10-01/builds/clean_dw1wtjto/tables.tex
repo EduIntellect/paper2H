@@ -1,0 +1,18 @@
+\begin{table*}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{@{}p{1.45cm} p{2.55cm} p{3.2cm} X@{}}
+\toprule
+\textbf{Domain} & \textbf{Target unit} & \textbf{Persistence rule} & \textbf{Illustrative explanation} \\
+\midrule
+PM$_{2.5}$ & $\mu\mathrm{g}\,\mathrm{m}^{-3}$ & $\hat y_{t+h}^{\mathrm{base}}=y_t$ & If $y_t=42\,\mu\mathrm{g}\,\mathrm{m}^{-3}$, every lead uses $42\,\mu\mathrm{g}\,\mathrm{m}^{-3}$. \\
+Load & Sum of 15-min kW readings & $\hat y_{t+h}^{\mathrm{base}}=y_t$ & The stored daily aggregate follows the producer script; dividing it by four gives the equivalent energy in kWh. \\
+Wind & $\mathrm{m}\,\mathrm{s}^{-1}$ at 100 m & $\hat y_{t+h}^{\mathrm{base}}=y_t$ & If $y_t=6.8\,\mathrm{m}\,\mathrm{s}^{-1}$, every lead uses $6.8\,\mathrm{m}\,\mathrm{s}^{-1}$. \\
+Traffic & mph & $\hat y_{t+h}^{\mathrm{base}}=y_t$ & If $y_t=57$ mph, every lead uses 57 mph. \\
+\bottomrule
+\end{tabularx}
+\caption{Persistence definition and verified target units in each domain. Electric-load values are retained on the exact scale produced by the historical aggregation script; the stated conversion follows the source dataset's 15-minute kW sampling.}
+\label{tab:baseline_domains}
+\end{table*}

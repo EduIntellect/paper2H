@@ -1,0 +1,47 @@
+{
+  "page_counts": {
+    "manuscript": 23,
+    "response": 5
+  },
+  "locations": {
+    "Operational Predictability Horizon": [
+      6
+    ],
+    "Operational interpretation": [
+      7
+    ],
+    "Conceptual illustration": [
+      7
+    ],
+    "Schematic of the leakage-free": [
+      9
+    ],
+    "LightGBM skill curve": [
+      13
+    ],
+    "Models": [
+      11
+    ],
+    "Comparison of predictability": [
+      17
+    ],
+    "Baseline sensitivity on exact common support": [
+      18
+    ],
+    "Metric sensitivity": [
+      20
+    ],
+    "Data Availability": [
+      21
+    ]
+  },
+  "all_pages_rendered": true,
+  "superseded_phrases_checked": [
+    "13 h &",
+    "support effect and the sensitivity",
+    "365-day rolling training",
+    "claims of model invariance",
+    "H \u2217(strict) = 63"
+  ],
+  "visual_acceptance": "PASS_AGENT_LOCAL_LAYOUT; AUTHOR_APPROVAL_PENDING"
+}

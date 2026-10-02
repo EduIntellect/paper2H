@@ -1,0 +1,24 @@
+% Generated values: results/dmkd_revision_audit_2026-09-30/hstar_sensitivity.csv
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Domain & Reference & $H^*_{\mathrm{relax}}$ & $H^*_{\mathrm{strict}}$ & $h_s$ & $h_e$ \\
+\midrule
+Load & Persistence & 0 & 0 & --- & --- \\
+Load & Seasonal & 4 & 4 & 1 & 4 \\
+Wind & Persistence & 48 & 48 & 1 & 48 \\
+Wind & Seasonal & 48 & 29 & 20 & 48 \\
+Traffic & Persistence & 72 & 4 & 64 & 67 \\
+Traffic & Seasonal & 72 & 13 & 48 & 60 \\
+\bottomrule
+\end{tabular}
+\caption{MAE baseline sensitivity for stored LightGBM forecasts on identical
+primary support. Counts per horizon are 275--281 for Load, 350--352 for Wind,
+and 102--105 for Traffic. No prediction was refitted and no row was dropped.
+These are the six-domain artifact version's diagnostics; they are distinct
+from the recovered four-domain revision's results.}
+\label{tab:revision-baseline}
+\end{table}

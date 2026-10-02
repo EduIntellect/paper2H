@@ -1,0 +1,261 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2026-06-01>
+L3 programming layer <2026-06-18>
+(./sn-jnl.cls
+Document Class: sn-jnl 2019/11/18 v0.1: An authoring template for Springer Journal articles
+(/home/fede/.TinyTeX/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(/home/fede/.TinyTeX/texmf-dist/tex/latex/base/fleqn.clo) (/home/fede/.TinyTeX/texmf-dist/tex/latex/base/size10.clo)) (/home/fede/.TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty) (/home/fede/.TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty (/home/fede/.TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty))) (/home/fede/.TinyTeX/texmf-dist/tex/latex/sttools/cuted.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/graphics/rotating.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/graphics/trig.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg) (/home/fede/.TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def))) (/home/fede/.TinyTeX/texmf-dist/tex/latex/base/ifthen.sty)) (/home/fede/.TinyTeX/texmf-dist/tex/latex/threeparttable/threeparttable.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/appendix/appendix.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/home/fede/.TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/home/fede/.TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty (/home/fede/.TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/home/fede/.TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/home/fede/.TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty))) (/home/fede/.TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/home/fede/.TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/home/fede/.TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/home/fede/.TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/home/fede/.TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/home/fede/.TinyTeX/texmf-dist/tex/latex/url/url.sty) (/home/fede/.TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/home/fede/.TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))) (/home/fede/.TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/home/fede/.TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/home/fede/.TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))) (/home/fede/.TinyTeX/texmf-dist/tex/latex/wrapfig/wrapfig.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/amscls/amsthm.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/base/fix-cm.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/base/ts1enc.def))) (/home/fede/.TinyTeX/texmf-dist/tex/latex/float/float.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/base/inputenc.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/microtype/microtype.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/microtype/microtype-pdftex.def) (/home/fede/.TinyTeX/texmf-dist/tex/latex/microtype/microtype.cfg)) (/home/fede/.TinyTeX/texmf-dist/tex/latex/caption/caption.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/caption/caption3.sty)
+
+Package caption Warning: Unknown document class (or package),
+(caption)                standard defaults will be used.
+See the caption package documentation for explanation.
+
+) (/home/fede/.TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/home/fede/.TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/home/fede/.TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/home/fede/.TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty)) (/home/fede/.TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/tools/array.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/tools/tabularx.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/natbib/natbib.sty) (/home/fede/.TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd) (/home/fede/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+No file manuscript_working.aux.
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+(/home/fede/.TinyTeX/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/home/fede/.TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg)) (/home/fede/.TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/home/fede/.TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/home/fede/.TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/home/fede/.TinyTeX/texmf-dist/tex/latex/microtype/mt-cmr.cfg) (/home/fede/.TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd) (/home/fede/.TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd) (/home/fede/.TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd) (/home/fede/.TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd) (/home/fede/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/home/fede/.TinyTeX/texmf-dist/tex/latex/microtype/mt-msa.cfg) (/home/fede/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/home/fede/.TinyTeX/texmf-dist/tex/latex/microtype/mt-msb.cfg)
+Underfull \vbox (badness 10000) has occurred while \output is active
+Underfull \vbox (badness 10000) has occurred while \output is active [1{/home/fede/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/home/fede/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/home/fede/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/home/fede/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/home/fede/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
+
+Package natbib Warning: Citation `hewamalage2023dmkd' on page 2 undefined on input line 89.
+
+
+Package natbib Warning: Citation `green2025stratify' on page 2 undefined on input line 93.
+
+
+Package natbib Warning: Citation `kreuzer2025trend' on page 2 undefined on input line 93.
+
+
+Package natbib Warning: Citation `hyndman2006' on page 2 undefined on input line 113.
+
+
+Package natbib Warning: Citation `petropoulos2022' on page 2 undefined on input line 116.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [2]
+
+Package natbib Warning: Citation `gneiting2007' on page 3 undefined on input line 120.
+
+
+Package natbib Warning: Citation `diebold1995' on page 3 undefined on input line 126.
+
+
+Package natbib Warning: Citation `makridakis2020' on page 3 undefined on input line 134.
+
+
+Package natbib Warning: Citation `godahewa2021' on page 3 undefined on input line 136.
+
+
+Package natbib Warning: Citation `hyndman2018' on page 3 undefined on input line 148.
+
+
+Package natbib Warning: Citation `hewamalage2023dmkd' on page 3 undefined on input line 154.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+Underfull \vbox (badness 10000) has occurred while \output is active [3]
+
+Package natbib Warning: Citation `murphy1993' on page 4 undefined on input line 166.
+
+
+Package natbib Warning: Citation `tashman2000' on page 4 undefined on input line 182.
+
+
+Package natbib Warning: Citation `cerqueira2020' on page 4 undefined on input line 188.
+
+
+Package natbib Warning: Citation `bergmeir2012' on page 4 undefined on input line 188.
+
+
+Package natbib Warning: Citation `kapoor2023leakage' on page 4 undefined on input line 193.
+
+
+Package natbib Warning: Citation `lorenz1969' on page 4 undefined on input line 204.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [4]
+
+Package natbib Warning: Citation `makridakis2020' on page 5 undefined on input line 213.
+
+
+Package natbib Warning: Citation `godahewa2021' on page 5 undefined on input line 213.
+
+
+Package natbib Warning: Citation `hyndman2006' on page 5 undefined on input line 224.
+
+
+Package natbib Warning: Citation `murphy1993' on page 5 undefined on input line 224.
+
+
+Package natbib Warning: Citation `tashman2000' on page 5 undefined on input line 224.
+
+
+Package natbib Warning: Citation `makridakis2020' on page 5 undefined on input line 225.
+
+
+Package natbib Warning: Citation `godahewa2021' on page 5 undefined on input line 225.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [5]
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 269.
+
+
+LaTeX Warning: Reference `fig:hstar_conceptual' on page 6 undefined on input line 322.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [6{/home/fede/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}] (/home/fede/.TinyTeX/texmf-dist/tex/latex/lm/t1lmss.fd)
+
+Package natbib Warning: Citation `murphy1993' on page 7 undefined on input line 355.
+
+
+Package natbib Warning: Citation `hyndman2018' on page 7 undefined on input line 355.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [7 <./fig_hstar_conceptual.pdf>]
+
+Package natbib Warning: Citation `hyndman2006' on page 8 undefined on input line 380.
+
+
+LaTeX Warning: Reference `fig:rolling_origin' on page 8 undefined on input line 384.
+
+
+Package natbib Warning: Citation `tashman2000' on page 8 undefined on input line 395.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [8]
+
+LaTeX Warning: Reference `tab:datasets' on page 9 undefined on input line 408.
+
+
+Package natbib Warning: Citation `trindade2015' on page 9 undefined on input line 443.
+
+
+Package natbib Warning: Citation `trindade2015' on page 9 undefined on input line 443.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Package natbib Warning: Citation `li2018dcrnn' on page 9 undefined on input line 448.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [9 <./fig_rolling_origin_protocol.pdf>] (/home/fede/.TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd) (/home/fede/.TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd)
+Underfull \vbox (badness 10000) has occurred while \output is active
+Underfull \vbox (badness 10000) has occurred while \output is active [10{/home/fede/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+
+Package natbib Warning: Citation `ke2017lightgbm' on page 11 undefined on input line 490.
+
+
+LaTeX Warning: Reference `tab:baseline_domains' on page 11 undefined on input line 518.
+
+(./tables.tex)
+Underfull \vbox (badness 10000) has occurred while \output is active [11]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 541.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 541.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 541.
+
+
+Package natbib Warning: Citation `chen2015beijingpm25' on page 12 undefined on input line 545.
+
+
+LaTeX Warning: Reference `fig:skill-pm25' on page 12 undefined on input line 549.
+
+
+LaTeX Warning: Reference `fig:skill-pm25' on page 12 undefined on input line 562.
+
+
+Package natbib Warning: Citation `hong2016' on page 12 undefined on input line 576.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [12]
+
+LaTeX Warning: Reference `fig:skill_load' on page 13 undefined on input line 579.
+
+
+LaTeX Warning: Reference `fig:skill_load' on page 13 undefined on input line 589.
+
+
+Package natbib Warning: Citation `draxl2015' on page 13 undefined on input line 604.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [13 <./fig_skill_pm25.pdf>]
+
+LaTeX Warning: Reference `fig:skill-wind' on page 14 undefined on input line 607.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [14 <./fig_skill_load.pdf>]
+
+Package natbib Warning: Citation `li2018dcrnn' on page 15 undefined on input line 630.
+
+
+LaTeX Warning: Reference `fig:skill-traffic' on page 15 undefined on input line 633.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [15 <./fig_skill_wind.pdf>]
+
+LaTeX Warning: Reference `tab:results' on page 16 undefined on input line 653.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: Reference `tab:baseline-sensitivity' on page 16 undefined on input line 687.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [16 <./fig_skill_traffic.pdf>] (./table_baseline_sensitivity.tex)
+Underfull \vbox (badness 10000) has occurred while \output is active [17]
+Underfull \vbox (badness 10000) has occurred while \output is active [18]
+Underfull \vbox (badness 10000) has occurred while \output is active [19]
+Underfull \vbox (badness 10000) has occurred while \output is active [20]
+
+Package natbib Warning: Citation `trindade2015' on page 21 undefined on input line 864.
+
+
+Package natbib Warning: Citation `chen2015beijingpm25' on page 21 undefined on input line 865.
+
+
+Package natbib Warning: Citation `draxl2015' on page 21 undefined on input line 865.
+
+
+Package natbib Warning: Citation `li2018dcrnn' on page 21 undefined on input line 866.
+
+No file manuscript_working.bbl.
+
+Package natbib Warning: There were undefined citations.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [21] (./manuscript_working.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `manuscript_working.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+(see the transcript file for additional information)</home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbsy7.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx6.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx7.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx8.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi9.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmib10.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmib7.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy5.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></home/fede/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
+Output written on manuscript_working.pdf (21 pages, 618671 bytes).
+Transcript written on manuscript_working.log.
