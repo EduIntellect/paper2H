@@ -1,5 +1,5 @@
 --- "original/Response to the editor and reviewers.tex"	2026-10-01 09:52:42.000000000 +0200
-+++ "submission/Response to the editor and reviewers.tex"	2026-10-02 17:00:29.053908220 +0200
++++ "submission/Response to the editor and reviewers.tex"	2026-10-02 18:11:42.370165664 +0200
 @@ -9,8 +9,10 @@
  \usepackage{amsmath,amssymb}
  \usepackage{geometry}
@@ -249,7 +249,7 @@
 +$\Delta$AIC$\,\le 2$ of the optimum in 10 of 20 wind windows but only 4 of 20
 +traffic windows (Appendix~A.2). We report this as a limitation of the fixed
 +order, not as a justification. The ACF and PACF of the last training window of each domain
-+are shown in a new figure in Appendix~A.2; they were inspected after the order was fixed. The PACF is dominated by lag~1,
++are shown in two new figures in Appendix~A.2 (one per domain); they were inspected after the order was fixed. The PACF is dominated by lag~1,
 +and the traffic ACF has a daily peak at lag~24 that a non-seasonal AR(2) cannot represent.
 +
 +The audit also found that the historical wind check requested a one-step

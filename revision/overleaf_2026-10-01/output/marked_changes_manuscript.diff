@@ -1,5 +1,5 @@
 --- original/main.tex	2026-10-01 09:52:42.000000000 +0200
-+++ submission/main.tex	2026-10-02 17:24:34.858728137 +0200
++++ submission/main.tex	2026-10-02 18:11:42.369819167 +0200
 @@ -56,14 +56,14 @@
  non-positive gaps), and $H^*(\mathrm{strict})$, the length of the longest
  contiguous interval of positive skill. When needed (especially for
@@ -286,6 +286,8 @@
  
  \section{Discussion}
 -The four empirical results reveal qualitatively distinct horizon-wise skill-profile patterns that fixed-horizon accuracy summaries would not recover. In electric load, skill collapses immediately against persistence, leaving no operationally useful horizon beyond the first day. Traffic exhibits a fragmented structure: positive skill arises in short, isolated intervals separated by non-positive regions, so that $H^*(\mathrm{strict})$ is substantially shorter than $H^*(\mathrm{relax})$. PM$_{2.5}$ presents a delayed-emergence pattern in which persistence dominates at short lead times, but a contiguous interval of positive skill appears and stabilizes at longer horizons. Wind stands apart as the only domain with positive skill sustained across the entire evaluated range relative to persistence.
+-
+-These empirical patterns can be read as four operational profile types under baseline-relative, horizon-wise evaluation: (i) immediate collapse under strong baseline competition (electric load), (ii) delayed but contiguous emergence of positive skill (PM$_{2.5}$), (iii) sustained positive skill across the evaluated horizon range (wind), and (iv) fragmented late recovery with baseline-sensitive continuity (traffic). The typology makes explicit why a single horizon summary is insufficient: $H^*(\mathrm{relax})$ alone can overstate operational usefulness in fragmented settings, while $H^*(\mathrm{strict})$ alone can miss delayed positive reach. Reporting both descriptors—and, when needed, interval locations and sign-change structure—provides a compact summary of reach and continuity.
 +The four examples show information that a few fixed-horizon errors would
 +miss. Traffic's positive intervals are separated by non-positive regions.
 +PM$_{2.5}$ also has positive islands, but its longest interval occurs late
@@ -303,8 +305,6 @@
 +contiguous usefulness and interval structure change across baselines and
 +other components of the evaluation protocol.
  
--These empirical patterns can be read as four operational profile types under baseline-relative, horizon-wise evaluation: (i) immediate collapse under strong baseline competition (electric load), (ii) delayed but contiguous emergence of positive skill (PM$_{2.5}$), (iii) sustained positive skill across the evaluated horizon range (wind), and (iv) fragmented late recovery with baseline-sensitive continuity (traffic). The typology makes explicit why a single horizon summary is insufficient: $H^*(\mathrm{relax})$ alone can overstate operational usefulness in fragmented settings, while $H^*(\mathrm{strict})$ alone can miss delayed positive reach. Reporting both descriptors—and, when needed, interval locations and sign-change structure—provides a compact summary of reach and continuity.
--
 -These results also reinforce concerns raised in prior methodological work: fixed-horizon reporting can hide delayed or fragmented usefulness, and leakage-prone evaluation or missing strong baselines can distort conclusions about practical value. The persistence-relative rolling-origin design used here addresses both issues directly.
 +Prior methodological work documents that leakage-prone evaluation and omitted strong baselines can distort conclusions about practical forecasting value \citep{hewamalage2023dmkd}. Our results add that fixed-horizon reporting can also hide delayed or fragmented usefulness, which the skill curve and its interval descriptors make visible. The persistence-relative rolling-origin design avoids leakage and baseline omission by construction, but it does not remove other sources of evaluation bias, such as the choice of metric or adaptive selection of horizons.
  
@@ -405,7 +405,7 @@
  domain families and evaluation designs, and whether more expressive model
  classes or multivariate formulations alter the interval structure of
  baseline-relative usefulness.
-@@ -775,11 +832,78 @@
+@@ -775,11 +832,84 @@
  
  \subsection*{A.1 Metric sensitivity}
  
@@ -472,24 +472,30 @@
 +\end{table}
 +The selected order is not stable across origins in either domain, and
 +$(2,0,0)$ is generally further from the AIC optimum in traffic than in wind.
-+Figure~\ref{fig:acf-pacf} shows the ACF and PACF of the last evaluated training window of each domain
-+(720 observations, lags up to 48). In both series the PACF is dominated by lag~1
-+(0.80 in wind, 0.85 in traffic) with small coefficients at lags 2--4, and the
-+traffic ACF has a daily peak at lag~24 (0.36) that a non-seasonal AR(2) cannot represent.
-+These plots were inspected after the order was fixed, not used to select it.
++Figures~\ref{fig:acf-pacf-wind} and~\ref{fig:acf-pacf-traffic} show the ACF and PACF of the last evaluated
++training window of wind and traffic, respectively (720 observations, lags up to 48). In both series the PACF
++is dominated by lag~1 (0.80 in wind, 0.85 in traffic) with small coefficients at lags 2--4
++(Figures~\ref{fig:acf-pacf-wind} and~\ref{fig:acf-pacf-traffic}, right panels). The traffic ACF also has a
++daily peak at lag~24 (0.36; Figure~\ref{fig:acf-pacf-traffic}, left panel) that a non-seasonal AR(2) cannot
++represent. These plots were inspected after the order was fixed, not used to select it.
 +\begin{figure}[h]
 +  \centering
-+  \includegraphics[width=0.48\textwidth]{fig_acf_pacf_wind.png}\hfill
-+  \includegraphics[width=0.48\textwidth]{fig_acf_pacf_traffic.png}
-+  \caption{ACF (top) and PACF (bottom) of the last evaluated $h=1$ training window (720 observations) for wind (left) and traffic (right).}
-+  \label{fig:acf-pacf}
++  \includegraphics[width=\textwidth]{fig_acf_pacf_wind.pdf}
++  \caption{Wind: ACF (left) and PACF (right) of the last evaluated $h=1$ training window (720 hourly observations). The shaded band is the 95\% confidence region.}
++  \label{fig:acf-pacf-wind}
++\end{figure}
++\begin{figure}[h]
++  \centering
++  \includegraphics[width=\textwidth]{fig_acf_pacf_traffic.pdf}
++  \caption{Traffic: ACF (left) and PACF (right) of the last evaluated $h=1$ training window (720 hourly observations). The shaded band is the 95\% confidence region.}
++  \label{fig:acf-pacf-traffic}
 +\end{figure}
 +The ADF test does not reject a unit root in 2 of 20 wind windows and 1 of 20
 +traffic windows ($p>0.05$).
  
  \section*{Declarations}
  
-@@ -793,22 +917,20 @@
+@@ -793,22 +923,20 @@
  Not applicable. This study is based exclusively on publicly available benchmark datasets. It did not involve human participants, animals, patient data, or primary data collection.
  
  \subsection*{Data Availability}
@@ -524,7 +530,7 @@
  forecasting, common-support validation, descriptor, table, and figure-generation
  scripts used for the reported results. The public project location is
  \url{https://github.com/EduIntellect/paper2H}.
-@@ -818,7 +940,10 @@
+@@ -818,7 +946,10 @@
  
  
  % Springer/DMKD bibliography (BibTeX)
