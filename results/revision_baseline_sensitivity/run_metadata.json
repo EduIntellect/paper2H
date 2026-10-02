@@ -1,0 +1,14 @@
+{
+  "python": "3.10.12",
+  "pandas": "2.3.3",
+  "scikit_learn": "1.7.2",
+  "lightgbm": "4.7.0",
+  "domains": [
+    "load",
+    "pm25",
+    "traffic",
+    "wind"
+  ],
+  "baseline_decision": "seasonal persistence specified before result execution",
+  "note": "executed in horizon batches across separate device_bash calls; see run_baseline_sensitivity_batch.py"
+}
