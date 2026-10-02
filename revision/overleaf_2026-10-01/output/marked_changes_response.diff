@@ -1,5 +1,5 @@
 --- "original/Response to the editor and reviewers.tex"	2026-10-01 09:52:42.000000000 +0200
-+++ "submission/Response to the editor and reviewers.tex"	2026-10-02 16:58:03.079456477 +0200
++++ "submission/Response to the editor and reviewers.tex"	2026-10-02 17:00:29.053908220 +0200
 @@ -9,8 +9,10 @@
  \usepackage{amsmath,amssymb}
  \usepackage{geometry}
@@ -25,7 +25,7 @@
  
  % Reviewer-comment formatting
  \newenvironment{reviewcomment}
-@@ -44,52 +53,86 @@
+@@ -44,7 +53,29 @@
  \begin{document}
  
  \maketitle
@@ -56,16 +56,16 @@
  
  
  % ============================================================
- \section*{Editor}
+@@ -52,44 +83,59 @@
  % ============================================================
  
--\begin{reviewcomment}
+ \begin{reviewcomment}
 -Please report results precisely, remove overstated conclusions, and explain
 -limitations completely.
--\end{reviewcomment}
-+We thank the Editor for handling the manuscript. Besides the changes requested by the reviewers, we made the following corrections to the reporting.
++Please ensure the results are accurately reported, any overstated conclusions are rewritten and the limitations of the work fully explained.
+ \end{reviewcomment}
  
--\response
+ \response
 -We reconstructed and verified the wind and traffic inputs by reproducing every
 -submitted persistence and LightGBM horizon error to floating-point tolerance.
 -In ``Models'' (pp.~10--11), we corrected the fixed LightGBM configurations,
@@ -134,7 +134,7 @@
  \end{reviewcomment}
  
  \response
-@@ -105,22 +148,34 @@
+@@ -105,22 +151,34 @@
  =
  \max\left(\mathcal{H}^{+}\cup\{0\}\right)
  \]
@@ -142,8 +142,8 @@
 +in Section~3.1. Equation~(5) also defines the relaxed span $\mathcal{R}$
 +and the gap set $\mathcal{G}=\mathcal{R}\setminus\mathcal{H}^{+}$,
 +whose elements have non-positive skill. This set may be non-empty.
- 
 +
+ 
 +\subsection*{Comment 3}
 +
 +\begin{reviewcomment}
@@ -173,7 +173,7 @@
  $\mathrm{m\,s^{-1}}$, and traffic speed in mph. For electric load, we clarify that the
  stored experimental target is the sum of 15-minute kW readings and that
  division by four expresses the aggregate daily demand in kWh, following the source
-@@ -130,41 +185,39 @@
+@@ -130,41 +188,39 @@
  \subsection*{Comment 5}
  
  \begin{reviewcomment}
@@ -231,7 +231,7 @@
  
  Under the same matched-support analysis, load remains at
  $H^*(\mathrm{strict})=1$, wind changes from 48 to 30, and traffic changes from
-@@ -174,56 +227,54 @@
+@@ -174,56 +230,54 @@
  endpoint is therefore partly structural and is not interpreted as evidence of
  baseline invariance.
  
@@ -264,7 +264,7 @@
 +the ARIMA order.
  
 -\subsection*{Comment 7}
- 
+-
 -\begin{reviewcomment}
 -Explain why ARIMA(2,0,0) was selected and whether ACF was examined.
 -\end{reviewcomment}
@@ -280,7 +280,7 @@
 -$h$-step protocol. We removed the ARIMA numerical robustness claims from
 -``Models'' and the Wind and Traffic results sections rather than retaining an
 -unsupported rationale or modifying the historical experiment post hoc.
--
+ 
 -The requested robustness evidence is instead provided by the prospectively
 -specified baseline sensitivity analysis on exact common support
 -(Section~10.4, pp.~16--17).
@@ -304,13 +304,13 @@
  
 -We explain that fixed-horizon summaries fail to capture delayed onset, skill
 -deficits, fragmentation, interval placement, continuity, or late recovery.
--
 +We explain that a few fixed-horizon errors do not locate positive-skill
 +intervals or show the gaps between them. The PM$_{2.5}$ and traffic
 +examples illustrate why interval locations are needed in addition to
 +lengths. We also state that positive average skill alone does not establish
 +deployment value: its magnitude, uncertainty, decision loss, and cost matter.
  
+-
 -\subsection*{Comment 10}
 -
 -\begin{reviewcomment}
@@ -324,7 +324,7 @@
  operational setting, $H^*$ could inform a decision policy estimated on
  historical validation data, frozen for prospective deployment, and subsequently
  updated using only realised historical errors.
-@@ -241,12 +292,12 @@
+@@ -241,12 +295,12 @@
  \subsection*{Comment 1}
  
  \begin{reviewcomment}
@@ -339,7 +339,7 @@
  contiguous positive interval and restricting dynamic deployment claims to
  future, separately validated policies.
  
-@@ -254,45 +305,44 @@
+@@ -254,45 +308,44 @@
  \subsection*{Comment 2}
  
  \begin{reviewcomment}
@@ -395,7 +395,7 @@
  detailed in our response to Reviewer~1 (Comment~6), enforcing exact common
  support and reporting all outcomes regardless of direction. Table~4 reports
  all four domains across both baselines, documenting common-origin sample
-@@ -302,36 +352,36 @@
+@@ -302,36 +355,36 @@
  \subsection*{Comment 6}
  
  \begin{reviewcomment}
