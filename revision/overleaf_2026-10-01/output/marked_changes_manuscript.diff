@@ -1,5 +1,5 @@
 --- original/main.tex	2026-10-01 09:52:42.000000000 +0200
-+++ submission/main.tex	2026-10-02 18:11:42.369819167 +0200
++++ submission/main.tex	2026-10-02 18:25:47.033740960 +0200
 @@ -56,14 +56,14 @@
  non-positive gaps), and $H^*(\mathrm{strict})$, the length of the longest
  contiguous interval of positive skill. When needed (especially for
@@ -495,7 +495,7 @@
  
  \section*{Declarations}
  
-@@ -793,22 +923,20 @@
+@@ -793,22 +923,10 @@
  Not applicable. This study is based exclusively on publicly available benchmark datasets. It did not involve human participants, animals, patient data, or primary data collection.
  
  \subsection*{Data Availability}
@@ -512,17 +512,7 @@
 -repositories for electric load~\citep{trindade2015} and Beijing
 -PM$_{2.5}$~\citep{chen2015beijingpm25}, NREL for wind~\citep{draxl2015}, and
 -the DCRNN/METR-LA distribution for traffic~\citep{li2018dcrnn}.
-+The datasets originate from public sources: UCI repositories for electric
-+load~\citep{trindade2015} and Beijing PM$_{2.5}$~\citep{chen2015beijingpm25}, NREL
-+for wind~\citep{draxl2015} (WTK-LED CONUS 2019, one grid point), and the
-+DCRNN/METR-LA distribution for traffic~\citep{li2018dcrnn} (sensor 773869). The
-+exact input files used for all four experiments, with SHA-256 checksums and
-+provenance notes, are deposited in the project repository at
-+\url{https://github.com/EduIntellect/paper2H/tree/data-cache-v1/release/data_cache_four_domain}
-+(tag \texttt{data-cache-v1}). PM$_{2.5}$ and electric load are released under CC BY 4.0 and the wind data
-+under NREL's open-data terms (CC BY 3.0 US). The traffic file is a single-sensor hourly
-+aggregate of METR-LA, whose underlying measurements come from Caltrans PeMS; we did not obtain
-+separate confirmation of its redistribution terms and will remove the file on request.
++All datasets used in this study are publicly available. The electric load dataset is available from the UCI Machine Learning Repository \citep{trindade2015}, accessible at \url{https://doi.org/10.24432/C58C86}; we use the daily sum of all 370 client series. The wind speed data are from NREL's Wind Toolkit (WTK-LED CONUS, 2019; one grid point, 100\,m wind speed) \citep{draxl2015}. The PM$_{2.5}$ dataset is the Beijing PM$_{2.5}$ dataset archived by the UCI Machine Learning Repository \citep{chen2015beijingpm25}, available at \url{https://doi.org/10.24432/C5JS49}. The traffic benchmark corresponds to the METR-LA dataset, originally introduced by \citet{li2018dcrnn}; the processed traffic file (\texttt{metr-la.h5}) was obtained from the public data links provided in the original DCRNN repository, and we use the hourly mean of sensor 773869. The exact input files used for all four experiments, with SHA-256 checksums, are deposited at \url{https://github.com/EduIntellect/paper2H/tree/data-cache-v1/release/data_cache_four_domain}. The traffic measurements originate from Caltrans PeMS; we have not obtained separate confirmation of their redistribution terms and will remove that file on request.
  
  \subsection*{Code Availability}
 -The replication package accompanying this revision contains the data-processing,
@@ -530,7 +520,7 @@
  forecasting, common-support validation, descriptor, table, and figure-generation
  scripts used for the reported results. The public project location is
  \url{https://github.com/EduIntellect/paper2H}.
-@@ -818,7 +946,10 @@
+@@ -818,7 +936,10 @@
  
  
  % Springer/DMKD bibliography (BibTeX)
