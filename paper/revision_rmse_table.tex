@@ -1,0 +1,28 @@
+% Generated values: results/dmkd_revision_audit_2026-09-30/hstar_sensitivity.csv
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Domain / horizon unit & Loss & $H^*_{\mathrm{relax}}$ & $H^*_{\mathrm{strict}}$ & $h_s$ & $h_e$ \\
+\midrule
+PM$_{2.5}$ / observed steps & MAE & 48 & 19 & 30 & 48 \\
+PM$_{2.5}$ / observed steps & RMSE & 48 & 19 & 30 & 48 \\
+Load / days & MAE & 0 & 0 & --- & --- \\
+Load / days & RMSE & 2 & 2 & 1 & 2 \\
+Wind / hours & MAE & 48 & 48 & 1 & 48 \\
+Wind / hours & RMSE & 48 & 48 & 1 & 48 \\
+Traffic / hours & MAE & 72 & 4 & 64 & 67 \\
+Traffic / hours & RMSE & 72 & 53 & 20 & 72 \\
+PM$_{10}$ Madrid / days & MAE & 7 & 6 & 2 & 7 \\
+PM$_{10}$ Madrid / days & RMSE & 7 & 7 & 1 & 7 \\
+PM$_{10}$ Barcelona / observed steps & MAE & 7 & 7 & 1 & 7 \\
+PM$_{10}$ Barcelona / observed steps & RMSE & 7 & 7 & 1 & 7 \\
+\bottomrule
+\end{tabular}
+\caption{LightGBM metric sensitivity with persistence on unchanged forecast
+support. Observation steps are not necessarily uniform calendar intervals.
+The complete five-model results are provided in the revision audit.}
+\label{tab:revision-rmse}
+\end{table}
