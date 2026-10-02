@@ -10,5 +10,5 @@
     "wind"
   ],
   "baseline_decision": "seasonal persistence specified before result execution",
-  "note": "executed in horizon batches across separate device_bash calls; see run_baseline_sensitivity_batch.py"
+  "note": "executed in horizon batches across separate calls; the batch driver was not preserved in the repository, so the run is documented by experiments/run_revision_baseline_sensitivity.py and the outputs in this directory"
 }
