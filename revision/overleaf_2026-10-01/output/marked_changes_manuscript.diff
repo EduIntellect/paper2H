@@ -1,5 +1,5 @@
 --- original/main.tex	2026-10-01 09:52:42.000000000 +0200
-+++ submission/main.tex	2026-10-02 16:44:23.251326178 +0200
++++ submission/main.tex	2026-10-02 17:08:08.713492729 +0200
 @@ -56,14 +56,14 @@
  non-positive gaps), and $H^*(\mathrm{strict})$, the length of the longest
  contiguous interval of positive skill. When needed (especially for
@@ -21,7 +21,7 @@
  descriptors beyond fixed-horizon error summaries so that total positive reach,
  sustained contiguous usefulness, and fragmented interval structure can be
  distinguished under a shared leakage-free protocol.}
-@@ -76,11 +76,13 @@
+@@ -76,13 +76,15 @@
  
  
  
@@ -34,7 +34,10 @@
 -We address this evaluation problem with leakage-free rolling-origin evaluation, train-only preprocessing, and persistence as an explicit reference baseline.. Horizon-wise baseline-relative performance is reported as skill curves $\mathrm{Skill}(h)$, and operational reach is summarized using complementary horizon descriptors that separate total positive reach from sustained contiguous usefulness.
 +We address this problem through rolling-origin evaluation, train-only preprocessing, and persistence as an explicit reference baseline. We report performance as a horizon-wise skill curve, $\mathrm{Skill}(h)$, and use two descriptors to distinguish the last horizon with positive skill from the longest uninterrupted positive interval.
  
- We frame predictability-horizon estimation as an evaluation-methodology contribution for forecasting systems in machine learning and data mining. The goal is not to create another applied leader board, but to establish a protocol for characterizing and comparing useful predictive reach by horizon relative to a clearly specified baseline, thereby complementing recent methodological work on multi-step forecasting \citep{green2025stratify,kreuzer2025trend}.
+-We frame predictability-horizon estimation as an evaluation-methodology contribution for forecasting systems in machine learning and data mining. The goal is not to create another applied leader board, but to establish a protocol for characterizing and comparing useful predictive reach by horizon relative to a clearly specified baseline, thereby complementing recent methodological work on multi-step forecasting \citep{green2025stratify,kreuzer2025trend}.
++We frame predictability-horizon estimation as an evaluation-methodology contribution for forecasting systems in machine learning and data mining. The goal is not to create another applied leaderboard, but to establish a protocol for characterizing and comparing useful predictive reach by horizon relative to a clearly specified baseline, thereby complementing recent methodological work on multi-step forecasting \citep{green2025stratify,kreuzer2025trend}.
+ 
+ Empirically, we apply this unified evaluation design to four domains—PM$_{2.5}$ air quality, electric load, wind speed, and traffic speed—chosen to span heterogeneous dynamics and baseline competitiveness under the same leakage-free protocol.
  
 @@ -90,7 +92,7 @@
  \begin{enumerate}
@@ -81,12 +84,14 @@
  
  \section{Evaluation Framework}
  This section specifies the evaluation components used to compute horizon-wise baseline-relative skill curves $\mathrm{Skill}(h)$ and the associated horizon descriptors: the reference baseline, error metrics, and the leakage-free rolling-origin validation protocol.
-@@ -481,10 +494,24 @@
+@@ -480,11 +493,25 @@
+ Lag 0 ($y_t$) is included so that the model and baseline share the same
  information at the forecasting origin; this does not introduce leakage
  since the target remains $y_{t+h}$ for $h \geq 1$.
- The daily electric-load experiment uses the fixed historical producer
+-The daily electric-load experiment uses the fixed historical producer
 -configuration: 14 daily lags plus day of week, a 365-day rolling training
 -window, 100 estimators, learning rate 0.05, 15 leaves, and random seed 42.
++The daily electric-load experiment uses a fixed
 +configuration: 14 daily lags plus a weekly index-phase feature ($i\bmod7$),
 +an expanding past-only training set, 100 estimators, learning rate 0.05,
 +15 leaves, and random seed 42. Evaluation starts after 365 daily
@@ -108,7 +113,15 @@
  The persistence baseline is defined as the most recent observed value
  available at the prediction origin.
  \begin{equation}
-@@ -501,9 +528,9 @@
+@@ -495,15 +522,15 @@
+ level against which baseline-relative usefulness is assessed.
+ Table~\ref{tab:baseline_domains} summarizes the baseline definition and an
+ illustrative domain-specific example. Units follow the corresponding source
+-metadata; for electric load, the historical producer sums 15-minute kW
+-readings, so division by four expresses the stored aggregate as kWh.
++metadata; for electric load, the aggregation script sums 15-minute kW
++readings, so division by four expresses the aggregate as kWh.
+ 
  \input{tables}
  
  No hyperparameter tuning is carried out in any domain. The protocol is
@@ -121,7 +134,7 @@
  above and retained for reproducibility; no claim of identical feature
  construction across hourly and daily domains is made.
  
-@@ -520,22 +547,29 @@
+@@ -520,22 +547,26 @@
  
  \subsection{\texorpdfstring{PM$_{2.5}$}{PM2.5} experimental setting}
  
@@ -148,9 +161,6 @@
 +instead selects the 22-hour interval $[27,48]$, not either of the shorter
 +early intervals. PM$_{2.5}$ thus combines fragmentation with a longer
 +late positive interval; it does not show positive skill only at long leads.
-+The revised numerical summary follows the stored LightGBM curve plotted in
-+Figure~\ref{fig:skill-pm25}. The earlier 13-hour summary was traced to a
-+separate moving-average result and is not retained as a LightGBM result.
  \begin{figure}[t]
    \centering
    \includegraphics[width=0.88\textwidth]{fig_skill_pm25.pdf}
@@ -159,7 +169,7 @@
    \label{fig:skill-pm25}
  \end{figure}
  
-@@ -548,13 +582,17 @@
+@@ -548,13 +579,17 @@
  
  \subsection{Observed skill behavior}
  In the canonical reported setting, daily electric load is operationally summarized at $h = 1$, yielding $H^*(\mathrm{relax}) = 1$ and $H^*(\mathrm{strict}) = 1$ with $[h_{\mathrm{start}},h_{\mathrm{end}}] = [1, 1]$. For visualization purposes, Figure~\ref{fig:skill_load} additionally shows an auxiliary extended-horizon view up to $h=7$ under the same protocol, highlighting that positive skill against persistence decays rapidly and remains confined to a very short early interval.
@@ -174,12 +184,12 @@
 +With only $h=1$ in the primary analysis, the two descriptors coincide by
 +construction: the one evaluated day has positive skill. This result alone
 +cannot establish what happens beyond one day. The auxiliary view in
-+Figure~\ref{fig:skill_load} illustrates the longer-range behaviour and must
++Figure~\ref{fig:skill_load} illustrates the longer-range behavior and must
 +be distinguished from the one-day cross-domain summary.
  
  \begin{figure}[t]
    \centering
-@@ -580,6 +618,15 @@
+@@ -580,6 +615,12 @@
  \end{aligned}
  \end{equation}
  
@@ -187,15 +197,12 @@
 +Under the same protocol with ARIMA$(2,0,0)$ and a true $h$-step forecast,
 +the descriptor tuple is unchanged: $H^*(\mathrm{relax})=H^*(\mathrm{strict})=48$,
 +$[h_{\mathrm{start}},h_{\mathrm{end}}]=[1,48]$ and no sign changes. Skill
-+amplitude differs from LightGBM. A one-step forecast reused at every horizon in an
-+earlier version of this check did not implement the $h$-step protocol; it is
-+replaced by the $h$-step evaluation reported here, which preserves the same
-+descriptor tuple.
++amplitude differs from LightGBM.
 +
  \subsection{Interpretation}
  Because the skill curve remains positive throughout the evaluated range, $H^*(\mathrm{relax})$ and $H^*(\mathrm{strict})$ coincide and equal $H_{\max}$, and the maximizing interval is $[1,48]$. Operationally, wind represents sustained positive skill: the model retains baseline-relative usefulness continuously across the entire evaluated horizon range.
  
-@@ -604,10 +651,18 @@
+@@ -604,10 +645,18 @@
  \end{equation}
  The first positive interval occurs at $[17,18]$, and the sign of $\mathrm{Skill}(h)$ changes 19 times across $h\in\{1,\dots,72\}$.
  
@@ -216,7 +223,7 @@
  continuous useful window is only seven hours and occurs at $[46,52]$.
  
  \begin{figure}[t]
-@@ -620,14 +675,13 @@
+@@ -620,14 +669,13 @@
  Table~\ref{tab:results} presents the operational horizon descriptors
  derived for the four study domains under a common evaluation framework.
  Together, these four domains instantiate qualitatively different horizon-wise skill structures under a shared, leakage-free evaluation design, which is why a single horizon summary is insufficient.
@@ -238,7 +245,7 @@
  Collectively, these findings indicate that fixed-horizon summaries can
  obscure substantial cross-domain variability in the structure of
  baseline-relative predictability.
-@@ -641,7 +695,7 @@
+@@ -641,7 +689,7 @@
  \toprule
  Domain & $H^*(\mathrm{relax})$ & $H^*(\mathrm{strict})$ & $[h_{\mathrm{start}}, h_{\mathrm{end}}]$ & $H^*(\mathrm{time})$ & Notes \\
  \midrule
@@ -247,7 +254,7 @@
  Load (daily) & 1 & 1 & $[1,1]$ & 1 day & positive skill is confined to the first evaluated day under this setup \\
  Wind & 48 & 48 & $[1,48]$ & 48 h & positive skill over the full evaluated range relative to persistence \\
  Traffic & 72 & 7 & $[46,52]$ & 7 h & fragmented profile with 19 sign changes and first positive interval $[17,18]$ \\
-@@ -652,14 +706,16 @@
+@@ -652,14 +700,16 @@
  \end{table}
  
  \subsection{Alternative-baseline sensitivity}
@@ -260,7 +267,7 @@
 -primary full-support persistence result (48/13, $[36,48]$). This is a support
 -effect and the sensitivity row does not replace the primary result.
 +Table~\ref{tab:baseline-sensitivity} reports the fixed seasonal-persistence
-+sensitivity from the archived revision analysis. Within this analysis,
++sensitivity analysis. Within this analysis,
 +the LightGBM and baseline records share the same forecast origin, target
 +timestamp, horizon, and $y_{\mathrm{true}}$; pairwise alignment loses no
 +records. The PM$_{2.5}$ matched-support persistence row and the primary
@@ -272,7 +279,7 @@
  
  Relative to the matched persistence row, seasonal persistence changes
  $H^*(\mathrm{strict})$ from 22 to 24 in PM$_{2.5}$ and shifts the interval
-@@ -676,9 +732,19 @@
+@@ -676,23 +726,37 @@
  \input{table_baseline_sensitivity}
  
  \section{Discussion}
@@ -295,7 +302,14 @@
  
  These results also reinforce concerns raised in prior methodological work: fixed-horizon reporting can hide delayed or fragmented usefulness, and leakage-prone evaluation or missing strong baselines can distort conclusions about practical value. The persistence-relative rolling-origin design used here addresses both issues directly.
  
-@@ -692,7 +758,11 @@
+ \textbf{Potential dynamic use.} An operational system could use an $H^*$
+ profile estimated on historical validation data to freeze a set of eligible
+ forecast horizons for subsequent deployment, and later update that policy
+-using only errors that have already been realised. This paper does not
++using only errors that have already been realized. This paper does not
+ validate such an adaptive controller. Re-estimating $H^*$, selecting horizons,
+ and evaluating that choice on the same errors would introduce adaptive
+ selection bias and overfitting. A dynamic policy therefore requires a
  prospective, prequential, or nested evaluation in which horizon selection is
  separated from the data used to assess it.
  
@@ -308,9 +322,12 @@
  
  \textbf{Baseline sensitivity.} Seasonal persistence alters the longest
  continuous positive-skill window in PM$_{2.5}$, wind, and traffic, despite
-@@ -703,7 +773,11 @@
+@@ -701,9 +765,13 @@
+ persistence to $[19,48]$ under seasonal persistence. Traffic changes in the
+ opposite direction, from a seven-hour to a fourteen-hour longest interval.
  These outcomes are reported without selecting the reference that gives a more
- favourable profile and show why the baseline is part of the estimand.
+-favourable profile and show why the baseline is part of the estimand.
++favorable profile and show why the baseline is part of the estimand.
  
 -\textbf{Scope of inference.} Because baseline competitiveness and evaluation design shape $\mathrm{Skill}(h)$, operational predictability horizons are not intrinsic properties of a forecasting model or domain. They reflect the interaction of dataset, model, baseline choice, metric, evaluated range, and temporal validation protocol.
 +\textbf{Scope of inference.} The same forecasting model can have different
@@ -321,7 +338,7 @@
  
  These findings point to two methodological implications for horizon-based forecast evaluation:
  \begin{enumerate}
-@@ -715,12 +789,10 @@
+@@ -715,28 +783,32 @@
  
  \section{Limitations}
  
@@ -338,7 +355,11 @@
  The empirical scope is limited to four datasets and their stated temporal
  periods, the fixed LightGBM configurations reported above, and the evaluated
  horizon caps. Results need not transfer to another dataset, target, model
-@@ -731,12 +803,18 @@
+ configuration, baseline, metric, or $H_{\max}$. The alternative-baseline
+-sensitivity reported in the revision examines baseline conditionality but
++sensitivity examines baseline conditionality but
+ does not eliminate it. Seasonal persistence also coincides with ordinary
+ persistence at exact multiples of the seasonal period, so unchanged terminal
  reach at those endpoints is not an independent invariance result. Moreover, no dynamic $H^*$ controller is evaluated
  prospectively; the operational policy described in the Discussion remains a
  potential application requiring separate prequential or nested validation.
@@ -358,7 +379,7 @@
  
  These results show why $H^*(\mathrm{relax})$ alone is not sufficient in
  fragmented settings. When skill curves are non-monotonic, total positive
-@@ -765,8 +843,8 @@
+@@ -765,8 +837,8 @@
  domains, useful predictive reach differs not only in extent but also in
  continuity and fragmentation, and the baseline-sensitivity analysis makes
  explicit that these descriptors are conditional on the chosen reference.
@@ -369,7 +390,7 @@
  domain families and evaluation designs, and whether more expressive model
  classes or multivariate formulations alter the interval structure of
  baseline-relative usefulness.
-@@ -775,11 +853,78 @@
+@@ -775,11 +847,78 @@
  
  \subsection*{A.1 Metric sensitivity}
  
@@ -453,7 +474,7 @@
  
  \section*{Declarations}
  
-@@ -793,19 +938,17 @@
+@@ -793,22 +932,20 @@
  Not applicable. This study is based exclusively on publicly available benchmark datasets. It did not involve human participants, animals, patient data, or primary data collection.
  
  \subsection*{Data Availability}
@@ -483,8 +504,12 @@
 +separate confirmation of its redistribution terms and will remove the file on request.
  
  \subsection*{Code Availability}
- The replication package accompanying this revision contains the data-processing,
-@@ -818,7 +961,10 @@
+-The replication package accompanying this revision contains the data-processing,
++The replication package accompanying this article contains the data-processing,
+ forecasting, common-support validation, descriptor, table, and figure-generation
+ scripts used for the reported results. The public project location is
+ \url{https://github.com/EduIntellect/paper2H}.
+@@ -818,7 +955,10 @@
  
  
  % Springer/DMKD bibliography (BibTeX)

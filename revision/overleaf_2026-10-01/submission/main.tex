@@ -84,7 +84,7 @@ In applied forecasting, evaluation is often reported at a small number of fixed 
 
 We address this problem through rolling-origin evaluation, train-only preprocessing, and persistence as an explicit reference baseline. We report performance as a horizon-wise skill curve, $\mathrm{Skill}(h)$, and use two descriptors to distinguish the last horizon with positive skill from the longest uninterrupted positive interval.
 
-We frame predictability-horizon estimation as an evaluation-methodology contribution for forecasting systems in machine learning and data mining. The goal is not to create another applied leader board, but to establish a protocol for characterizing and comparing useful predictive reach by horizon relative to a clearly specified baseline, thereby complementing recent methodological work on multi-step forecasting \citep{green2025stratify,kreuzer2025trend}.
+We frame predictability-horizon estimation as an evaluation-methodology contribution for forecasting systems in machine learning and data mining. The goal is not to create another applied leaderboard, but to establish a protocol for characterizing and comparing useful predictive reach by horizon relative to a clearly specified baseline, thereby complementing recent methodological work on multi-step forecasting \citep{green2025stratify,kreuzer2025trend}.
 
 Empirically, we apply this unified evaluation design to four domains—PM$_{2.5}$ air quality, electric load, wind speed, and traffic speed—chosen to span heterogeneous dynamics and baseline competitiveness under the same leakage-free protocol.
 
@@ -493,7 +493,7 @@ formulations~\citep{ke2017lightgbm}. For the three hourly domains
 Lag 0 ($y_t$) is included so that the model and baseline share the same
 information at the forecasting origin; this does not introduce leakage
 since the target remains $y_{t+h}$ for $h \geq 1$.
-The daily electric-load experiment uses the fixed historical producer
+The daily electric-load experiment uses a fixed
 configuration: 14 daily lags plus a weekly index-phase feature ($i\bmod7$),
 an expanding past-only training set, 100 estimators, learning rate 0.05,
 15 leaves, and random seed 42. Evaluation starts after 365 daily
@@ -522,8 +522,8 @@ strong in operational forecasting contexts and serves as the reference
 level against which baseline-relative usefulness is assessed.
 Table~\ref{tab:baseline_domains} summarizes the baseline definition and an
 illustrative domain-specific example. Units follow the corresponding source
-metadata; for electric load, the historical producer sums 15-minute kW
-readings, so division by four expresses the stored aggregate as kWh.
+metadata; for electric load, the aggregation script sums 15-minute kW
+readings, so division by four expresses the aggregate as kWh.
 
 \input{tables}
 
@@ -563,9 +563,6 @@ Positive skill at $h=48$ sets the relaxed endpoint. The relaxed span therefore c
 instead selects the 22-hour interval $[27,48]$, not either of the shorter
 early intervals. PM$_{2.5}$ thus combines fragmentation with a longer
 late positive interval; it does not show positive skill only at long leads.
-The revised numerical summary follows the stored LightGBM curve plotted in
-Figure~\ref{fig:skill-pm25}. The earlier 13-hour summary was traced to a
-separate moving-average result and is not retained as a LightGBM result.
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.88\textwidth]{fig_skill_pm25.pdf}
@@ -591,7 +588,7 @@ H^*(\mathrm{relax}) = 1, \qquad H^*(\mathrm{strict}) = 1, \qquad [h_{\mathrm{sta
 With only $h=1$ in the primary analysis, the two descriptors coincide by
 construction: the one evaluated day has positive skill. This result alone
 cannot establish what happens beyond one day. The auxiliary view in
-Figure~\ref{fig:skill_load} illustrates the longer-range behaviour and must
+Figure~\ref{fig:skill_load} illustrates the longer-range behavior and must
 be distinguished from the one-day cross-domain summary.
 
 \begin{figure}[t]
@@ -622,10 +619,7 @@ H^*(\mathrm{strict}) &= 48, & H^*(\mathrm{time}) &= 48\ \mathrm{h}.
 Under the same protocol with ARIMA$(2,0,0)$ and a true $h$-step forecast,
 the descriptor tuple is unchanged: $H^*(\mathrm{relax})=H^*(\mathrm{strict})=48$,
 $[h_{\mathrm{start}},h_{\mathrm{end}}]=[1,48]$ and no sign changes. Skill
-amplitude differs from LightGBM. A one-step forecast reused at every horizon in an
-earlier version of this check did not implement the $h$-step protocol; it is
-replaced by the $h$-step evaluation reported here, which preserves the same
-descriptor tuple.
+amplitude differs from LightGBM.
 
 \subsection{Interpretation}
 Because the skill curve remains positive throughout the evaluated range, $H^*(\mathrm{relax})$ and $H^*(\mathrm{strict})$ coincide and equal $H_{\max}$, and the maximizing interval is $[1,48]$. Operationally, wind represents sustained positive skill: the model retains baseline-relative usefulness continuously across the entire evaluated horizon range.
@@ -707,7 +701,7 @@ Traffic & 72 & 7 & $[46,52]$ & 7 h & fragmented profile with 19 sign changes and
 
 \subsection{Alternative-baseline sensitivity}
 Table~\ref{tab:baseline-sensitivity} reports the fixed seasonal-persistence
-sensitivity from the archived revision analysis. Within this analysis,
+sensitivity analysis. Within this analysis,
 the LightGBM and baseline records share the same forecast origin, target
 timestamp, horizon, and $y_{\mathrm{true}}$; pairwise alignment loses no
 records. The PM$_{2.5}$ matched-support persistence row and the primary
@@ -751,7 +745,7 @@ These results also reinforce concerns raised in prior methodological work: fixed
 \textbf{Potential dynamic use.} An operational system could use an $H^*$
 profile estimated on historical validation data to freeze a set of eligible
 forecast horizons for subsequent deployment, and later update that policy
-using only errors that have already been realised. This paper does not
+using only errors that have already been realized. This paper does not
 validate such an adaptive controller. Re-estimating $H^*$, selecting horizons,
 and evaluating that choice on the same errors would introduce adaptive
 selection bias and overfitting. A dynamic policy therefore requires a
@@ -771,7 +765,7 @@ example: the strict interval contracts from the full $[1,48]$ range under
 persistence to $[19,48]$ under seasonal persistence. Traffic changes in the
 opposite direction, from a seven-hour to a fourteen-hour longest interval.
 These outcomes are reported without selecting the reference that gives a more
-favourable profile and show why the baseline is part of the estimand.
+favorable profile and show why the baseline is part of the estimand.
 
 \textbf{Scope of inference.} The same forecasting model can have different
 horizon descriptors when the baseline, loss, evaluated range, or data
@@ -797,7 +791,7 @@ The empirical scope is limited to four datasets and their stated temporal
 periods, the fixed LightGBM configurations reported above, and the evaluated
 horizon caps. Results need not transfer to another dataset, target, model
 configuration, baseline, metric, or $H_{\max}$. The alternative-baseline
-sensitivity reported in the revision examines baseline conditionality but
+sensitivity examines baseline conditionality but
 does not eliminate it. Seasonal persistence also coincides with ordinary
 persistence at exact multiples of the seasonal period, so unchanged terminal
 reach at those endpoints is not an independent invariance result. Moreover, no dynamic $H^*$ controller is evaluated
@@ -951,7 +945,7 @@ aggregate of METR-LA, whose underlying measurements come from Caltrans PeMS; we 
 separate confirmation of its redistribution terms and will remove the file on request.
 
 \subsection*{Code Availability}
-The replication package accompanying this revision contains the data-processing,
+The replication package accompanying this article contains the data-processing,
 forecasting, common-support validation, descriptor, table, and figure-generation
 scripts used for the reported results. The public project location is
 \url{https://github.com/EduIntellect/paper2H}.
