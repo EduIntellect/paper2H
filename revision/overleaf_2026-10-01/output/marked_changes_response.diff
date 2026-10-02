@@ -1,0 +1,359 @@
+--- "original/Response to the editor and reviewers.tex"	2026-10-01 09:52:42.000000000 +0200
++++ "submission/Response to the editor and reviewers.tex"	2026-10-02 16:13:06.097239842 +0200
+@@ -9,8 +9,10 @@
+ \usepackage{amsmath,amssymb}
+ \usepackage{geometry}
+ \usepackage{enumitem}
++\usepackage{needspace}
+ \usepackage{parskip}
+ \usepackage{hyperref}
++\usepackage{xurl}
+ \usepackage{xcolor}
+ 
+ \geometry{
+@@ -29,6 +31,13 @@
+ 
+ \setlength{\parindent}{0pt}
+ \setlength{\parskip}{0.7em}
++\clubpenalty=10000
++\widowpenalty=10000
++\displaywidowpenalty=10000
++\let\originalsubsection\subsection
++\renewcommand{\subsection}{\Needspace{9\baselineskip}\originalsubsection}
++\let\originalsection\section
++\renewcommand{\section}{\Needspace{12\baselineskip}\originalsection}
+ 
+ % Reviewer-comment formatting
+ \newenvironment{reviewcomment}
+@@ -44,7 +53,29 @@
+ \begin{document}
+ 
+ \maketitle
+-We thank the editor and both reviewers for their comments. Their observations led us to revise the study and present the results in greater detail. Before changing any numerical values, we audited the code for all four domains and the historical artifacts used to generate the original results. In the revised version, we retain the predictions for each forecasting source and calculate relative capability only after verifying that the comparisons share exact common support. We collect the data needed to reproduce the analysis at a single entry point.
++Submission ID: \texttt{1e58c388-d7ec-4084-b792-df20a48e3e75}.
++Locations refer to section titles and figure/table labels.
++
++We thank the editor and reviewers for their careful reading. We have
++clarified the horizon definitions, explained their practical use, and
++revised the presentation of the four-domain results. We also checked the
++stored evidence behind the numerical summaries and the alternative-baseline
++analysis. The corrections described below distinguish changes to the
++reporting from changes to experiments.
++
++\textbf{Additional experiments carried out in this revision.} No new model
++class, hyperparameter, split or evaluation protocol was introduced. We carried out the following
++analyses, all on the same data and protocol as the paper:
++\begin{enumerate}[leftmargin=*,itemsep=2pt]
++\item \emph{Wind ARIMA check with a true $h$-step forecast.} The earlier check requested a one-step forecast at
++every horizon. We reran it with the $h$-step forecast; the wind descriptors are unchanged (Section~Wind Domain Results).
++\item \emph{ARIMA order diagnostic.} An AIC search ($p,q\le5$, $d=0$) on the training windows of 20 evenly spaced
++evaluated origins per domain (Appendix~A.2). The reported ARIMA check was not refitted with these orders.
++\item \emph{RMSE recomputation.} The four LightGBM experiments were re-executed unchanged while also recording RMSE.
++Their MAE reproduces the reported MAE exactly, and Appendix~A.1 now uses these per-origin errors.
++\item \emph{Seasonal-persistence sensitivity.} Re-executed on the current inputs; all eight reported
++descriptor tuples are reproduced exactly (Table~4).
++\end{enumerate}
+ 
+ 
+ % ============================================================
+@@ -57,16 +88,32 @@
+ \end{reviewcomment}
+ 
+ \response
+-We reconstructed and verified the wind and traffic inputs by reproducing every
+-submitted persistence and LightGBM horizon error to floating-point tolerance.
+-In ``Models'' (pp.~10--11), we corrected the fixed LightGBM configurations,
+-removed unsupported claims of model invariance, and eliminated causal language.
+-We expanded ``Limitations'' (p.~19) to state explicitly that findings are
+-conditional upon the chosen baseline, evaluation metric, $H_{\max}$, dataset,
+-model configuration, and validation protocol. We also state directly that a
+-dynamic $H^*$ controller was not prospectively evaluated. The new
+-``Alternative-baseline sensitivity'' subsection (pp.~16--17) and Table~4 report
+-the additional sensitivity analysis.
++We corrected a mismatch between the PM$_{2.5}$ text and its plotted
++LightGBM curve. That curve gives $H^*(\mathrm{strict})=22$ and $[27,48]$.
++The former value of 13 and $[36,48]$ came from a separate moving-average
++result, not the reported LightGBM curve. We corrected the text, caption,
++and Table~3 without changing the forecasts or the figure data.
++
++In ``Models'', the daily-load description now follows the producer:
++expanding training, evaluation beginning after 365 observations, and a
++weekly index-phase feature rather than a timestamp-derived day-of-week
++label. We removed claims that the observed profiles establish intrinsic
++domain limits or robustness across forecasting models. ``Limitations''
++now separates positive average skill from evidence of operational benefit
++and makes the baseline, metric, support, model, and horizon caps explicit.
++The discussion of dynamic horizon selection remains a potential use,
++not a validated controller.
++
++The archived four-domain seasonal-baseline analysis is reported in
++``Alternative-baseline sensitivity'' and Table~4. Its stored comparisons
++were checked on exact common support, and the analysis was re-executed on the
++current inputs, reproducing all reported values exactly.
++The metric-sensitivity appendix (Appendix~A.1) was recomputed from per-origin
++squared errors of the same LightGBM forecasts. The rerun reproduces the reported
++MAE exactly in all four domains, so the MAE and RMSE descriptors share forecasts
++and support. This corrected the PM$_{2.5}$ RMSE row (48/23, $[26,48]$) that had
++been inherited from a different, moving-average experiment; the other three rows
++are unchanged (wind 48/48, traffic 72/63, load 3/3).
+ 
+ 
+ % ============================================================
+@@ -82,7 +129,7 @@
+ 
+ \response
+ We replaced the full stop with a colon after both labels in
+-``Operational Predictability Horizon'' (Section~3.1, p.~6).
++``Operational Predictability Horizon'' (Section~3.1).
+ 
+ 
+ \subsection*{Comments 2--3}
+@@ -105,7 +152,9 @@
+ =
+ \max\left(\mathcal{H}^{+}\cup\{0\}\right)
+ \]
+-in Section~3.1 (p.~6).
++in Section~3.1. Equation~(5) also defines the relaxed span $\mathcal{R}$
++and the gap set $\mathcal{G}=\mathcal{R}\setminus\mathcal{H}^{+}$,
++whose elements have non-positive skill. This set may be non-empty.
+ 
+ The text explicitly notes that intermediate horizons with non-positive skill
+ may fall within the relaxed reach, but are not themselves interpreted as
+@@ -120,7 +169,7 @@
+ \end{reviewcomment}
+ 
+ \response
+-Table~2 (p.~11) now specifies PM$_{2.5}$ in $\mu\mathrm{g\,m^{-3}}$, wind speed in
++Table~2 now specifies PM$_{2.5}$ in $\mu\mathrm{g\,m^{-3}}$, wind speed in
+ $\mathrm{m\,s^{-1}}$, and traffic speed in mph. For electric load, we clarify that the
+ stored experimental target is the sum of 15-minute kW readings and that
+ division by four expresses the aggregate daily demand in kWh, following the source
+@@ -135,8 +184,8 @@
+ 
+ \response
+ We have added explicit textual references to the conceptual $H^*$ schematic
+-(Fig.~1, p.~7), the rolling-origin validation protocol (Fig.~2, p.~9), and the
+-empirical skill curve (Fig.~3, p.~12).
++(Fig.~1), the rolling-origin validation protocol (Fig.~2), and the
++PM$_{2.5}$ skill curve (Fig.~3).
+ 
+ 
+ \subsection*{Comment 6}
+@@ -146,25 +195,23 @@
+ \end{reviewcomment}
+ 
+ \response
+-Before inspecting any comparative result, we pre-specified seasonal persistence
+-as a transparent cross-domain sensitivity baseline: 24-hour seasonality for
+-hourly domains and 7-day seasonality for daily load. LightGBM, persistence, and
+-seasonal persistence were regenerated across identical forecast origins, and
+-exact equality of forecast origin, target timestamp, horizon, and
+-$y_{\mathrm{true}}$ was asserted before Skill was calculated. No records were
+-dropped during pairwise alignment.
++We include the archived seasonal-persistence analysis, using a fixed
++24-hour period for the hourly domains and a 7-day period for daily load.
++For each domain, we verified equality of forecast origin, target timestamp,
++horizon, and $y_{\mathrm{true}}$ between the stored LightGBM, persistence,
++and seasonal-persistence records. Pairwise alignment loses no records.
++The analysis was re-executed on the current inputs and reproduces all eight
++reported descriptor tuples exactly.
+ 
+ For PM$_{2.5}$, the persistence comparison on this exact common support yields
+ $H^*(\mathrm{strict})=22$ with longest contiguous positive interval $[27,48]$,
+ whereas seasonal persistence yields $H^*(\mathrm{strict})=24$ with $[25,48]$.
+ 
+-The matched-support persistence value $H^*(\mathrm{strict})=22$ differs from
+-the primary full-support persistence result ($H^*(\mathrm{strict})=13$ with
+-longest contiguous positive interval $[36,48]$) because the sensitivity
+-analysis is restricted to origins jointly eligible for both baselines. This
+-difference is an evaluation-support effect: the matched-support persistence row
+-is used solely for the baseline-sensitivity comparison and does not replace the
+-primary PM$_{2.5}$ result.
++The primary LightGBM curve also gives $H^*(\mathrm{strict})=22$ and
++$[27,48]$, after the reporting correction explained above. The previous
++13-hour value is not explained as a support effect. Equal descriptors
++do not imply equal samples or MAEs: the seasonal-baseline comparison
++uses only its matched-support rows.
+ 
+ Under the same matched-support analysis, load remains at
+ $H^*(\mathrm{strict})=1$, wind changes from 48 to 30, and traffic changes from
+@@ -182,20 +229,31 @@
+ \end{reviewcomment}
+ 
+ \response
+-We agree that the original manuscript did not document this choice adequately.
+-An audit of our repository and Git history revealed no record that the AR(2)
+-order was selected via ACF/PACF, AIC/BIC, grid search, auto-ARIMA, or validation
+-splits. We therefore make no such claim.
+-
+-The audit also revealed that the historical wind adapter requested a one-step
+-ARIMA forecast at every evaluated horizon, failing to implement the stated
+-$h$-step protocol. We removed the ARIMA numerical robustness claims from
+-``Models'' and the Wind and Traffic results sections rather than retaining an
+-unsupported rationale or modifying the historical experiment post hoc.
+-
+-The requested robustness evidence is instead provided by the prospectively
+-specified baseline sensitivity analysis on exact common support
+-(Section~10.4, pp.~16--17).
++We agree that the original manuscript did not document this choice. The order
++$(2,0,0)$ was fixed a priori as a low-order autoregression; an audit of our
++repository found no record that it was selected via ACF/PACF, information
++criteria, grid search, auto-ARIMA or validation splits, and we do not claim
++otherwise. The ARIMA check is now described in Section~Models as a
++model-substitution illustration, not a tuned competitor.
++
++To answer the question directly, we examined the data. On the training windows
++of 20 evenly spaced evaluated origins per domain, an AIC search
++($p,q\le5$, $d=0$, with constant) selects different orders at different origins
++(10 distinct best orders in wind, 8 in traffic), and $(2,0,0)$ lies within
++$\Delta$AIC$\,\le 2$ of the optimum in 10 of 20 wind windows but only 4 of 20
++traffic windows (Appendix~A.2). We report this as a limitation of the fixed
++order, not as a justification.
++
++The audit also found that the historical wind check requested a one-step
++forecast at every horizon instead of the stated $h$-step forecast. We reran it
++with a true $h$-step forecast, otherwise identical: the wind descriptors are
++unchanged ($H^*(\mathrm{relax})=H^*(\mathrm{strict})=48$, $[1,48]$, no sign
++changes) while skill amplitude differs. Traffic used an $h$-step forecast and its
++numbers are unchanged ($H^*(\mathrm{strict})=6$, $[38,43]$, 13 sign changes).
++
++The separate seasonal-baseline analysis tests sensitivity to the reference
++baseline, not robustness across forecasting models, and is not used to justify
++the ARIMA order.
+ 
+ 
+ \subsection*{Comments 8--9}
+@@ -207,12 +265,15 @@
+ 
+ \response
+ A new ``Operational interpretation and actionability'' subsection
+-(Section~3.2, p.~7) defines $H^*(\mathrm{relax})$ as the outer horizon at
++(Section~3.2) defines $H^*(\mathrm{relax})$ as the outer horizon at
+ which positive baseline-relative skill is observed, and $H^*(\mathrm{strict})$,
+ with its interval location, as the longest contiguous positive interval.
+ 
+-We explain that fixed-horizon summaries fail to capture delayed onset, skill
+-deficits, fragmentation, interval placement, continuity, or late recovery.
++We explain that a few fixed-horizon errors do not locate positive-skill
++intervals or show the gaps between them. The PM$_{2.5}$ and traffic
++examples illustrate why interval locations are needed in addition to
++lengths. We also state that positive average skill alone does not establish
++deployment value: its magnitude, uncertainty, decision loss, and cost matter.
+ 
+ 
+ \subsection*{Comment 10}
+@@ -223,7 +284,7 @@
+ \end{reviewcomment}
+ 
+ \response
+-We have added a substantive, bounded discussion to Section~11 (p.~18). In an
++We discuss this possibility in ``Discussion''. In an
+ operational setting, $H^*$ could inform a decision policy estimated on
+ historical validation data, frozen for prospective deployment, and subsequently
+ updated using only realised historical errors.
+@@ -246,7 +307,7 @@
+ 
+ \response
+ We added the dedicated operational interpretation subsection noted above
+-(Section~3.2, p.~7), distinguishing the outer positive reach from the longest
++(Section~3.2), distinguishing the outer positive reach from the longest
+ contiguous positive interval and restricting dynamic deployment claims to
+ future, separately validated policies.
+ 
+@@ -259,7 +320,7 @@
+ 
+ \response
+ Both figures are now explicitly introduced and discussed in the main text
+-(Fig.~1, p.~7; Fig.~2, p.~9).
++(Figs.~1--2).
+ 
+ 
+ \subsection*{Comment 3}
+@@ -269,9 +330,9 @@
+ \end{reviewcomment}
+ 
+ \response
+-We regenerated Figure~1 with dedicated callout boxes and separated label
+-placements. The underlying data and mathematical definitions remain unchanged,
+-and the rendered PDF (p.~7) was verified visually.
++The revised Figure~1 uses dedicated callout boxes and separated label
++placements. This is a layout correction, not a change to the horizon
++definitions or empirical results.
+ 
+ 
+ \subsection*{Comment 4}
+@@ -281,8 +342,7 @@
+ \end{reviewcomment}
+ 
+ \response
+-We regenerated Figure~2 with larger containers and wrapped text, resolving the
+-text overflow and clipping in the rendered PDF (p.~9).
++The revised Figure~2 has larger boxes and wrapped text.
+ 
+ 
+ \subsection*{Comment 5}
+@@ -292,7 +352,7 @@
+ \end{reviewcomment}
+ 
+ \response
+-We conducted the pre-specified seasonal-persistence sensitivity analysis
++We report the archived seasonal-persistence analysis
+ detailed in our response to Reviewer~1 (Comment~6), enforcing exact common
+ support and reporting all outcomes regardless of direction. Table~4 reports
+ all four domains across both baselines, documenting common-origin sample
+@@ -302,22 +362,20 @@
+ \subsection*{Comment 6}
+ 
+ \begin{reviewcomment}
+-Data Availability should reduce the need to visit four or five separate
+-sources and should clearly state whether files are cached in the code
+-repository.
++Please cache all the data in a site you control and make the central
++data location clear in the paper.
+ \end{reviewcomment}
+ 
+ \response
+-The replication package now provides a single entry point
+-(\texttt{data/README.md}) alongside a machine-readable manifest containing
+-source identifiers, exact filenames, SHA-256 checksums, pre-processing
+-scripts, and redistribution terms.
+-
+-Exact input records for PM$_{2.5}$ and load are version-controlled within the
+-repository. Wind and traffic inputs are retrieved deterministically,
+-checksum-verified, and pre-processed via a single script; we state explicitly
+-that raw external files are not cached directly in the repository. The
+-manuscript directs readers to this manifest in ``Data Availability'' (p.~21).
++We deposited the exact input files of all four experiments in the project
++repository, with SHA-256 checksums and provenance notes, under the fixed tag
++\texttt{data-cache-v1}:
++\url{https://github.com/EduIntellect/paper2H/tree/data-cache-v1/release/data_cache_four_domain}.
++The ``Data Availability'' section now points to this location. PM$_{2.5}$ and electric
++load are redistributed under CC BY 4.0 and wind under NREL's open-data terms. The traffic file is a
++single-sensor hourly aggregate of METR-LA; its underlying measurements come from Caltrans PeMS, and
++we state in the repository that we did not obtain separate confirmation of redistribution terms and will
++remove the file on request.
+ 
+ 
+ \subsection*{Comment 7}
+@@ -327,11 +385,14 @@
+ \end{reviewcomment}
+ 
+ \response
+-As noted in our response to Reviewer~1 (Comment~7), no documented
+-order-selection rationale was preserved, and the historical wind implementation
+-did not execute the intended $h$-step protocol. We removed the ARIMA robustness
+-claims from the text and document this constraint transparently, rather than
+-constructing a post hoc ACF/PACF justification.
++As noted in our response to Reviewer~1 (Comment~7), the order $(2,0,0)$ was fixed
++a priori as a low-order autoregression and was not selected with ACF/PACF or
++information criteria. We now say so in Section~Models, report an a posteriori
++AIC-based diagnostic in Appendix~A.2 (the best order varies across origins, and
++$(2,0,0)$ is further from the optimum in traffic than in wind), and present the
++check as an illustration of descriptor sensitivity, not a tuned model. The
++wind check was rerun with a true $h$-step forecast; its descriptors are
++unchanged.
+ 
+ 
+-\end{document}
+\ No hay ningún carácter de nueva línea al final del archivo
++\end{document}
