@@ -33,8 +33,9 @@ def load_wind_module():
 class ARIMAAdapter:
     """Drop-in replacement for the LightGBM estimator interface used in wind pipeline."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, horizon=1, **kwargs):
         self._fitted = None
+        self.horizon = max(1, int(horizon))
 
     def fit(self, x_train, y_train):
         y = pd.Series(y_train).dropna().astype(float)
@@ -52,8 +53,46 @@ class ARIMAAdapter:
             raise ValueError("Model not fitted")
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            forecast = self._fitted.forecast(steps=1)
+            forecast = self._fitted.forecast(steps=self.horizon)
         return np.array([float(forecast.iloc[-1])])
+
+
+def _arima_factory_for_horizon(h: int):
+    def _factory(**kwargs):
+        return ARIMAAdapter(horizon=h, **kwargs)
+
+    return _factory
+
+
+def evaluate_horizon_aligned_arima(wind, series: pd.Series):
+    """Reuse canonical evaluator per horizon while injecting ARIMA with matching forecast step.
+
+    Mirrors evaluate_horizon_aligned_arima in traffic_arima_canonical_predictability.py.
+    Fixes a horizon-alignment bug in the original adapter, which always called
+    forecast(steps=1) regardless of h, so for h>1 it compared a 1-step-ahead
+    forecast against the true h-step-ahead target.
+    """
+    horizons_out = []
+    baseline_out = []
+    model_out = []
+
+    original_estimator = wind.LGBMRegressor
+    try:
+        for h in wind.HORIZONS:
+            h = int(h)
+            wind.LGBMRegressor = _arima_factory_for_horizon(h)
+            h_arr, baseline_h, model_h = wind.evaluate_rolling_origin_lightgbm(
+                series=series,
+                horizons=[h],
+                lags=wind.LAGS,
+            )
+            horizons_out.extend(h_arr.tolist())
+            baseline_out.extend(baseline_h.tolist())
+            model_out.extend(model_h.tolist())
+    finally:
+        wind.LGBMRegressor = original_estimator
+
+    return np.array(horizons_out), np.array(baseline_out), np.array(model_out)
 
 
 def compute_hstar_descriptors(horizons: np.ndarray, skill: np.ndarray):
@@ -101,14 +140,10 @@ def main():
 
     wind = load_wind_module()
 
-    # Canonical protocol reuse: swap model class only, keep evaluation function intact.
-    wind.LGBMRegressor = ARIMAAdapter
-
     series = wind.load_wind_series(wind.DATA_PATH)
-    horizons, baseline_mae, model_mae = wind.evaluate_rolling_origin_lightgbm(
+    horizons, baseline_mae, model_mae = evaluate_horizon_aligned_arima(
+        wind=wind,
         series=series,
-        horizons=wind.HORIZONS,
-        lags=wind.LAGS,
     )
 
     with np.errstate(divide="ignore", invalid="ignore"):
