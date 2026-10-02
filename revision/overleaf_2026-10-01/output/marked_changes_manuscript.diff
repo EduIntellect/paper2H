@@ -1,5 +1,5 @@
 --- original/main.tex	2026-10-01 09:52:42.000000000 +0200
-+++ submission/main.tex	2026-10-02 16:13:06.097843102 +0200
++++ submission/main.tex	2026-10-02 16:20:42.292534054 +0200
 @@ -56,14 +56,14 @@
  non-positive gaps), and $H^*(\mathrm{strict})$, the length of the longest
  contiguous interval of positive skill. When needed (especially for
@@ -363,7 +363,7 @@
  domain families and evaluation designs, and whether more expressive model
  classes or multivariate formulations alter the interval structure of
  baseline-relative usefulness.
-@@ -775,11 +853,66 @@
+@@ -775,11 +853,78 @@
  
  \subsection*{A.1 Metric sensitivity}
  
@@ -430,12 +430,24 @@
 +\end{table}
 +The selected order is not stable across origins in either domain, and
 +$(2,0,0)$ is generally further from the AIC optimum in traffic than in wind.
++Figure~\ref{fig:acf-pacf} shows the ACF and PACF of the last evaluated training window of each domain
++(720 observations, lags up to 48). In both series the PACF is dominated by lag~1
++(0.80 in wind, 0.85 in traffic) with small coefficients at lags 2--4, and the
++traffic ACF has a daily peak at lag~24 (0.36) that a non-seasonal AR(2) cannot represent.
++These plots were inspected after the order was fixed, not used to select it.
++\begin{figure}[h]
++  \centering
++  \includegraphics[width=0.48\textwidth]{fig_acf_pacf_wind.png}\hfill
++  \includegraphics[width=0.48\textwidth]{fig_acf_pacf_traffic.png}
++  \caption{ACF (top) and PACF (bottom) of the last evaluated $h=1$ training window (720 observations) for wind (left) and traffic (right).}
++  \label{fig:acf-pacf}
++\end{figure}
 +The ADF test does not reject a unit root in 2 of 20 wind windows and 1 of 20
 +traffic windows ($p>0.05$).
  
  \section*{Declarations}
  
-@@ -793,19 +926,17 @@
+@@ -793,19 +938,17 @@
  Not applicable. This study is based exclusively on publicly available benchmark datasets. It did not involve human participants, animals, patient data, or primary data collection.
  
  \subsection*{Data Availability}
@@ -466,7 +478,7 @@
  
  \subsection*{Code Availability}
  The replication package accompanying this revision contains the data-processing,
-@@ -818,7 +949,10 @@
+@@ -818,7 +961,10 @@
  
  
  % Springer/DMKD bibliography (BibTeX)

@@ -1,5 +1,5 @@
 --- "original/Response to the editor and reviewers.tex"	2026-10-01 09:52:42.000000000 +0200
-+++ "submission/Response to the editor and reviewers.tex"	2026-10-02 16:13:06.097239842 +0200
++++ "submission/Response to the editor and reviewers.tex"	2026-10-02 16:20:50.879530768 +0200
 @@ -9,8 +9,10 @@
  \usepackage{amsmath,amssymb}
  \usepackage{geometry}
@@ -177,7 +177,7 @@
  
  Under the same matched-support analysis, load remains at
  $H^*(\mathrm{strict})=1$, wind changes from 48 to 30, and traffic changes from
-@@ -182,20 +229,31 @@
+@@ -182,20 +229,33 @@
  \end{reviewcomment}
  
  \response
@@ -208,7 +208,9 @@
 +(10 distinct best orders in wind, 8 in traffic), and $(2,0,0)$ lies within
 +$\Delta$AIC$\,\le 2$ of the optimum in 10 of 20 wind windows but only 4 of 20
 +traffic windows (Appendix~A.2). We report this as a limitation of the fixed
-+order, not as a justification.
++order, not as a justification. The ACF and PACF of the last training window of each domain
++are shown in a new figure in Appendix~A.2; they were inspected after the order was fixed. The PACF is dominated by lag~1,
++and the traffic ACF has a daily peak at lag~24 that a non-seasonal AR(2) cannot represent.
 +
 +The audit also found that the historical wind check requested a one-step
 +forecast at every horizon instead of the stated $h$-step forecast. We reran it
@@ -223,7 +225,7 @@
  
  
  \subsection*{Comments 8--9}
-@@ -207,12 +265,15 @@
+@@ -207,12 +267,15 @@
  
  \response
  A new ``Operational interpretation and actionability'' subsection
@@ -242,7 +244,7 @@
  
  
  \subsection*{Comment 10}
-@@ -223,7 +284,7 @@
+@@ -223,7 +286,7 @@
  \end{reviewcomment}
  
  \response
@@ -251,7 +253,7 @@
  operational setting, $H^*$ could inform a decision policy estimated on
  historical validation data, frozen for prospective deployment, and subsequently
  updated using only realised historical errors.
-@@ -246,7 +307,7 @@
+@@ -246,7 +309,7 @@
  
  \response
  We added the dedicated operational interpretation subsection noted above
@@ -260,7 +262,7 @@
  contiguous positive interval and restricting dynamic deployment claims to
  future, separately validated policies.
  
-@@ -259,7 +320,7 @@
+@@ -259,7 +322,7 @@
  
  \response
  Both figures are now explicitly introduced and discussed in the main text
@@ -269,7 +271,7 @@
  
  
  \subsection*{Comment 3}
-@@ -269,9 +330,9 @@
+@@ -269,9 +332,9 @@
  \end{reviewcomment}
  
  \response
@@ -282,7 +284,7 @@
  
  
  \subsection*{Comment 4}
-@@ -281,8 +342,7 @@
+@@ -281,8 +344,7 @@
  \end{reviewcomment}
  
  \response
@@ -292,7 +294,7 @@
  
  
  \subsection*{Comment 5}
-@@ -292,7 +352,7 @@
+@@ -292,7 +354,7 @@
  \end{reviewcomment}
  
  \response
@@ -301,7 +303,7 @@
  detailed in our response to Reviewer~1 (Comment~6), enforcing exact common
  support and reporting all outcomes regardless of direction. Table~4 reports
  all four domains across both baselines, documenting common-origin sample
-@@ -302,22 +362,20 @@
+@@ -302,22 +364,20 @@
  \subsection*{Comment 6}
  
  \begin{reviewcomment}
@@ -335,7 +337,7 @@
  
  
  \subsection*{Comment 7}
-@@ -327,11 +385,14 @@
+@@ -327,11 +387,14 @@
  \end{reviewcomment}
  
  \response

@@ -911,6 +911,18 @@ are $(1,0,0)$ for wind (6/20) and $(3,0,1)$ for traffic (5/20).}
 \end{table}
 The selected order is not stable across origins in either domain, and
 $(2,0,0)$ is generally further from the AIC optimum in traffic than in wind.
+Figure~\ref{fig:acf-pacf} shows the ACF and PACF of the last evaluated training window of each domain
+(720 observations, lags up to 48). In both series the PACF is dominated by lag~1
+(0.80 in wind, 0.85 in traffic) with small coefficients at lags 2--4, and the
+traffic ACF has a daily peak at lag~24 (0.36) that a non-seasonal AR(2) cannot represent.
+These plots were inspected after the order was fixed, not used to select it.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.48\textwidth]{fig_acf_pacf_wind.png}\hfill
+  \includegraphics[width=0.48\textwidth]{fig_acf_pacf_traffic.png}
+  \caption{ACF (top) and PACF (bottom) of the last evaluated $h=1$ training window (720 observations) for wind (left) and traffic (right).}
+  \label{fig:acf-pacf}
+\end{figure}
 The ADF test does not reject a unit root in 2 of 20 wind windows and 1 of 20
 traffic windows ($p>0.05$).
 
