@@ -56,14 +56,14 @@ evaluated horizon such that $\mathrm{Skill}(h)>0$ (allowing intermediate
 non-positive gaps), and $H^*(\mathrm{strict})$, the length of the longest
 contiguous interval of positive skill. When needed (especially for
 fragmented or late-recovery profiles), we additionally report interval
-locations and sign-change structures. A fixed seasonal-persistence
-sensitivity is evaluated on exact common support. It changes strict continuity
-and interval location in several domains even when relaxed reach is unchanged,
-showing that the descriptors depend on the baseline. The four settings
-illustrate different aspects of the skill profile: a short positive window
+locations and sign-change structures. Applied to four public
+datasets, the descriptors reveal different skill profiles: a short positive window
 in electric load, early positive islands followed by a longer positive
 interval in PM$_{2.5}$, sustained positive skill in wind speed, and
-fragmented positive intervals in traffic speed. These patterns motivate reporting multiple operational
+fragmented positive intervals in traffic speed. A fixed seasonal-persistence
+sensitivity, evaluated on exact common support, changes strict continuity
+and interval location in several domains even when relaxed reach is unchanged,
+showing that the descriptors depend on the baseline. These patterns motivate reporting multiple operational
 descriptors beyond fixed-horizon error summaries so that total positive reach,
 sustained contiguous usefulness, and fragmented interval structure can be
 distinguished under a shared leakage-free protocol.}
@@ -80,13 +80,11 @@ distinguished under a shared leakage-free protocol.}
 
 \section{Introduction}
 
-In applied forecasting, evaluation is often reported at a small number of fixed lead times. This practice can obscure when (and for how long) a method is operationally useful relative to a strong baseline, especially when multi-step performance is non-monotonic or fragmented across the horizon. Methodological audits also document recurrent evaluation failures—including temporally invalid partitioning, leakage-prone preprocessing, omitted parsimonious baselines, and uncritical metric selection—that can materially distort conclusions about practical forecasting value \citep{hewamalage2023dmkd}. A remaining evaluation problem is how to quantify baseline-relative usefulness over the full forecast horizon under a shared, leakage-free protocol.
+In applied forecasting, evaluation is often reported at a small number of fixed lead times. This practice can obscure when (and for how long) a method is operationally useful relative to a strong baseline, especially when multi-step performance is non-monotonic or fragmented across the horizon. Methodological audits also document recurrent evaluation failures—including temporally invalid partitioning, leakage-prone preprocessing, omitted parsimonious baselines, and uncritical metric selection—that can materially distort conclusions about practical forecasting value \citep{hewamalage2023dmkd}.
 
-We address this problem through rolling-origin evaluation, train-only preprocessing, and persistence as an explicit reference baseline. We report performance as a horizon-wise skill curve, $\mathrm{Skill}(h)$, and use two descriptors to distinguish the last horizon with positive skill from the longest uninterrupted positive interval.
+A remaining evaluation problem is how to quantify baseline-relative usefulness over the full forecast horizon under a shared, leakage-free protocol. We address this problem through rolling-origin evaluation, train-only preprocessing, and persistence as an explicit reference baseline. We report performance as a horizon-wise skill curve, $\mathrm{Skill}(h)$, and use two descriptors to distinguish the last horizon with positive skill from the longest uninterrupted positive interval. We apply this design to four domains---PM$_{2.5}$ air quality, electric load, wind speed, and traffic speed---chosen to span heterogeneous dynamics and baseline competitiveness.
 
 We frame predictability-horizon estimation as an evaluation-methodology contribution for forecasting systems in machine learning and data mining. The goal is not to create another applied leaderboard, but to establish a protocol for characterizing and comparing useful predictive reach by horizon relative to a clearly specified baseline, thereby complementing recent methodological work on multi-step forecasting \citep{green2025stratify,kreuzer2025trend}.
-
-Empirically, we apply this unified evaluation design to four domains—PM$_{2.5}$ air quality, electric load, wind speed, and traffic speed—chosen to span heterogeneous dynamics and baseline competitiveness under the same leakage-free protocol.
 
 The paper makes three contributions:
 \begin{enumerate}
@@ -738,9 +736,12 @@ Reach, continuity, and fragmentation can coexist within the same curve.
 An outer endpoint alone does not show the gaps before it, and an interval
 length alone does not locate that interval. Reporting both descriptors
 with interval locations makes these distinctions explicit without
-assigning each domain to a unique profile type.
+assigning each domain to a unique profile type. When skill curves are
+non-monotonic, total positive reach can remain stable even though
+contiguous usefulness and interval structure change across baselines and
+other components of the evaluation protocol.
 
-These results also reinforce concerns raised in prior methodological work: fixed-horizon reporting can hide delayed or fragmented usefulness, and leakage-prone evaluation or missing strong baselines can distort conclusions about practical value. The persistence-relative rolling-origin design used here addresses both issues directly.
+Prior methodological work documents that leakage-prone evaluation and omitted strong baselines can distort conclusions about practical forecasting value \citep{hewamalage2023dmkd}. Our results add that fixed-horizon reporting can also hide delayed or fragmented usefulness, which the skill curve and its interval descriptors make visible. The persistence-relative rolling-origin design avoids leakage and baseline omission by construction, but it does not remove other sources of evaluation bias, such as the choice of metric or adaptive selection of horizons.
 
 \textbf{Potential dynamic use.} An operational system could use an $H^*$
 profile estimated on historical validation data to freeze a set of eligible
@@ -769,8 +770,11 @@ favorable profile and show why the baseline is part of the estimand.
 
 \textbf{Scope of inference.} The same forecasting model can have different
 horizon descriptors when the baseline, loss, evaluated range, or data
-changes. The descriptors summarize that comparison; they do not measure
-an intrinsic limit of a model or domain. The alternative-baseline analysis
+changes. The descriptors summarize that comparison,
+\[
+H^* = H^*(\text{dataset}, \text{model}, \text{baseline}, \text{metric}, \text{validation protocol}),
+\]
+and do not measure an intrinsic limit of a model or domain. The alternative-baseline analysis
 tests sensitivity to the reference, not robustness across forecasting models.
 
 These findings point to two methodological implications for horizon-based forecast evaluation:
@@ -800,25 +804,6 @@ potential application requiring separate prequential or nested validation.
 Positive sample-average skill is not, by itself, evidence of a material or
 statistically established operational benefit. We do not provide uncertainty
 intervals for the horizon descriptors or evaluate deployment costs.
-
-More formally, the horizon descriptors reported here should be understood as
-\[
-H^* = H^*(\text{dataset}, \text{model}, \text{baseline}, \text{metric}, \text{validation protocol}),
-\]
-rather than as intrinsic properties of a forecasting system. We do not
-infer stability under RMSE from MAE curves; Appendix~A.1 recomputes the
-descriptors from per-origin errors on the same support and shows that
-stability does not hold uniformly across domains.
-
-These results show why $H^*(\mathrm{relax})$ alone is not sufficient in
-fragmented settings. When skill curves are non-monotonic, total positive
-reach can remain stable even though contiguous usefulness and interval
-structure change across baselines and other components of the evaluation protocol. Reporting $H^*(\mathrm{strict})$,
-together with interval locations and, when needed, sign-change
-structure, therefore provides a more informative summary of operational
-usefulness. Clear reporting of the baseline, evaluated horizon range,
-dataset, model, and protocol remains necessary for reproducibility and
-for the correct interpretation of any reported $H^*$ estimate.
 
 
 \section{Conclusion}
