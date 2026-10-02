@@ -1,5 +1,5 @@
 --- "original/Response to the editor and reviewers.tex"	2026-10-01 09:52:42.000000000 +0200
-+++ "submission/Response to the editor and reviewers.tex"	2026-10-02 16:44:43.979599593 +0200
++++ "submission/Response to the editor and reviewers.tex"	2026-10-02 16:58:03.079456477 +0200
 @@ -9,8 +9,10 @@
  \usepackage{amsmath,amssymb}
  \usepackage{geometry}
@@ -25,7 +25,7 @@
  
  % Reviewer-comment formatting
  \newenvironment{reviewcomment}
-@@ -44,7 +53,29 @@
+@@ -44,52 +53,86 @@
  \begin{document}
  
  \maketitle
@@ -56,10 +56,16 @@
  
  
  % ============================================================
-@@ -57,16 +88,32 @@
- \end{reviewcomment}
+ \section*{Editor}
+ % ============================================================
  
- \response
+-\begin{reviewcomment}
+-Please report results precisely, remove overstated conclusions, and explain
+-limitations completely.
+-\end{reviewcomment}
++We thank the Editor for handling the manuscript. Besides the changes requested by the reviewers, we made the following corrections to the reporting.
+ 
+-\response
 -We reconstructed and verified the wind and traffic inputs by reproducing every
 -submitted persistence and LightGBM horizon error to floating-point tolerance.
 -In ``Models'' (pp.~10--11), we corrected the fixed LightGBM configurations,
@@ -99,7 +105,11 @@
  
  
  % ============================================================
-@@ -76,20 +123,18 @@
+ \section*{Reviewer 1}
+ % ============================================================
+ 
++We follow the seven points of the report in their original order.
++
  \subsection*{Comment 1}
  
  \begin{reviewcomment}
@@ -114,16 +124,17 @@
 +``Operational Predictability Horizon'' (Section~3.1; the reviewed PDF numbers the "Operational definitions" paragraph as Section~3.1.1).
  
  
- \subsection*{Comments 2--3}
+-\subsection*{Comments 2--3}
++\subsection*{Comment 2}
  
  \begin{reviewcomment}
 -Equation (5) and the surrounding text should explicitly state that the relaxed
 -horizon permits non-positive skill at intermediate steps.
-+In section 3.3.1 in equation (5) include the condition of including the non-positive intermediate skills within the horizon as the definition using equation (5) does not represent what $H^*$(relax) is extracting from the curve. In this definition of relax $H^*$ reiterate for clarity purposes here that it considers all the time steps before as it skill score once the upper bound of the interval is positive as seen in the PM2.5 and the traffic domain results.
++In section 3.3.1 in equation (5) include the condition of including the non-positive intermediate skills within the horizon as the definition using equation (5) does not represent what $H^*$(relax) is extracting from the curve.
  \end{reviewcomment}
  
  \response
-@@ -105,22 +150,26 @@
+@@ -105,22 +148,34 @@
  =
  \max\left(\mathcal{H}^{+}\cup\{0\}\right)
  \]
@@ -132,6 +143,14 @@
 +and the gap set $\mathcal{G}=\mathcal{R}\setminus\mathcal{H}^{+}$,
 +whose elements have non-positive skill. This set may be non-empty.
  
++
++\subsection*{Comment 3}
++
++\begin{reviewcomment}
++In this definition of relax $H^*$ reiterate for clarity purposes here that it considers all the time steps before as it skill score once the upper bound of the interval is positive as seen in the PM2.5 and the traffic domain results.
++\end{reviewcomment}
++
++\response
  The text explicitly notes that intermediate horizons with non-positive skill
  may fall within the relaxed reach, but are not themselves interpreted as
 -skilful. We verified this behaviour using executable unit tests covering
@@ -154,7 +173,7 @@
  $\mathrm{m\,s^{-1}}$, and traffic speed in mph. For electric load, we clarify that the
  stored experimental target is the sum of 15-minute kW readings and that
  division by four expresses the aggregate daily demand in kWh, following the source
-@@ -130,41 +179,39 @@
+@@ -130,41 +185,39 @@
  \subsection*{Comment 5}
  
  \begin{reviewcomment}
@@ -174,7 +193,7 @@
  
  \begin{reviewcomment}
 -Evaluate baseline choices beyond persistence.
-+An evaluation of other baseline choices is warranted, other than persistence.
++An evaluation of other baseline choices is warranted, other than persistence. For some datasets you used ARIMA(2,0,0) which is essentially an AR(2) model why did you choose this parameter? Did you do an ACF plot for this data?
  \end{reviewcomment}
  
  \response
@@ -185,7 +204,7 @@
 -exact equality of forecast origin, target timestamp, horizon, and
 -$y_{\mathrm{true}}$ was asserted before Skill was calculated. No records were
 -dropped during pairwise alignment.
-+We include the archived seasonal-persistence analysis, using a fixed
++\textit{Alternative baselines.} We include the archived seasonal-persistence analysis, using a fixed
 +24-hour period for the hourly domains and a 7-day period for daily load.
 +For each domain, we verified equality of forecast origin, target timestamp,
 +horizon, and $y_{\mathrm{true}}$ between the stored LightGBM, persistence,
@@ -212,30 +231,11 @@
  
  Under the same matched-support analysis, load remains at
  $H^*(\mathrm{strict})=1$, wind changes from 48 to 30, and traffic changes from
-@@ -178,52 +225,66 @@
- \subsection*{Comment 7}
+@@ -174,56 +227,54 @@
+ endpoint is therefore partly structural and is not interpreted as evidence of
+ baseline invariance.
  
- \begin{reviewcomment}
--Explain why ARIMA(2,0,0) was selected and whether ACF was examined.
-+For some datasets you used ARIMA(2,0,0) which is essentially an AR(2) model why did you choose this parameter? Did you do an ACF plot for this data?
- \end{reviewcomment}
- 
- \response
--We agree that the original manuscript did not document this choice adequately.
--An audit of our repository and Git history revealed no record that the AR(2)
--order was selected via ACF/PACF, AIC/BIC, grid search, auto-ARIMA, or validation
--splits. We therefore make no such claim.
--
--The audit also revealed that the historical wind adapter requested a one-step
--ARIMA forecast at every evaluated horizon, failing to implement the stated
--$h$-step protocol. We removed the ARIMA numerical robustness claims from
--``Models'' and the Wind and Traffic results sections rather than retaining an
--unsupported rationale or modifying the historical experiment post hoc.
--
--The requested robustness evidence is instead provided by the prospectively
--specified baseline sensitivity analysis on exact common support
--(Section~10.4, pp.~16--17).
-+We agree that the original manuscript did not document this choice. The order
++\textit{ARIMA order and ACF.} We agree that the original manuscript did not document this choice. The order
 +$(2,0,0)$ was fixed a priori as a low-order autoregression; an audit of our
 +repository found no record that it was selected via ACF/PACF, information
 +criteria, grid search, auto-ARIMA or validation splits, and we do not claim
@@ -263,13 +263,36 @@
 +baseline, not robustness across forecasting models, and is not used to justify
 +the ARIMA order.
  
+-\subsection*{Comment 7}
  
- \subsection*{Comments 8--9}
+-\begin{reviewcomment}
+-Explain why ARIMA(2,0,0) was selected and whether ACF was examined.
+-\end{reviewcomment}
+-
+-\response
+-We agree that the original manuscript did not document this choice adequately.
+-An audit of our repository and Git history revealed no record that the AR(2)
+-order was selected via ACF/PACF, AIC/BIC, grid search, auto-ARIMA, or validation
+-splits. We therefore make no such claim.
+-
+-The audit also revealed that the historical wind adapter requested a one-step
+-ARIMA forecast at every evaluated horizon, failing to implement the stated
+-$h$-step protocol. We removed the ARIMA numerical robustness claims from
+-``Models'' and the Wind and Traffic results sections rather than retaining an
+-unsupported rationale or modifying the historical experiment post hoc.
+-
+-The requested robustness evidence is instead provided by the prospectively
+-specified baseline sensitivity analysis on exact common support
+-(Section~10.4, pp.~16--17).
+-
+-
+-\subsection*{Comments 8--9}
++\subsection*{Comment 7}
  
  \begin{reviewcomment}
 -Explain the practical utility of relaxed and strict $H^*$ and what they add
 -beyond fixed-horizon summaries.
-+State or reiterate the practical usefulness and use cases of each skill- relaxed and strict. Also, examine what can be done with these patterns that regular fixed horizon accuracy summaries cannot do.
++State or reiterate the practical usefulness and use cases of each skill- relaxed and strict. Also, examine what can be done with these patterns that regular fixed horizon accuracy summaries cannot do. For example, can you have the persistence baseline and skill score -- relaxes and strict-- be used to determine the various h steps to predict in a rolling window approach for a dynamical forecast of the time series? Or would this create a feedback loop and cause overfitting. Explore and if feasible add to the paper to make it more substantial and unique.
  \end{reviewcomment}
  
  \response
@@ -281,28 +304,27 @@
  
 -We explain that fixed-horizon summaries fail to capture delayed onset, skill
 -deficits, fragmentation, interval placement, continuity, or late recovery.
+-
 +We explain that a few fixed-horizon errors do not locate positive-skill
 +intervals or show the gaps between them. The PM$_{2.5}$ and traffic
 +examples illustrate why interval locations are needed in addition to
 +lengths. We also state that positive average skill alone does not establish
 +deployment value: its magnitude, uncertainty, decision loss, and cost matter.
  
- 
- \subsection*{Comment 10}
- 
- \begin{reviewcomment}
+-\subsection*{Comment 10}
+-
+-\begin{reviewcomment}
 -Could $H^*$ dynamically decide which horizons to forecast, and could this
 -create feedback or overfitting?
-+For example, can you have the persistence baseline and skill score -- relaxes and strict-- be used to determine the various h steps to predict in a rolling window approach for a dynamical forecast of the time series? Or would this create a feedback loop and cause overfitting. Explore and if feasible add to the paper to make it more substantial and unique.
- \end{reviewcomment}
- 
- \response
+-\end{reviewcomment}
+-
+-\response
 -We have added a substantive, bounded discussion to Section~11 (p.~18). In an
-+We discuss this possibility in ``Discussion''. In an
++\textit{Dynamic use.} We discuss this possibility in ``Discussion''. In an
  operational setting, $H^*$ could inform a decision policy estimated on
  historical validation data, frozen for prospective deployment, and subsequently
  updated using only realised historical errors.
-@@ -241,12 +302,12 @@
+@@ -241,12 +292,12 @@
  \subsection*{Comment 1}
  
  \begin{reviewcomment}
@@ -317,7 +339,7 @@
  contiguous positive interval and restricting dynamic deployment claims to
  future, separately validated policies.
  
-@@ -254,45 +315,44 @@
+@@ -254,45 +305,44 @@
  \subsection*{Comment 2}
  
  \begin{reviewcomment}
@@ -373,7 +395,7 @@
  detailed in our response to Reviewer~1 (Comment~6), enforcing exact common
  support and reporting all outcomes regardless of direction. Table~4 reports
  all four domains across both baselines, documenting common-origin sample
-@@ -302,36 +362,36 @@
+@@ -302,36 +352,36 @@
  \subsection*{Comment 6}
  
  \begin{reviewcomment}
@@ -418,7 +440,7 @@
 -did not execute the intended $h$-step protocol. We removed the ARIMA robustness
 -claims from the text and document this constraint transparently, rather than
 -constructing a post hoc ACF/PACF justification.
-+As noted in our response to Reviewer~1 (Comment~7), the order $(2,0,0)$ was fixed
++As noted in our response to Reviewer~1 (Comment~6), the order $(2,0,0)$ was fixed
 +a priori as a low-order autoregression and was not selected with ACF/PACF or
 +information criteria. We now say so in Section~Models, report an a posteriori
 +AIC-based diagnostic in Appendix~A.2 (the best order varies across origins, and

@@ -82,12 +82,8 @@ descriptor tuples are reproduced exactly (Table~4).
 \section*{Editor}
 % ============================================================
 
-\begin{reviewcomment}
-Please report results precisely, remove overstated conclusions, and explain
-limitations completely.
-\end{reviewcomment}
+We thank the Editor for handling the manuscript. Besides the changes requested by the reviewers, we made the following corrections to the reporting.
 
-\response
 We corrected a mismatch between the PM$_{2.5}$ text and its plotted
 LightGBM curve. That curve gives $H^*(\mathrm{strict})=22$ and $[27,48]$.
 The former value of 13 and $[36,48]$ came from a separate moving-average
@@ -120,6 +116,8 @@ are unchanged (wind 48/48, traffic 72/63, load 3/3).
 \section*{Reviewer 1}
 % ============================================================
 
+We follow the seven points of the report in their original order.
+
 \subsection*{Comment 1}
 
 \begin{reviewcomment}
@@ -131,10 +129,10 @@ We replaced the full stop with a colon after both labels in
 ``Operational Predictability Horizon'' (Section~3.1; the reviewed PDF numbers the "Operational definitions" paragraph as Section~3.1.1).
 
 
-\subsection*{Comments 2--3}
+\subsection*{Comment 2}
 
 \begin{reviewcomment}
-In section 3.3.1 in equation (5) include the condition of including the non-positive intermediate skills within the horizon as the definition using equation (5) does not represent what $H^*$(relax) is extracting from the curve. In this definition of relax $H^*$ reiterate for clarity purposes here that it considers all the time steps before as it skill score once the upper bound of the interval is positive as seen in the PM2.5 and the traffic domain results.
+In section 3.3.1 in equation (5) include the condition of including the non-positive intermediate skills within the horizon as the definition using equation (5) does not represent what $H^*$(relax) is extracting from the curve.
 \end{reviewcomment}
 
 \response
@@ -154,6 +152,14 @@ in Section~3.1. Equation~(5) also defines the relaxed span $\mathcal{R}$
 and the gap set $\mathcal{G}=\mathcal{R}\setminus\mathcal{H}^{+}$,
 whose elements have non-positive skill. This set may be non-empty.
 
+
+\subsection*{Comment 3}
+
+\begin{reviewcomment}
+In this definition of relax $H^*$ reiterate for clarity purposes here that it considers all the time steps before as it skill score once the upper bound of the interval is positive as seen in the PM2.5 and the traffic domain results.
+\end{reviewcomment}
+
+\response
 The text explicitly notes that intermediate horizons with non-positive skill
 may fall within the relaxed reach, but are not themselves interpreted as
 skilful. In the PM$_{2.5}$ and traffic results we now also state how much of the relaxed
@@ -191,11 +197,11 @@ PM$_{2.5}$ skill curve (Fig.~3).
 \subsection*{Comment 6}
 
 \begin{reviewcomment}
-An evaluation of other baseline choices is warranted, other than persistence.
+An evaluation of other baseline choices is warranted, other than persistence. For some datasets you used ARIMA(2,0,0) which is essentially an AR(2) model why did you choose this parameter? Did you do an ACF plot for this data?
 \end{reviewcomment}
 
 \response
-We include the archived seasonal-persistence analysis, using a fixed
+\textit{Alternative baselines.} We include the archived seasonal-persistence analysis, using a fixed
 24-hour period for the hourly domains and a 7-day period for daily load.
 For each domain, we verified equality of forecast origin, target timestamp,
 horizon, and $y_{\mathrm{true}}$ between the stored LightGBM, persistence,
@@ -221,15 +227,7 @@ where seasonal and standard persistence coincide; the unchanged relaxed
 endpoint is therefore partly structural and is not interpreted as evidence of
 baseline invariance.
 
-
-\subsection*{Comment 7}
-
-\begin{reviewcomment}
-For some datasets you used ARIMA(2,0,0) which is essentially an AR(2) model why did you choose this parameter? Did you do an ACF plot for this data?
-\end{reviewcomment}
-
-\response
-We agree that the original manuscript did not document this choice. The order
+\textit{ARIMA order and ACF.} We agree that the original manuscript did not document this choice. The order
 $(2,0,0)$ was fixed a priori as a low-order autoregression; an audit of our
 repository found no record that it was selected via ACF/PACF, information
 criteria, grid search, auto-ARIMA or validation splits, and we do not claim
@@ -258,10 +256,10 @@ baseline, not robustness across forecasting models, and is not used to justify
 the ARIMA order.
 
 
-\subsection*{Comments 8--9}
+\subsection*{Comment 7}
 
 \begin{reviewcomment}
-State or reiterate the practical usefulness and use cases of each skill- relaxed and strict. Also, examine what can be done with these patterns that regular fixed horizon accuracy summaries cannot do.
+State or reiterate the practical usefulness and use cases of each skill- relaxed and strict. Also, examine what can be done with these patterns that regular fixed horizon accuracy summaries cannot do. For example, can you have the persistence baseline and skill score -- relaxes and strict-- be used to determine the various h steps to predict in a rolling window approach for a dynamical forecast of the time series? Or would this create a feedback loop and cause overfitting. Explore and if feasible add to the paper to make it more substantial and unique.
 \end{reviewcomment}
 
 \response
@@ -276,15 +274,7 @@ examples illustrate why interval locations are needed in addition to
 lengths. We also state that positive average skill alone does not establish
 deployment value: its magnitude, uncertainty, decision loss, and cost matter.
 
-
-\subsection*{Comment 10}
-
-\begin{reviewcomment}
-For example, can you have the persistence baseline and skill score -- relaxes and strict-- be used to determine the various h steps to predict in a rolling window approach for a dynamical forecast of the time series? Or would this create a feedback loop and cause overfitting. Explore and if feasible add to the paper to make it more substantial and unique.
-\end{reviewcomment}
-
-\response
-We discuss this possibility in ``Discussion''. In an
+\textit{Dynamic use.} We discuss this possibility in ``Discussion''. In an
 operational setting, $H^*$ could inform a decision policy estimated on
 historical validation data, frozen for prospective deployment, and subsequently
 updated using only realised historical errors.
@@ -384,7 +374,7 @@ For certain datasets, ARIMA(2,0,0)---effectively an AR(2) model---was applied. C
 \end{reviewcomment}
 
 \response
-As noted in our response to Reviewer~1 (Comment~7), the order $(2,0,0)$ was fixed
+As noted in our response to Reviewer~1 (Comment~6), the order $(2,0,0)$ was fixed
 a priori as a low-order autoregression and was not selected with ACF/PACF or
 information criteria. We now say so in Section~Models, report an a posteriori
 AIC-based diagnostic in Appendix~A.2 (the best order varies across origins, and
